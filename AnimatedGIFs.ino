@@ -69,16 +69,11 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
-//#define NEOMATRIX
-//#define DEBUGLINE 6
-
-// if you want to display a file and display that one first
-#define FIRSTINDEX 0
+#include "config.h"
 
 #ifdef NEOMATRIX
 #include "neomatrix_config.h"
 #define rgb24 CRGB
-
 #else
 #define ENABLE_SCROLLING  1
 #if defined (ARDUINO)
@@ -90,15 +85,9 @@
 #endif
 #endif
 
-#include <SD.h>
 #include "GifDecoder.h"
 #include "FilenameFunctions.h"
 
-#define DISPLAY_TIME_SECONDS 10
-
-
-// range 0-255
-const int defaultBrightness = 255;
 
 const rgb24 COLOR_BLACK = {
     0, 0, 0 };
@@ -252,6 +241,29 @@ void setup() {
     backgroundLayer.swapBuffers(false);
 #endif // NEOMATRIX
 
+#ifdef ESP8266
+    Serial.println();
+    Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
+    Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
+    Serial.print( F("CPU: ") ); Serial.println(system_get_cpu_freq());
+    Serial.print( F("SDK: ") ); Serial.println(system_get_sdk_version());
+    Serial.print( F("Chip ID: ") ); Serial.println(system_get_chip_id());
+    Serial.print( F("Flash ID: ") ); Serial.println(spi_flash_get_id());
+    Serial.print( F("Flash Size: ") ); Serial.println(ESP.getFlashChipRealSize());
+    Serial.print( F("Vcc: ") ); Serial.println(ESP.getVcc());
+    Serial.println();
+#endif
+
+#ifdef SPI_FFS
+    SPIFFS.begin();
+    Dir dir = SPIFFS.openDir("/");
+    while (dir.next()) {
+	String fileName = dir.fileName();
+	size_t fileSize = dir.fileSize();
+	Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
+    }
+    Serial.printf("\n");
+#else
     if(initSdCard(SD_CS) < 0) {
 #if ENABLE_SCROLLING == 1
         scrollingLayer.start("No SD card", -1);
@@ -259,6 +271,7 @@ void setup() {
         Serial.println("No SD card");
         while(1);
     }
+#endif
 
     // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing the SD card to avoid using up too much memory
 

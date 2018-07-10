@@ -1,5 +1,6 @@
-#ifndef config_h
-#define config_h
+#ifndef neomatrix_config_h
+#define neomatrix_config_h
+
 #include <Adafruit_GFX.h>
 #include <FastLED_NeoMatrix.h>
 #include <FastLED.h>
@@ -19,7 +20,7 @@ float matrix_gamma = 3.0; // higher number is darker
 #define OFFSETX 0
 #define OFFSETY 0
 
-#ifdef ESP8255
+#ifdef ESP8266
 #define NEOPIN D1
 #else
 #define NEOPIN 13
@@ -148,7 +149,9 @@ void matrix_setup() {
 #ifdef M16BY16T4
     FastLED.addLeds<NEOPIXEL,NEOPIN>(matrixleds, NUMMATRIX).setCorrection(TypicalLEDStrip);
     Serial.print("Neomatrix total LEDs: ");
-    Serial.println(NUMMATRIX);
+    Serial.print(NUMMATRIX);
+    Serial.print(" running on pin: ");
+    Serial.println(NEOPIN);
 #elif M32BY8T3P
 // See  https://github.com/FastLED/FastLED/wiki/Parallel-Output for pin definitions
     #ifdef ESP8266
