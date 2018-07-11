@@ -2,6 +2,26 @@ AnimatedGIFs for SmartMatrix/SDcard or NeoMatrix (Neopixel/WS2812B) from SDcard 
 ===========================================================================================================================
 
 
+Configuration
+-------------
+Please see config.h to select whether you're using SDcard or SPIFFS, and NeoMatrix instead of SmartMatrix.  
+For NeoMatrix you must also edit neomatrix_config.h to configure your matrix layout, addjust OFFSETX/OFFSETY if needed, as well as matrix_brightness and matrix_gamma.
+
+AnimatedGIFs file browser
+-------------------------
+You either put your gifs inside a /gifs subdirectory on an sdcard or under /gifs in SPIFFS 
+
+You can send the following commands over serial port (115200):
+- n / p : go to next/previous gif
+- + / - : adjust gamma correction for NeoMatrix backend
+- 1 to xx: jump to gif number xx (need newline after number)
+= : display current GIF in loop for 1h instead of 10 seconds
+
+config.h also has these compile time variables:
+- #define FIRSTINDEX 0 : change which GIF is shown first
+- #define DEBUGLINE 6: if defined will only decode first frame, stop, and dump to serial port the color values of the given line
+
+
 NeoMatrix and SPIFFS support
 ----------------------------
 I, Marc MERLIN <marc_soft@merlins.org>, took the excellent work
