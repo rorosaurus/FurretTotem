@@ -72,17 +72,17 @@
 #include "config.h"
 
 #ifdef NEOMATRIX
-#include "neomatrix_config.h"
-#define rgb24 CRGB
+    #include "neomatrix_config.h"
+    #define rgb24 CRGB
 #else
-#define ENABLE_SCROLLING  1
-#if defined (ARDUINO)
-//#include <SmartLEDShieldV4.h>  // uncomment this line for SmartLED Shield V4 (needs to be before #include <SmartMatrix3.h>)
-#include <SmartMatrix3.h>
-#elif defined (SPARK)
-#include "application.h"
-#include "SmartMatrix3_Photon_Apa102/SmartMatrix3_Photon_Apa102.h"
-#endif
+    #define ENABLE_SCROLLING  1
+    #if defined (ARDUINO)
+    //#include <SmartLEDShieldV4.h>  // uncomment this line for SmartLED Shield V4 (needs to be before #include <SmartMatrix3.h>)
+    #include <SmartMatrix3.h>
+    #elif defined (SPARK)
+    #include "application.h"
+    #include "SmartMatrix3_Photon_Apa102/SmartMatrix3_Photon_Apa102.h"
+    #endif
 #endif
 
 #include "GifDecoder.h"
@@ -120,26 +120,6 @@ SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight
  */
 GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
 
-// Chip select for SD card on the SmartMatrix Shield or Photon
-// Teensy 3.5/3.6
-#if defined(__MK64FX512__) || defined(__MK66FX1M0__)
-    #define SD_CS BUILTIN_SDCARD
-#elif defined(ESP32)
-    #define SD_CS 5
-#elif defined (ARDUINO)
-    #define SD_CS 15
-    //#define SD_CS BUILTIN_SDCARD
-#elif defined (SPARK)
-    #define SD_CS SS
-#endif
-
-#if defined(ESP32)
-    // ESP32 SD Library can't handle a trailing slash in the directory name
-    #define GIF_DIRECTORY "/gifs"
-#else
-    // Teensy SD Library requires a trailing slash in the directory name
-    #define GIF_DIRECTORY "/gifs/"
-#endif
 
 int num_files;
 
@@ -242,6 +222,9 @@ void setup() {
 #endif // NEOMATRIX
 
 #ifdef ESP8266
+    extern "C" {
+    #include "user_interface.h"
+    }
     Serial.println();
     Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
     Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
@@ -256,20 +239,32 @@ void setup() {
 
 #ifdef SPI_FFS
     SPIFFS.begin();
-    Dir dir = SPIFFS.openDir("/");
-    while (dir.next()) {
-	String fileName = dir.fileName();
-	size_t fileSize = dir.fileSize();
-	Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
-    }
+    #ifdef ESP32
+    // Oh boy, ESP32 SPIFFS does not even support directory objects...
+    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
+	File dir = SPIFFS.open("/");
+	while (File file = dir.openNextFile()) {
+	    Serial.print("FS File: ");
+	    Serial.print(file.name());
+	    Serial.print(" Size: ");
+	    Serial.println(file.size());
+	}
+    #else
+	Dir dir = SPIFFS.openDir("/");
+	while (dir.next()) {
+	    String fileName = dir.fileName();
+	    size_t fileSize = dir.fileSize();
+	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
+	}
+    #endif
     Serial.printf("\n");
 #else
     if(initSdCard(SD_CS) < 0) {
-#if ENABLE_SCROLLING == 1
-        scrollingLayer.start("No SD card", -1);
-#endif
-        Serial.println("No SD card");
-        while(1);
+	#if ENABLE_SCROLLING == 1
+		scrollingLayer.start("No SD card", -1);
+	#endif
+	Serial.println("No SD card");
+	while(1);
     }
 #endif
 

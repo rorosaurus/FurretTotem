@@ -21,7 +21,7 @@ float matrix_gamma = 3.0; // higher number is darker
 #define OFFSETY 0
 
 #ifdef ESP8266
-#define NEOPIN D1
+#define NEOPIN 5
 #else
 #define NEOPIN 13
 #endif

@@ -87,15 +87,27 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
     Serial.println(directoryName);
 
 #ifdef SPI_FFS
-    Dir directory = SPIFFS.openDir(directoryName);
-    Serial.println("About to check the directory");
-    while (directory.next()) {
-        String filename = directory.fileName();
-        if (isAnimationFile(filename)) {
-            numberOfFiles++;
-            if (displayFilenames) Serial.println(filename);
-        }
-    }
+    #ifdef ESP32
+    // Oh boy, ESP32 SPIFFS does not even support directory objects...
+    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
+	File dir = SPIFFS.open(directoryName);
+	while (File file = dir.openNextFile()) {
+	    String filename = file.name();
+	    if (isAnimationFile(filename)) {
+		numberOfFiles++;
+		if (displayFilenames) Serial.println(filename);
+	    }
+	}
+    #else
+	Dir dir = SPIFFS.openDir(directoryName);
+	while (dir.next()) {
+	    String filename = dir.fileName();
+	    if (isAnimationFile(filename)) {
+		numberOfFiles++;
+		if (displayFilenames) Serial.println(filename);
+	    }
+	}
+    #endif
 #else
     File directory = SD.open(directoryName);
     if (!directory) return -1;
@@ -123,15 +135,27 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
     if ((index < 0) || (index >= numberOfFiles)) return;
 
 #ifdef SPI_FFS
-    Dir directory = SPIFFS.openDir(directoryName);
-    
-    while (directory.next() && index >= 0) {
-        String filename = directory.fileName();
-        if (isAnimationFile(filename)) {
-            index--;
-            filename.toCharArray(pnBuffer, 29);
-        }
-    }
+    #ifdef ESP32
+	File dir = SPIFFS.open(directoryName);
+	while (File file = dir.openNextFile()) {
+	    String filename = file.name();
+	    if (isAnimationFile(filename)) {
+		index--;
+		filename.toCharArray(pnBuffer, 29);
+	    }
+	    if (!index) break;
+	}
+    #else
+	Dir dir = SPIFFS.openDir(directoryName);
+	
+	while (dir.next() && index >= 0) {
+	    String filename = dir.fileName();
+	    if (isAnimationFile(filename)) {
+		index--;
+		filename.toCharArray(pnBuffer, 29);
+	    }
+	}
+    #endif
 #else
     File directory = SD.open(directoryName);
     if (!directory) return;
@@ -173,7 +197,7 @@ int openGifFilenameByIndex(const char *directoryName, int index) {
     //Serial.print("Pathname: ");
     //Serial.println(pathname);
 
-    if(file)
+    if (file)
         file.close();
 
     // Attempt to open the file for reading
