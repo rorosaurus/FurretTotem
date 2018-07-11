@@ -4,8 +4,11 @@ AnimatedGIFs for SmartMatrix/SDcard or NeoMatrix (Neopixel/WS2812B) from SDcard 
 
 Configuration
 -------------
-Please see config.h to select whether you're using SDcard or SPIFFS, and NeoMatrix instead of SmartMatrix.  
-For NeoMatrix you must also edit neomatrix_config.h to configure your matrix layout, addjust OFFSETX/OFFSETY if needed, as well as matrix_brightness and matrix_gamma.
+Please see config.h to select whether you're using SDcard or SPIFFS, and
+NeoMatrix instead of SmartMatrix.  
+For NeoMatrix you must also edit neomatrix_config.h to configure your matrix
+layout, addjust OFFSETX/OFFSETY if needed, as well as matrix_brightness and
+matrix_gamma.
 
 AnimatedGIFs file browser
 -------------------------
@@ -13,7 +16,7 @@ You either put your gifs inside a /gifs subdirectory on an sdcard or under /gifs
 
 You can send the following commands over serial port (115200):
 - n / p : go to next/previous gif
-- + / - : adjust gamma correction for NeoMatrix backend
+- \+ / \- : adjust gamma correction for NeoMatrix backend
 - 1 to xx: jump to gif number xx (need newline after number)
 = : display current GIF in loop for 1h instead of 10 seconds
 
@@ -73,7 +76,7 @@ CS (default) |  15
 
 This code first looks for .gif files in the /gifs/ directory (you can customize this with the GIF_DIRECTORY definition) then plays random GIFs in the directory, looping each GIF for DISPLAY_TIME_SECONDS
 
-This example is meant to give you an idea of how to add GIF playback to your own sketch.  For a project that adds GIF playback with other features, take a look at [Light Appliance](https://github.com/CraigLindley/LightAppliance) and [Aurora](https://github.com/pixelmatix/aurora):
+This example is meant to give you an idea of how to add GIF playback to your own sketch.  For a project that adds GIF playback with other features, take a look at [Light Appliance](https://github.com/CraigLindley/LightAppliance) and [Aurora](https://github.com/pixelmatix/aurora)
 
 If you find any GIFs that won't play properly, please attach them to a new
-Issue post in the GitHub repo [here](https://github.com/pixelmatix/AnimatedGIFs/issues):
+Issue post in the GitHub repo [here](https://github.com/pixelmatix/AnimatedGIFs/issues)
