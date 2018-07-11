@@ -1,20 +1,35 @@
-AnimatedGIFs for SmartMatrix/SDcard or NeoMatrix (Neopixel/WS2812B) from SDcard or SPIFFS on ESP8266/ESP32
-==========================================================================================================
-I, Marc MERLIN <marc_soft@merlins.org>, took the excellent work from Louis Beaudoin's GIF decoder for SmartMatrix
-and ported it to https://github.com/marcmerlin/FastLED_NeoMatrix .
+AnimatedGIFs for SmartMatrix/SDcard or NeoMatrix (Neopixel/WS2812B) from SDcard or SPIFFS, on Teensy 3.x, ESP8266, or ESP32
+===========================================================================================================================
 
-In the process, I also allowed it to work on SPIFFS (built in filesystem using flash available on ESP8266 and ESP32) so that you can store your GIFS directly on the flash and not need an sdcard at all.  
-Unfortunately the SPIFFS support on ESP32 and ESP8266 is not quite identical, so the code needs to account for both APIs (ESP8266 is the odd one out, the ESP32 SPIFFS API is actually compatible with the sdcard API).
 
-The data subdirectory allows the arduino API to automatically create a flash filesystem and upload it to your chip, see:
+NeoMatrix and SPIFFS support
+----------------------------
+I, Marc MERLIN <marc_soft@merlins.org>, took the excellent work
+from Louis Beaudoin's GIF decoder for SmartMatrix and ported it to
+https://github.com/marcmerlin/FastLED_NeoMatrix .
+
+In the process, I also allowed it to work on SPIFFS (built in filesystem using
+flash available on ESP8266 and ESP32) so that you can store your GIFS directly
+on the flash and not need an sdcard at all.
+Unfortunately the SPIFFS support on ESP32 and ESP8266 is not quite identical, so
+the code needs to account for both APIs (ESP8266 is the odd one out, the ESP32
+SPIFFS API is actually compatible with the sdcard API).
+
+The data subdirectory allows the arduino API to automatically create a flash
+filesystem and upload it to your chip, see:
 - ESP8266: http://esp8266.github.io/Arduino/versions/2.3.0/doc/filesystem.html#uploading-files-to-file-system
 - ESP32: https://github.com/me-no-dev/arduino-esp32fs-plugin
 
-The gifs/ subdirectory contains animated gifs that don't long as good on Neomatrix due to the lesser dynamic range of neopixels. Please look at neomatrix_config.h and adjust these if needed:
+The gifs/ subdirectory contains animated gifs that don't long as good on
+Neomatrix due to the lesser dynamic range of neopixels. Please look at
+neomatrix_config.h and adjust these if needed:
 - uint8_t matrix_brightness = 32;
 - float matrix_gamma = 3.0;
 
-That being said, some GIFs just don't look so good on Neomatrix while they will look ok on SmartMatrix. Those in the gifs/ subdirectory and do not get uploaded to ESP chips by default (although you could upload them if you actually connect those chips to a SmartMatrix instead of a NeoMatrix).
+That being said, some GIFs just don't look so good on Neomatrix while they will
+look ok on SmartMatrix. Those in the gifs/ subdirectory and do not get uploaded
+to ESP chips by default (although you could upload them if you actually connect
+those chips to a SmartMatrix instead of a NeoMatrix).
 
 You can get more animated GIFS here:
 - https://imgur.com/a/NuFRD 
