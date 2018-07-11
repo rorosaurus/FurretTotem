@@ -221,7 +221,7 @@ void setup() {
     backgroundLayer.swapBuffers(false);
 #endif // NEOMATRIX
 
-#ifdef ESP8266
+#if defined(ESP8266)
     extern "C" {
     #include "user_interface.h"
     }

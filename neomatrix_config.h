@@ -26,6 +26,10 @@ float matrix_gamma = 3.0; // higher number is darker
 #define NEOPIN 13
 #endif
 
+#ifdef ESP32
+#pragma message "Please use https://github.com/samguyer/FastLED.git as stock FastLED is unstable with ESP32"
+#endif
+
 // Used by LEDMatrix
 #define MATRIX_TILE_WIDTH   16 // width of EACH NEOPIXEL MATRIX (not total display)
 #define MATRIX_TILE_HEIGHT  16 // height of each matrix
