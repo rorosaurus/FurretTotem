@@ -25,8 +25,10 @@ const int defaultBrightness = 255;
     #include <FS.h>
     #define SPI_FFS
     #define GIF_DIRECTORY "/gifs/"
+    extern "C" {
+        #include "user_interface.h"
+    }
 #elif defined(ESP32)
-    #include <FS.h>
     #include <SPIFFS.h>
     #define SPI_FFS
     // Do NOT add a trailing slash, or things will fail

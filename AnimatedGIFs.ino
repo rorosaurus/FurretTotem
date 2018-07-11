@@ -222,9 +222,6 @@ void setup() {
 #endif // NEOMATRIX
 
 #if defined(ESP8266)
-    extern "C" {
-    #include "user_interface.h"
-    }
     Serial.println();
     Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
     Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
