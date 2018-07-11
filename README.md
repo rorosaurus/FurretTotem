@@ -13,7 +13,8 @@ The data subdirectory allows the arduino API to automatically create a flash fil
 The gifs/ subdirectory contains animated gifs that don't long as good on Neomatrix due to the lesser dynamic range of neopixels. Please look at neomatrix_config.h and adjust these if needed:
 - uint8_t matrix_brightness = 32;
 - float matrix_gamma = 3.0;
-that being said, some GIFs just don't look so good on Neomatrix while they will look ok on SmartMatrix. Those in the gifs/ subdirectory and do not get uploaded to ESP chips by default (although you could upload them if you actually connect those chips to a SmartMatrix instead of a NeoMatrix).
+
+That being said, some GIFs just don't look so good on Neomatrix while they will look ok on SmartMatrix. Those in the gifs/ subdirectory and do not get uploaded to ESP chips by default (although you could upload them if you actually connect those chips to a SmartMatrix instead of a NeoMatrix).
 
 You can get more animated GIFS here:
 - https://imgur.com/a/NuFRD 
