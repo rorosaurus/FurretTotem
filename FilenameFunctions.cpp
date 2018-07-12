@@ -7,18 +7,6 @@
  */
 #include "config.h"
 
-#ifndef SPI_FFS
-    #if defined (ARDUINO)
-    #include <SD.h>
-    #elif defined (SPARK)
-    #include "sd-card-library-photon-compat/sd-card-library-photon-compat.h"
-    #endif
-#else
-// http://esp8266.github.io/Arduino/versions/2.3.0/doc/filesystem.html#uploading-files-to-file-system
-// esp8266com/esp8266/libraries/SD/src/File.cpp
-#include <FS.h>
-#endif
-
 File file;
 
 int numberOfFiles;

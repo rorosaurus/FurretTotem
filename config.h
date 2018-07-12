@@ -34,7 +34,11 @@ const int defaultBrightness = 255;
     // Do NOT add a trailing slash, or things will fail
     #define GIF_DIRECTORY "/gifs"
 #else
+    #if defined (ARDUINO)
     #include <SD.h>
+    #elif defined (SPARK)
+    #include "sd-card-library-photon-compat/sd-card-library-photon-compat.h"
+    #endif
     // Chip select for SD card on the SmartMatrix Shield or Photon
     // Teensy 3.5/3.6
     #if defined(__MK64FX512__) || defined(__MK66FX1M0__)
