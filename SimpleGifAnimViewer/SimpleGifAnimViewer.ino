@@ -20,13 +20,13 @@ const uint8_t kMatrixHeight = 32;       // known working: 16, 32, 48, 64`
  */
 GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
 
-void screenClearCallback(void) {
-  matrix_clear();
-}
+bool fileSeekCallback(unsigned long position) { return file.seek(position); }
+unsigned long filePositionCallback(void) { return file.position(); }
+int fileReadCallback(void) { return file.read(); }
+int fileReadBlockCallback(void * buffer, int numberOfBytes) { return file.read((uint8_t*)buffer, numberOfBytes); }
 
-void updateScreenCallback(void) {
-  matrix_show();
-}
+void screenClearCallback(void) { matrix_clear(); }
+void updateScreenCallback(void) { matrix_show(); }
 
 void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t blue) {
   CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
@@ -35,22 +35,6 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
   matrix->setPassThruColor(color.red*65536 + color.green*256 + color.blue);
   // drawPixel ensures we don't write out of bounds
   matrix->drawPixel(x+OFFSETX, y+OFFSETY, 0);
-}
-
-bool fileSeekCallback(unsigned long position) {
-    return file.seek(position);
-}
-
-unsigned long filePositionCallback(void) {
-    return file.position();
-}
-
-int fileReadCallback(void) {
-    return file.read();
-}
-
-int fileReadBlockCallback(void * buffer, int numberOfBytes) {
-    return file.read((uint8_t*)buffer, numberOfBytes);
 }
 
 // Setup method runs once, when the sketch starts
@@ -68,8 +52,6 @@ void setup() {
 
     Serial.begin(115200);
     Serial.println("Starting AnimatedGIFs Sketch");
-
-
     matrix_setup();
 
     SPIFFS.begin();
@@ -77,7 +59,7 @@ void setup() {
     if (!file) {
         Serial.print("Error opening GIF file ");
         Serial.println(pathname);
-	delay(1000000);
+	while (1) { delay(1000); }; // while 1 loop only triggers watchdog on ESP chips
     }
     decoder.startDecoding();
 }
