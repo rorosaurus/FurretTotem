@@ -26,6 +26,11 @@ config.h also has these compile time variables:
 - #define DEBUGLINE 6: if defined will only decode first frame, stop, and dump to serial port the color values of the given line
 
 
+SimpleGifAnimViewer
+-------------------
+This is a shrunk version of AnimatedGIFs.  This subdirectory shows a near minimal amount of code necessary to display a GIF on a NeoMatrix (60 lines of code). You only need to change the hardcoded path to the GIF, and configure neomatrix_config.h to match your panel. With very minimal changes, you can read from sdcard instead of SPIFFS if you need more storage, or you are using a flash-less chip like Teensy.
+
+
 NeoMatrix and SPIFFS support
 ----------------------------
 I, Marc MERLIN <marc_soft@merlins.org>, took the excellent work
