@@ -1,6 +1,8 @@
 AnimatedGIFs for SmartMatrix/SDcard or NeoMatrix (Neopixel/WS2812B) from SDcard or SPIFFS, on Teensy 3.x, ESP8266, or ESP32
 ===========================================================================================================================
 
+Video: https://www.youtube.com/watch?v=RJX2-j1PWFw
+
 ![125_20180713_neomatrix_animatedgifs](https://user-images.githubusercontent.com/1369412/42703527-b27a5450-8681-11e8-82a9-d074e473848c.jpg)
 
 Configuration
