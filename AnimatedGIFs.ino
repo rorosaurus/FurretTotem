@@ -69,6 +69,7 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
+#include "size.h"
 #include "config.h"
 
 #ifdef NEOMATRIX
@@ -94,8 +95,8 @@ const rgb24 COLOR_BLACK = {
 
 /* SmartMatrix configuration and memory allocation */
 #define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
-const uint8_t kMatrixWidth = 32;        // known working: 32, 64, 96, 128
-const uint8_t kMatrixHeight = 32;       // known working: 16, 32, 48, 64
+const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
+const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
 
 #ifndef NEOMATRIX
 const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48

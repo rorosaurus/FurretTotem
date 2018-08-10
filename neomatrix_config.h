@@ -12,11 +12,50 @@
 uint8_t matrix_brightness = 32;
 float matrix_gamma = 3.0; // higher number is darker
 
-#define M16BY16T4
+#define M64BY64
+//#define M16BY16T4
 //#define M32BY8T3P
 
 
-#ifdef M16BY16T4
+#ifdef M64BY64
+// You probably want to adjust matrix_size in size.h
+
+#define OFFSETX 0
+#define OFFSETY 0
+
+#ifdef ESP32
+#pragma message "Please use https://github.com/samguyer/FastLED.git as stock FastLED is unstable with ESP32"
+#endif
+
+
+// Used by LEDMatrix
+#define MATRIX_TILE_WIDTH   64 // width of EACH NEOPIXEL MATRIX (not total display)
+#define MATRIX_TILE_HEIGHT  64 // height of each matrix
+#define MATRIX_TILE_H       1  // number of matrices arranged horizontally
+#define MATRIX_TILE_V       1  // number of matrices arranged vertically
+#define NUM_STRIPS 16
+#define NUM_LEDS_PER_STRIP 256
+
+// Used by NeoMatrix
+#define mw (MATRIX_TILE_WIDTH *  MATRIX_TILE_H)
+#define mh (MATRIX_TILE_HEIGHT * MATRIX_TILE_V)
+#define NUMMATRIX (mw*mh)
+
+// Compat for some other demos
+#define NUM_LEDS NUMMATRIX 
+#define MATRIX_HEIGHT mh
+#define MATRIX_WIDTH mw
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
+CRGB matrixleds[NUMMATRIX];
+
+FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH, MATRIX_TILE_HEIGHT,  
+    NEO_MATRIX_BOTTOM + NEO_MATRIX_LEFT +
+    NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG );
+
+
+#elif defined(M16BY16T4)
+// You probably want to adjust matrix_size in size.h
 #define OFFSETX 0
 #define OFFSETY 0
 
@@ -81,7 +120,8 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH,
     NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG + 
     NEO_TILE_TOP + NEO_TILE_RIGHT +  NEO_TILE_PROGRESSIVE);
 
-#elif M32BY8T3P
+#elif defined(M32BY8T3P)
+// You probably want to adjust matrix_size in size.h
 
 // If the matrix is not 32x32, adjust how the image is displayed
 #define OFFSETX -4
@@ -121,8 +161,9 @@ uint16_t XY( uint8_t x, uint8_t y) {
 void matrix_clear() {
     //FastLED[1].clearLedData();
     // clear does not work properly with multiple matrices connected via parallel inputs
+    // on ESP8266
 #ifdef M32BY8T3P
-    memset(matrixleds, 0, NUMMATRIX*MATRIX_TILE_H);
+    memset(matrixleds, 0, NUMMATRIX*3);
 #else
     matrix->clear();
 #endif
@@ -150,13 +191,37 @@ void matrix_show() {
 }
 
 void matrix_setup() {
-#ifdef M16BY16T4
+#ifdef M64BY64
+    // https://github.com/FastLED/FastLED/wiki/Multiple-Controller-Examples
+    FastLED.addLeds<WS2812B, 2, GRB>(matrixleds, 0*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B, 4, GRB>(matrixleds, 1*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B, 5, GRB>(matrixleds, 2*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,12, GRB>(matrixleds, 3*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,13, GRB>(matrixleds, 4*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,17, GRB>(matrixleds, 5*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP);  // broken
+    // moving buffers around so that output row 6 goes on pin 13, works fine.
+    // anything sent to pin 14 does not work. So, I patched port 17 to 14 just for this demo.
+    // pin14 output works for other code
+
+    FastLED.addLeds<WS2812B,15, GRB>(matrixleds, 6*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,16, GRB>(matrixleds, 7*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,18, GRB>(matrixleds, 8*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,19, GRB>(matrixleds, 9*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,21, GRB>(matrixleds,10*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,22, GRB>(matrixleds,11*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,23, GRB>(matrixleds,12*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,25, GRB>(matrixleds,13*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,26, GRB>(matrixleds,14*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
+    FastLED.addLeds<WS2812B,27, GRB>(matrixleds,15*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP);
+    Serial.print("Neomatrix 16 way output, total LEDs: ");
+    Serial.println(NUMMATRIX);
+#elif defined(M16BY16T4)
     FastLED.addLeds<NEOPIXEL,NEOPIN>(matrixleds, NUMMATRIX).setCorrection(TypicalLEDStrip);
     Serial.print("Neomatrix total LEDs: ");
     Serial.print(NUMMATRIX);
     Serial.print(" running on pin: ");
     Serial.println(NEOPIN);
-#elif M32BY8T3P
+#elif defined(M32BY8T3P)
 // See  https://github.com/FastLED/FastLED/wiki/Parallel-Output for pin definitions
     #ifdef ESP8266
     FastLED.addLeds<WS2811_PORTA,3>(matrixleds, NUMMATRIX/MATRIX_TILE_H).setCorrection(TypicalLEDStrip);
