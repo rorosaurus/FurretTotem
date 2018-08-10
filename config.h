@@ -25,11 +25,11 @@ const int defaultBrightness = 255;
 #if defined(ESP8266)
     #include <FS.h>
     #define SPI_FFS
-    if (matrix_size == 64) {
+    #if matrix_size == 64
         #define GIF_DIRECTORY "/gifs64/"
-    } else {
+    #else
         #define GIF_DIRECTORY "/gifs/"
-    }
+    #endif
     extern "C" {
         #include "user_interface.h"
     }
@@ -37,11 +37,11 @@ const int defaultBrightness = 255;
     #include <SPIFFS.h>
     #define SPI_FFS
     // Do NOT add a trailing slash, or things will fail
-    if (matrix_size == 64) {
+    #if matrix_size == 64
         #define GIF_DIRECTORY "/gifs64"
-    } else {
+    #else
         #define GIF_DIRECTORY "/gifs"
-    }
+    #endif
 #else
     #if defined (ARDUINO)
     #include <SD.h>
@@ -63,18 +63,18 @@ const int defaultBrightness = 255;
     
     #if defined(ESP32)
         // ESP32 SD Library can't handle a trailing slash in the directory name
-	if (matrix_size == 64) {
-	    #define GIF_DIRECTORY "/gifs64"
-	} else {
-	    #define GIF_DIRECTORY "/gifs"
-	}
+        #if matrix_size == 64
+            #define GIF_DIRECTORY "/gifs64"
+        #else
+            #define GIF_DIRECTORY "/gifs"
+        #endif
     #else
         // Teensy SD Library requires a trailing slash in the directory name
-	if (matrix_size == 64) {
-	    #define GIF_DIRECTORY "/gifs64/"
-	} else {
-	    #define GIF_DIRECTORY "/gifs/"
-	}
+        #if matrix_size == 64
+            #define GIF_DIRECTORY "/gifs64/"
+        #else
+            #define GIF_DIRECTORY "/gifs/"
+        #endif
     #endif
 #endif
 
