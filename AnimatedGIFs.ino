@@ -237,7 +237,7 @@ void setup() {
 
 #ifdef SPI_FFS
     SPIFFS.begin();
-    Serial.printf("SPIFFS Directory listing:");
+    Serial.println("SPIFFS Directory listing:");
     #ifdef ESP8266
 	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) {
