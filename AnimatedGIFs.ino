@@ -237,8 +237,16 @@ void setup() {
 
 #ifdef SPI_FFS
     SPIFFS.begin();
-    #ifdef ESP32
-    // Oh boy, ESP32 SPIFFS does not even support directory objects...
+    Serial.printf("SPIFFS Directory listing:");
+    #ifdef ESP8266
+	Dir dir = SPIFFS.openDir("/");
+	while (dir.next()) {
+	    String fileName = dir.fileName();
+	    size_t fileSize = dir.fileSize();
+	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
+	}
+    #else
+    // ESP32 SPIFFS does not support directory objects
     // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
 	File dir = SPIFFS.open("/");
 	while (File file = dir.openNextFile()) {
@@ -246,13 +254,6 @@ void setup() {
 	    Serial.print(file.name());
 	    Serial.print(" Size: ");
 	    Serial.println(file.size());
-	}
-    #else
-	Dir dir = SPIFFS.openDir("/");
-	while (dir.next()) {
-	    String fileName = dir.fileName();
-	    size_t fileSize = dir.fileSize();
-	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
 	}
     #endif
     Serial.printf("\n");
