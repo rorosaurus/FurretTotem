@@ -8,7 +8,7 @@
 #endif
 File file;
 
-char *pathname = "/gifs/concentric_circles.gif";
+const char *pathname = "/gifs/concentric_circles.gif";
 
 const uint8_t kMatrixWidth = 32;        // known working: 32, 64, 96, 128
 const uint8_t kMatrixHeight = 32;       // known working: 16, 32, 48, 64`

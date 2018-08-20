@@ -14,7 +14,6 @@
 #include <FastLED_NeoMatrix.h>
 #include <FastLED.h>
 
-
 //---------------------------------------------------------------------------- 
 //
 
@@ -25,16 +24,15 @@ float matrix_gamma = 3.0; // higher number is darker
 //#define M16BY16T4
 //#define M32BY8T3P
 
+#if defined(ESP32) && ! defined(ESP32_16PINS)
+#pragma message "Please use https://github.com/samguyer/FastLED.git as stock FastLED is unstable with ESP32"
+#endif
+
 #ifdef M64BY64
 // You probably want to adjust matrix_size in size.h
 
 #define OFFSETX 0
 #define OFFSETY 0
-
-#if defined(ESP32) && ! defined(ESP32_16PINS)
-#pragma message "Please use https://github.com/samguyer/FastLED.git as stock FastLED is unstable with ESP32"
-#endif
-
 
 #define MATRIX_TILE_WIDTH   64 // width of EACH NEOPIXEL MATRIX (not total display)
 #define MATRIX_TILE_HEIGHT  64 // height of each matrix
@@ -165,8 +163,6 @@ uint16_t XY( uint8_t x, uint8_t y) {
 
 
 #ifdef ESP32_16PINS
-#define FASTLED_ALLOW_INTERRUPTS 0
-#define FASTLED_SHOW_CORE 0
 FASTLED_USING_NAMESPACE
 // -- Task handles for use in the notifications
 static TaskHandle_t FastLEDshowTaskHandle = 0;
@@ -262,7 +258,6 @@ void matrix_setup() {
         // moving buffers around so that output row 6 goes on pin 13, works fine.
         // anything sent to pin 14 does not work. So, I patched port 17 to 14 just for this demo.
         // pin14 output works for other code
-    
         FastLED.addLeds<WS2812B,15, GRB>(matrixleds, 6*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP); 
         FastLED.addLeds<WS2812B,16, GRB>(matrixleds, 7*NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP);
 
