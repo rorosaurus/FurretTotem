@@ -18,7 +18,7 @@
 //
 
 uint8_t matrix_brightness = 32;
-float matrix_gamma = 3.0; // higher number is darker
+float matrix_gamma = 2.4; // higher number is darker
 
 #define M64BY64
 //#define M16BY16T4

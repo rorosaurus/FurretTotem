@@ -256,7 +256,7 @@ void setup() {
 	    Serial.println(file.size());
 	}
     #endif
-    Serial.printf("\n");
+    Serial.println();
 #else
     if(initSdCard(SD_CS) < 0) {
 	#if ENABLE_SCROLLING == 1
