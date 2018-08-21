@@ -1,7 +1,7 @@
 #ifndef neomatrix_config_h
 #define neomatrix_config_h
 
-//#define ESP32_16PINS
+#define ESP32_16PINS
 
 // This uses https://github.com/hpwit/fastled-esp32-16PINS.git
 // instead of https://github.com/samguyer/FastLED.git
