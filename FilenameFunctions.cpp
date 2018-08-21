@@ -129,7 +129,7 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 	    String filename = file.name();
 	    if (isAnimationFile(filename)) {
 		index--;
-		filename.toCharArray(pnBuffer, 29);
+		filename.toCharArray(pnBuffer, 127);
 	    }
 	    if (!index) break;
 	}
@@ -140,7 +140,7 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 	    String filename = dir.fileName();
 	    if (isAnimationFile(filename)) {
 		index--;
-		filename.toCharArray(pnBuffer, 29);
+		filename.toCharArray(pnBuffer, 127);
 	    }
 	}
     #endif
@@ -177,7 +177,7 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 }
 
 int openGifFilenameByIndex(const char *directoryName, int index) {
-    char pathname[30];
+    char pathname[128];
 
     getGIFFilenameByIndex(directoryName, index, pathname);
     
