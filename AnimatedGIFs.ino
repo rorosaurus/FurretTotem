@@ -73,8 +73,12 @@
 #include "config.h"
 
 #ifdef NEOMATRIX
+    // select which NEOMATRIX config will be selected
+    #define M16BY16T4
     #include "neomatrix_config.h"
+    #ifndef rgb24
     #define rgb24 CRGB
+    #endif
 #else
     #define ENABLE_SCROLLING  1
     #if defined (ARDUINO)
@@ -89,16 +93,20 @@
 #include "GifDecoder.h"
 #include "FilenameFunctions.h"
 
-
 const rgb24 COLOR_BLACK = {
     0, 0, 0 };
 
-/* SmartMatrix configuration and memory allocation */
-#define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
+#ifdef NEOPIXEL_MATRIX
 const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
 const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
+#endif
+
 
 #ifndef NEOMATRIX
+const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
+const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
+/* SmartMatrix configuration and memory allocation */
+#define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
 const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
 const uint8_t kDmaBufferRows = 2;       // known working: 2-4
 const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
@@ -126,7 +134,7 @@ int num_files;
 
 void screenClearCallback(void) {
 #ifdef NEOMATRIX
-  matrix_clear();
+  matrix->clear();
 #else
   backgroundLayer.fillScreen({0,0,0});
 #endif
@@ -134,7 +142,7 @@ void screenClearCallback(void) {
 
 void updateScreenCallback(void) {
 #ifdef NEOMATRIX
-  matrix_show();
+  matrix->show();
 #else
   backgroundLayer.swapBuffers();
 #endif
@@ -147,7 +155,8 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
   // matrixleds[XY(x+OFFSETX,y+OFFSETY)] = color;
   matrix->setPassThruColor(color.red*65536 + color.green*256 + color.blue);
   // drawPixel ensures we don't write out of bounds
-  matrix->drawPixel(x+OFFSETX, y+OFFSETY, 0);
+  //matrix->drawPixel(x+OFFSETX, y+OFFSETY, (uint32_t) color.red*65536 + color.green*256 + color.blue);
+  matrix->drawPixel(x+OFFSETX, y+OFFSETY, color);
 #else
   backgroundLayer.drawPixel(x, y, {red, green, blue});
 #endif
@@ -292,10 +301,14 @@ void setup() {
 }
 
 void adjust_gamma(float change) {
+#ifdef NEOMATRIX
     matrix_gamma += change;
     matrix->precal_gamma(matrix_gamma);
     Serial.print("Change gamma to: "); 
     Serial.println(matrix_gamma); 
+#else
+    Serial.println("Gamma changing not supported in SmartMatrix lib"); 
+#endif
 }
 
 void loop() {
@@ -368,7 +381,7 @@ void loop() {
 
         if (openGifFilenameByIndex(GIF_DIRECTORY, index) >= 0) {
             // Can clear screen for new animation here, but this might cause flicker with short animations
-	    // matrix_clear();
+	    // matrix->clear();
 
             decoder.startDecoding();
         } else {
