@@ -1,6 +1,8 @@
 #ifndef neomatrix_config_h
 #define neomatrix_config_h
 
+#define M16BY16T4
+//#define NEOPIXEL_MATRIX
 #ifndef NEOPIXEL_MATRIX
 #define SMARTMATRIX
 #endif
@@ -91,7 +93,7 @@ SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeig
 
 #ifdef LEDMATRIX
 // cLEDMatrix defines 
-cLEDMatrix<-MATRIX_TILE_WIDTH, -MATRIX_TILE_HEIGHT, HORIZONTAL_ZIGZAG_MATRIX,
+cLEDMatrix<MATRIX_TILE_WIDTH, -MATRIX_TILE_HEIGHT, HORIZONTAL_MATRIX,
     MATRIX_TILE_H, MATRIX_TILE_V, HORIZONTAL_BLOCKS> ledmatrix;
 
 // cLEDMatrix creates a FastLED array inside its object and we need to retrieve
@@ -104,15 +106,7 @@ CRGB matrixleds[NUMMATRIX];
 
 // Sadly this callback function must be copied around with this init code
 void show_callback() {
-    for (uint16_t y=0; y<kMatrixHeight; y++) {
-	for (uint16_t x=0; x<kMatrixWidth; x++) {
-	    CRGB led = matrixleds[x + kMatrixWidth*y];
-	    // rgb24 defined in MatrixComnon.h
-	    backgroundLayer.drawPixel(x, y, { led.r, led.g, led.b } );
-	}
-    }
-    // This should be zero copy
-    // that said, copy or no copy is about the same speed in the end.
+    memcpy(backgroundLayer.backBuffer(), matrixleds, kMatrixHeight*kMatrixWidth*3);
     backgroundLayer.swapBuffers(false);
 }
 
@@ -139,7 +133,6 @@ const uint8_t MATRIX_WIDTH = mw;
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
-CRGB matrixleds[NUMMATRIX];
 // cLEDMatrix defines 
 cLEDMatrix<-MATRIX_TILE_WIDTH, -MATRIX_TILE_HEIGHT, HORIZONTAL_ZIGZAG_MATRIX,
     MATRIX_TILE_H, MATRIX_TILE_V, HORIZONTAL_BLOCKS> ledmatrix;
@@ -188,7 +181,7 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH,
 
 //---------------------------------------------------------------------------- 
 #elif defined(M16BY16T4)
-const uint8_t matrix_brightness = 64;
+const uint8_t matrix_brightness = 16;
 
 const uint8_t MATRIX_TILE_WIDTH = 16; // width of EACH NEOPIXEL MATRIX (not total display)
 const uint8_t MATRIX_TILE_HEIGHT= 16; // height of each matrix
@@ -207,10 +200,9 @@ const uint8_t MATRIX_WIDTH = mw;
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
-CRGB matrixleds[NUMMATRIX];
 // cLEDMatrix defines 
-cLEDMatrix<MATRIX_TILE_WIDTH, -MATRIX_TILE_HEIGHT, HORIZONTAL_ZIGZAG_MATRIX,
-    MATRIX_TILE_H, MATRIX_TILE_V, HORIZONTAL_BLOCKS> ledmatrix;
+cLEDMatrix<-MATRIX_TILE_WIDTH, MATRIX_TILE_HEIGHT, HORIZONTAL_ZIGZAG_MATRIX,
+    MATRIX_TILE_H, MATRIX_TILE_V, VERTICAL_BLOCKS> ledmatrix;
 
 // cLEDMatrix creates a FastLED array inside its object and we need to retrieve
 // a pointer to its first element to act as a regular FastLED array, necessary
@@ -257,7 +249,6 @@ const uint8_t MATRIX_WIDTH = mw;
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
-CRGB matrixleds[NUMMATRIX];
 // cLEDMatrix defines 
 cLEDMatrix<MATRIX_TILE_WIDTH, MATRIX_TILE_HEIGHT, VERTICAL_ZIGZAG_MATRIX> ledmatrix;
 
@@ -318,8 +309,7 @@ void FastLEDshowTask(void *pvParameters)
 
 //============================================================================ 
 
-
-#ifdef ESP8266 
+#ifdef ESP8266
 // Turn off Wifi in setup()
 // https://www.hackster.io/rayburne/esp8266-turn-off-wifi-reduce-current-big-time-1df8ae
 //

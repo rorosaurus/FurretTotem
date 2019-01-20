@@ -3,7 +3,7 @@
 
 #include "size.h"
 #define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
-#define NEOPIXEL_MATRIX  //  Real NEOMATRIX, not SmartMatrix_GFX
+//#define NEOPIXEL_MATRIX  //  Real NEOMATRIX, not SmartMatrix_GFX
 //#define DEBUGLINE 6
 
 // if you want to display a file and display that one first
