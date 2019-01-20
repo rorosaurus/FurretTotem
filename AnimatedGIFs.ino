@@ -103,13 +103,15 @@ const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 6
 
 
 #ifndef NEOMATRIX
+#pragma message "Compiling for SmartMatrix"
 const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
 const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
 /* SmartMatrix configuration and memory allocation */
 #define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
 const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
 const uint8_t kDmaBufferRows = 2;       // known working: 2-4
-const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
+//const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
+const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
 const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);    // see http://docs.pixelmatix.com/SmartMatrix for options
 const uint8_t kBackgroundLayerOptions = (SM_BACKGROUND_OPTIONS_NONE);
 const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
