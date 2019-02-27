@@ -55,9 +55,17 @@
 
 #if defined(SMARTMATRIX)
 const uint8_t matrix_brightness = 255;
+#ifndef __MK66FX1M0__
+#pragma message "Compiling for non teensy with 64x32 16 scan panel"
+const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
+const uint8_t MATRIX_TILE_HEIGHT= 96; // height of each matrix
+#else // my teensy 3.6 is connected to a 64x64 panel
+#pragma message "Compiling for Teensy with 64x64 32 scan panel"
+const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
+const uint8_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
+#endif
 // Used by LEDMatrix
 const uint8_t MATRIX_TILE_WIDTH = 64; // width of EACH NEOPIXEL MATRIX (not total display)
-const uint8_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
 const uint8_t MATRIX_TILE_H     = 1;  // number of matrices arranged horizontally
 const uint8_t MATRIX_TILE_V     = 1;  // number of matrices arranged vertically
 
@@ -78,13 +86,6 @@ const uint8_t kMatrixWidth = mw;
 const uint8_t kMatrixHeight = mh;
 const uint8_t kRefreshDepth = 24;       // known working: 24, 36, 48
 const uint8_t kDmaBufferRows = 2;       // known working: 2-4, use 2 to save memory, more to keep from dropping frames and automatically lowering refresh rate
-#ifndef __MK66FX1M0__
-#pragma message "Compiling for non teensy with 64x32 16 scan panel"
-const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
-#else // my teensy 3.6 is connected to a 64x64 panel
-#pragma message "Compiling for Teensy with 64x64 32 scan panel"
-const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
-#endif
 const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);      // see http://docs.pixelmatix.com/SmartMatrix for options
 const uint8_t kBackgroundLayerOptions = (SM_BACKGROUND_OPTIONS_NONE);
 
@@ -181,7 +182,7 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH,
 
 //---------------------------------------------------------------------------- 
 #elif defined(M16BY16T4)
-const uint8_t matrix_brightness = 16;
+const uint8_t matrix_brightness = 64;
 
 const uint8_t MATRIX_TILE_WIDTH = 16; // width of EACH NEOPIXEL MATRIX (not total display)
 const uint8_t MATRIX_TILE_HEIGHT= 16; // height of each matrix
@@ -420,7 +421,18 @@ void matrix_setup() {
 #if !defined(SMARTMATRIX)
     FastLED.setBrightness(matrix_brightness);
 #endif
-    if (matrix_gamma != 1) matrix->precal_gamma(matrix_gamma);
+    Serial.print("Brightness: ");
+    Serial.println(matrix_brightness);
+    Serial.print("Gamma Correction: ");
+    Serial.println(matrix_gamma);
+    // Gamma is used by AnimatedGIFs, as such:
+    // CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
+    matrix->precal_gamma(matrix_gamma);
+
+    // At least on teensy, due to some framework bug it seems, early
+    // serial output gets looped back into serial input
+    // Hence, flush input.
+    while(Serial.available() > 0) { char t = Serial.read(); }
 }
 
 #endif

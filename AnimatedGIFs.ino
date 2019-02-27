@@ -209,7 +209,6 @@ void setup() {
 
     matrix.setBrightness(defaultBrightness);
 
-
     // for large panels, may want to set the refresh rate lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
     //matrix.setRefreshRate(90);
 
@@ -300,6 +299,11 @@ void setup() {
     }
     Serial.print("Index of files: 0 to ");
     Serial.println(num_files);
+    Serial.flush();
+    // At least on teensy, due to some framework bug it seems, early
+    // serial output gets looped back into serial input
+    // Hence, flush input.
+    while(Serial.available() > 0) { char t = Serial.read(); t=t; }
 }
 
 void adjust_gamma(float change) {
