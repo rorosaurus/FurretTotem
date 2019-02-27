@@ -41,7 +41,9 @@
     #endif
     
     #include <FastLED_NeoMatrix.h>
+    #pragma message "Compiling for NEOMATRIX"
 #else
+    #pragma message "Compiling for SMARTMATRIX with NEOMATRIX API"
     #include <SmartLEDShieldV4.h>  // if you're using SmartLED Shield V4 hardware
     #include <SmartMatrix3.h>
     #include <SmartMatrix_GFX.h>
@@ -55,14 +57,17 @@
 
 #if defined(SMARTMATRIX)
 const uint8_t matrix_brightness = 255;
-#ifndef __MK66FX1M0__
-#pragma message "Compiling for non teensy with 64x32 16 scan panel"
+
+#ifdef ESP32
+#pragma message "Compiling for ESP32 with 64x32 16 scan panel"
 const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
-const uint8_t MATRIX_TILE_HEIGHT= 96; // height of each matrix
-#else // my teensy 3.6 is connected to a 64x64 panel
+const uint8_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
+#elif defined(__MK66FX1M0__) // my teensy 3.6 is connected to a 64x64 panel
 #pragma message "Compiling for Teensy with 64x64 32 scan panel"
 const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
 const uint8_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
+#else
+#error Unknown architecture (not ESP32 or teensy 3.5/6)
 #endif
 // Used by LEDMatrix
 const uint8_t MATRIX_TILE_WIDTH = 64; // width of EACH NEOPIXEL MATRIX (not total display)
@@ -346,6 +351,8 @@ int wrapX(int x) {
 
 
 void matrix_setup() {
+    Serial.begin(115200);
+    Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Serial.begin");
     matrix_gamma = 2.4; // higher number is darker, needed for Neomatrix more than SmartMatrix
 #if defined(SMARTMATRIX)
     matrix_gamma = 1; // SmartMatrix should be good by default.
@@ -354,13 +361,18 @@ void matrix_setup() {
     matrixLayer.setBrightness(matrix_brightness);
     matrixLayer.setRefreshRate(240);
     backgroundLayer.enableColorCorrection(true);
+    Serial.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix GFX output, total LEDs: ");
+    Serial.println(NUMMATRIX);
     delay(1000);
     // Quick hello world test
+#ifndef DISABLE_MATRIX_TEST
+    Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix Grey Demo");
     backgroundLayer.fillScreen( {0x80, 0x80, 0x80} );
     backgroundLayer.swapBuffers();
     delay(1000);
-    Serial.print("SmartMatrix GFX output, total LEDs: ");
-    Serial.println(NUMMATRIX);
+#endif
+
+    Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix Init Done");
 // Example of parallel output
 #elif defined(M32B8X3)
     // Init Matrix
@@ -429,10 +441,25 @@ void matrix_setup() {
     // CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
     matrix->precal_gamma(matrix_gamma);
 
+// LEDMatrix alignment is tricky, make sure things are aligned correctly
+#ifndef DISABLE_MATRIX_TEST
+#ifdef LEDMATRIX
+    ledmatrix.DrawLine (0, 0, ledmatrix.Width() - 1, ledmatrix.Height() - 1, CRGB(0, 255, 0));
+    ledmatrix.DrawPixel(0, 0, CRGB(255, 0, 0));
+    ledmatrix.DrawPixel(ledmatrix.Width() - 1, ledmatrix.Height() - 1, CRGB(0, 0, 255));
+
+    ledmatrix.DrawLine (ledmatrix.Width() - 5, 4, 4, ledmatrix.Height() - 5, CRGB(128, 128, 128));
+    ledmatrix.DrawPixel(ledmatrix.Width() - 5, 4,  CRGB(255, 64, 64));
+    ledmatrix.DrawPixel(4, ledmatrix.Height() - 5, CRGB(64, 64, 255));
+    matrix->show();
+    delay(1000);
+#endif
+#endif
+
     // At least on teensy, due to some framework bug it seems, early
     // serial output gets looped back into serial input
     // Hence, flush input.
-    while(Serial.available() > 0) { char t = Serial.read(); }
+    while(Serial.available() > 0) { char t = Serial.read(); t = t; }
 }
 
 #endif
