@@ -79,15 +79,6 @@
     #ifndef rgb24
     #define rgb24 CRGB
     #endif
-#else
-    #define ENABLE_SCROLLING  1
-    #if defined (ARDUINO)
-    //#include <SmartLEDShieldV4.h>  // uncomment this line for SmartLED Shield V4 (needs to be before #include <SmartMatrix3.h>)
-    #include <SmartMatrix3.h>
-    #elif defined (SPARK)
-    #include "application.h"
-    #include "SmartMatrix3_Photon_Apa102/SmartMatrix3_Photon_Apa102.h"
-    #endif
 #endif
 
 #include "GifDecoder.h"
@@ -100,28 +91,14 @@ const rgb24 COLOR_BLACK = {
 const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
 const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
 #endif
-
-
 #ifndef NEOMATRIX
-#pragma message "Compiling for SmartMatrix"
-const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
-const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
-/* SmartMatrix configuration and memory allocation */
-#define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
-const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
-const uint8_t kDmaBufferRows = 2;       // known working: 2-4
-//const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
-const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
-const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);    // see http://docs.pixelmatix.com/SmartMatrix for options
-const uint8_t kBackgroundLayerOptions = (SM_BACKGROUND_OPTIONS_NONE);
-const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
+    SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
+    SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
+    #if ENABLE_SCROLLING == 1
+        SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
+    #endif
+#endif
 
-SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
-SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
-#if ENABLE_SCROLLING == 1
-SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
-#endif
-#endif
 
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
  * 
@@ -180,7 +157,7 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
 
 // Setup method runs once, when the sketch starts
 void setup() {
-    // Wait for teensy to be ready
+    // Wait for teensy Serial to be ready
     delay(3000);
     decoder.setScreenClearCallback(screenClearCallback);
     decoder.setUpdateScreenCallback(updateScreenCallback);
@@ -192,58 +169,58 @@ void setup() {
     decoder.setFileReadBlockCallback(fileReadBlockCallback);
 
     // Seed the random number generator
-    randomSeed(analogRead(14));
-
-    Serial.begin(115200);
-    Serial.println("Starting AnimatedGIFs Sketch");
-
+    // This breaks SmartMatrix output on ESP32
+    //randomSeed(analogRead(14));
 
 #ifdef NEOMATRIX
     matrix_setup();
+    
+    // sdcard not supported on ESP8266, use SPIFFS
+    #if defined(ESP8266)
+	Serial.println();
+	Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
+	Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
+	Serial.print( F("CPU: ") ); Serial.println(system_get_cpu_freq());
+	Serial.print( F("SDK: ") ); Serial.println(system_get_sdk_version());
+	Serial.print( F("Chip ID: ") ); Serial.println(system_get_chip_id());
+	Serial.print( F("Flash ID: ") ); Serial.println(spi_flash_get_id());
+	Serial.print( F("Flash Size: ") ); Serial.println(ESP.getFlashChipRealSize());
+	Serial.print( F("Vcc: ") ); Serial.println(ESP.getVcc());
+	Serial.println();
+    #endif
 #else
+    // neomatrix_config takes care of starting Serial, but we don't call it in the SMARTMATRIX code path
+    Serial.begin(115200);
+    Serial.println("Running on Native SmartMatrix Backend");
     // Initialize matrix
     matrix.addLayer(&backgroundLayer); 
-#if ENABLE_SCROLLING == 1
-    matrix.addLayer(&scrollingLayer); 
-#endif
+    #if ENABLE_SCROLLING == 1
+	matrix.addLayer(&scrollingLayer); 
+    #endif
 
     matrix.setBrightness(defaultBrightness);
 
     // for large panels, may want to set the refresh rate lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
     //matrix.setRefreshRate(90);
 
-#if !defined(ESP32)
-    matrix.begin();
-#endif
+    #if !defined(ESP32)
+	matrix.begin();
+    #else
+	// for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
+	//matrix.setMaxCalculationCpuPercentage(50);
 
-#if defined(ESP32)
-    // for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
-    //matrix.setMaxCalculationCpuPercentage(50);
+	// alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
+	//matrix.setCalcRefreshRateDivider(4);
 
-    // alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
-    //matrix.setCalcRefreshRateDivider(4);
-
-    // The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM, make sure at least that much is left free
-    matrix.begin(28000);
-#endif
+	// The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM, make sure at least that much is left free
+	matrix.begin(28000);
+    #endif
 
     // Clear screen
     backgroundLayer.fillScreen(COLOR_BLACK);
     backgroundLayer.swapBuffers(false);
 #endif // NEOMATRIX
-
-#if defined(ESP8266)
-    Serial.println();
-    Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
-    Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
-    Serial.print( F("CPU: ") ); Serial.println(system_get_cpu_freq());
-    Serial.print( F("SDK: ") ); Serial.println(system_get_sdk_version());
-    Serial.print( F("Chip ID: ") ); Serial.println(system_get_chip_id());
-    Serial.print( F("Flash ID: ") ); Serial.println(spi_flash_get_id());
-    Serial.print( F("Flash Size: ") ); Serial.println(ESP.getFlashChipRealSize());
-    Serial.print( F("Vcc: ") ); Serial.println(ESP.getVcc());
-    Serial.println();
-#endif
+Serial.println("Starting AnimatedGIFs Sketch");
 
 #ifdef SPI_FFS
     SPIFFS.begin();
@@ -270,15 +247,15 @@ void setup() {
 #else
     if(initSdCard(SD_CS) < 0) {
 	#if ENABLE_SCROLLING == 1
-		scrollingLayer.start("No SD card", -1);
+	    scrollingLayer.start("No SD card", -1);
 	#endif
 	Serial.println("No SD card");
 	while(1);
     }
 #endif
 
-    // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing the SD card to avoid using up too much memory
-
+    // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing
+    // the SD card to avoid using up too much memory
     // Determine how many animated GIF files exist
     num_files = enumerateGIFFiles(GIF_DIRECTORY, true);
 
@@ -287,6 +264,7 @@ void setup() {
         scrollingLayer.start("No gifs directory", -1);
 #endif
         Serial.println("No gifs directory");
+	// while(1) trips the watchdog on ESP8266
         delay(100000000);
     }
 
