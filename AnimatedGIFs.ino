@@ -73,24 +73,15 @@
 #include "config.h"
 
 #ifdef NEOMATRIX
-    // select which NEOMATRIX config will be selected
-    #define M16BY16T4
-    #include "neomatrix_config.h"
-    #ifndef rgb24
-    #define rgb24 CRGB
-    #endif
+// select which NEOMATRIX config will be selected
+#define M16BY16T4
+#include "neomatrix_config.h"
+// else use SmartMatrix as defined in config.h
 #endif
 
 #include "GifDecoder.h"
 #include "FilenameFunctions.h"
 
-const rgb24 COLOR_BLACK = {
-    0, 0, 0 };
-
-#ifdef NEOPIXEL_MATRIX
-const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
-const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
-#endif
 #ifndef NEOMATRIX
     SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
     SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
@@ -132,7 +123,7 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
   CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
   // This works but does not handle out of bounds pixels well (it writes to the last pixel)
   // matrixleds[XY(x+OFFSETX,y+OFFSETY)] = color;
-  matrix->setPassThruColor(color.red*65536 + color.green*256 + color.blue);
+  //matrix->setPassThruColor(color.red*65536 + color.green*256 + color.blue);
   // drawPixel ensures we don't write out of bounds
   //matrix->drawPixel(x+OFFSETX, y+OFFSETY, (uint32_t) color.red*65536 + color.green*256 + color.blue);
   matrix->drawPixel(x+OFFSETX, y+OFFSETY, color);
@@ -175,7 +166,6 @@ void setup() {
 #ifdef NEOMATRIX
     matrix_setup();
     
-    // sdcard not supported on ESP8266, use SPIFFS
     #if defined(ESP8266)
 	Serial.println();
 	Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
@@ -203,22 +193,22 @@ void setup() {
     // for large panels, may want to set the refresh rate lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
     //matrix.setRefreshRate(90);
 
-    #if !defined(ESP32)
-	matrix.begin();
-    #else
+    #if defined(ESP32)
 	// for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
 	//matrix.setMaxCalculationCpuPercentage(50);
 
 	// alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
 	//matrix.setCalcRefreshRateDivider(4);
-
-	// The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM, make sure at least that much is left free
-	matrix.begin(28000);
-    #endif
-
-    // Clear screen
-    backgroundLayer.fillScreen(COLOR_BLACK);
-    backgroundLayer.swapBuffers(false);
+	#if defined(SPI_FFS)
+	    matrix.begin();
+	#else
+	    // The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM
+	    // make sure at least that much is left free
+	    matrix.begin(28000);
+	#endif
+    #else // ESP32
+	matrix.begin();
+    #endif // ESP32
 #endif // NEOMATRIX
 Serial.println("Starting AnimatedGIFs Sketch");
 
