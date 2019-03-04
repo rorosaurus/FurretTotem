@@ -2,14 +2,20 @@
 #define config_h
 
 #include "size.h"
-//#define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
-//#define NEOPIXEL_MATRIX  //  Real NEOMATRIX, not SmartMatrix_GFX
-//#define DEBUGLINE 6
+
+#define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
+//#define NEOPIXEL_MATRIX  // If NEOMATRIX, use FastLED::NeoMatrix, not SmartMatrix_GFX
 
 // if you want to display a file and display that one first
-#define FIRSTINDEX 0
+#define FIRSTINDEX 7
+//#define DEBUGLINE 6
 
-#ifndef NEOMATRIX
+// Use Neomatrix backend (which in turn could be using SmartMatrix)
+#ifdef NEOMATRIX
+    // This doesn't work due to variables being redefined. Sigh...
+    // instead it's included once from AnimatedGIFs.ino
+    //#include "neomatrix_config.h"
+#else // NEOMATRIX
     #pragma message "Compiling for Native SmartMatrix"
     #define ENABLE_SCROLLING  1
     #if defined (ARDUINO)
@@ -28,7 +34,7 @@
     const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
     /* SmartMatrix configuration and memory allocation */
     #define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
-    const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
+    const uint8_t kRefreshDepth = 24;       // known working: 24, 36, 48
     const uint8_t kDmaBufferRows = 2;       // known working: 2-4
     const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
     //const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
@@ -37,10 +43,6 @@
     const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
 #endif
 
-#ifdef NEOPIXEL_MATRIX
-const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
-const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
-#endif
 
 // Note, you can use an sdcard on ESP32 or ESP8266 if you really want,
 // but if your data fits in built in flash, why not use it?

@@ -315,6 +315,13 @@ void FastLEDshowTask(void *pvParameters)
 
 //============================================================================ 
 
+// Compat with SmartMatrix code that uses those variables
+// (but don't redefine for SmartMatrix backend)
+#ifdef NEOPIXEL_MATRIX
+const uint8_t kMatrixWidth = mw;
+const uint8_t kMatrixHeight = mh;
+#endif
+
 #ifdef ESP8266
 // Turn off Wifi in setup()
 // https://www.hackster.io/rayburne/esp8266-turn-off-wifi-reduce-current-big-time-1df8ae
