@@ -1,13 +1,14 @@
 #ifndef config_h
 #define config_h
 
-#include "size.h"
+// control if we decode in 32x32 or 64x64, or something else
+#define matrix_size 64
 
-#define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
+//#define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
 //#define NEOPIXEL_MATRIX  // If NEOMATRIX, use FastLED::NeoMatrix, not SmartMatrix_GFX
 
 // if you want to display a file and display that one first
-#define FIRSTINDEX 7
+#define FIRSTINDEX 0
 //#define DEBUGLINE 6
 
 // Use Neomatrix backend (which in turn could be using SmartMatrix)
@@ -43,6 +44,10 @@
     const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
 #endif
 
+// If the matrix is a different size than the GIFs, set the offset for the upper left corner
+// (negative or positive is ok).
+extern int OFFSETX;
+extern int OFFSETY;
 
 // Note, you can use an sdcard on ESP32 or ESP8266 if you really want,
 // but if your data fits in built in flash, why not use it?
