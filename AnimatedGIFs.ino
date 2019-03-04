@@ -69,26 +69,31 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
-#include "size.h"
 #include "config.h"
+// If the matrix is a different size than the GIFs, set the offset for the upper left corner
+// (negative or positive is ok).
+int OFFSETX = 0;
+int OFFSETY = 0;
 
 #ifdef NEOMATRIX
 // select which NEOMATRIX config will be selected
-#define M16BY16T4
-#include "neomatrix_config.h"
+    #define M16BY16T4
+    #include "neomatrix_config.h"
 // else use SmartMatrix as defined in config.h
-#endif
-
-#include "GifDecoder.h"
-#include "FilenameFunctions.h"
-
-#ifndef NEOMATRIX
+#else
     SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
     SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
     #if ENABLE_SCROLLING == 1
         SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
     #endif
-#endif
+#endif // NEOMATRIX
+
+// If the matrix is a different size than the GIFs, set the offset for the upper left corner
+// (negative or positive is ok).
+
+#include "GifDecoder.h"
+#include "FilenameFunctions.h"
+
 
 
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
