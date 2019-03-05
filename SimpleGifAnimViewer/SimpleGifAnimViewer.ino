@@ -77,9 +77,6 @@ void setup() {
     Serial.println("Running on Native SmartMatrix Backend");
     // Initialize matrix
     matrix.addLayer(&backgroundLayer); 
-    #if ENABLE_SCROLLING == 1
-	matrix.addLayer(&scrollingLayer); 
-    #endif
     matrix.setBrightness(defaultBrightness);
 
     #if defined(ESP32)
