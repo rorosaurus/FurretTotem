@@ -13,6 +13,9 @@ For NeoMatrix you must also edit neomatrix_config.h to configure your matrix
 layout, addjust OFFSETX/OFFSETY if needed, as well as matrix_brightness and
 matrix_gamma.
 
+neomatrix_config.h contains more configuration related to the NeoMatrix API
+(which can also use SmartMatrix via its API)
+
 AnimatedGIFs file browser
 -------------------------
 You either put your gifs inside a /gifs subdirectory on an sdcard or under /gifs in SPIFFS 
@@ -30,8 +33,11 @@ config.h also has these compile time variables:
 
 SimpleGifAnimViewer
 -------------------
-This is a shrunk version of AnimatedGIFs.  This subdirectory shows a near minimal amount of code necessary to display a GIF on a NeoMatrix (60 lines of code). You only need to change the hardcoded path to the GIF, and configure neomatrix_config.h to match your panel. With very minimal changes, you can read from sdcard instead of SPIFFS if you need more storage, or you are using a flash-less chip like Teensy.
+This is a very shrunk version of AnimatedGIFs.  This subdirectory shows a near minimal amount of code necessary to display a GIF on a NeoMatrix (60 lines of code). You only need to change the hardcoded path to the GIF, and configure neomatrix_config.h to match your panel. With very minimal changes, you can read from sdcard instead of SPIFFS if you need more storage, or you are using a flash-less chip like Teensy.
 
+SimpleGifAnimViewer2
+-------------------
+This version uses GifAnim_Impl.h as a library and shows how to animate a GIF in just 10 lines of code or so.  
 
 NeoMatrix and SPIFFS support
 ----------------------------
