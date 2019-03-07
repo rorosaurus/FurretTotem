@@ -13,7 +13,16 @@
 
 extern File file;
 #include "GifDecoder.h"
+
+// Used by simpleGifViewer to work without FilenameFunctions*
+#ifdef BASICSPIFFS
+bool fileSeekCallback(unsigned long position) { return file.seek(position); }
+unsigned long filePositionCallback(void) { return file.position(); }
+int fileReadCallback(void) { return file.read(); }
+int fileReadBlockCallback(void * buffer, int numberOfBytes) { return file.read((uint8_t*)buffer, numberOfBytes); }
+#else
 #include "FilenameFunctions.h"
+#endif
 
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
  * defined in config.h
