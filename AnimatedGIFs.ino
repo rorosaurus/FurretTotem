@@ -71,8 +71,8 @@
 
 #include "GifAnim_Impl.h"
 
-// If the matrix is a different size than the GIFs, set the offset for the upper left corner
-// (negative or positive is ok).
+// If the matrix is a different size than the GIFs, allow panning through the GIF
+// while displaying it, or bouncing it around if it's smaller than the display
 int OFFSETX = 0;
 int OFFSETY = 0;
 
