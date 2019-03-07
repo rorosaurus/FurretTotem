@@ -4,6 +4,13 @@
 // control if we decode in 32x32 or 64x64, or something else
 #define matrix_size 64
 
+/* GifDecoder needs lzwMaxBits
+ * The lzwMaxBits value of 12 supports all GIFs, but uses 16kB RAM
+ * lzwMaxBits can be set to 10 or 11 for small displays, 12 for large displays
+ * All 32x32-pixel GIFs tested work with 11, most work with 10
+ */
+const int lzwMaxBits = 12;
+
 //#define NEOMATRIX // Switch to NEOMATRIX backend from native SMARTMATRIX backend
 //#define NEOPIXEL_MATRIX  // If NEOMATRIX, use FastLED::NeoMatrix, not SmartMatrix_GFX
 
