@@ -1,4 +1,5 @@
-#include "SimpleGifAnimViewer_Impl.h"
+#define BASICSPIFFS
+#include "GifAnim_Impl.h"
 
 // If the matrix is a different size than the GIFs, set the offset for the upper left corner
 // (negative or positive is ok).
