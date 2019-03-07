@@ -69,108 +69,24 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
-#include "config.h"
+#include "GifAnim_Impl.h"
+
 // If the matrix is a different size than the GIFs, set the offset for the upper left corner
 // (negative or positive is ok).
 int OFFSETX = 0;
 int OFFSETY = 0;
 
-#ifdef NEOMATRIX
-// select which NEOMATRIX config will be selected
-    #define M16BY16T4
-    #include "neomatrix_config.h"
-// else use SmartMatrix as defined in config.h
-#else
-    SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
-    SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
-    #if ENABLE_SCROLLING == 1
-        SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
-    #endif
-#endif // NEOMATRIX
-
-// If the matrix is a different size than the GIFs, set the offset for the upper left corner
-// (negative or positive is ok).
-
-#include "GifDecoder.h"
-#include "FilenameFunctions.h"
-
-
-
-/* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
- * 
- * The lzwMaxBits value of 12 supports all GIFs, but uses 16kB RAM
- * lzwMaxBits can be set to 10 or 11 for small displays, 12 for large displays
- * All 32x32-pixel GIFs tested work with 11, most work with 10
- */
-GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
-
-
 int num_files;
-
-void screenClearCallback(void) {
-#ifdef NEOMATRIX
-  matrix->clear();
-#else
-  backgroundLayer.fillScreen({0,0,0});
-#endif
-}
-
-void updateScreenCallback(void) {
-#ifdef NEOMATRIX
-  matrix->show();
-#else
-  backgroundLayer.swapBuffers();
-#endif
-}
-
-void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t blue) {
-#ifdef NEOMATRIX
-  CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
-  // This works but does not handle out of bounds pixels well (it writes to the last pixel)
-  // matrixleds[XY(x+OFFSETX,y+OFFSETY)] = color;
-  //matrix->setPassThruColor(color.red*65536 + color.green*256 + color.blue);
-  // drawPixel ensures we don't write out of bounds
-  //matrix->drawPixel(x+OFFSETX, y+OFFSETY, (uint32_t) color.red*65536 + color.green*256 + color.blue);
-  matrix->drawPixel(x+OFFSETX, y+OFFSETY, color);
-#else
-  backgroundLayer.drawPixel(x, y, {red, green, blue});
-#endif
-#if DEBUGLINE
-  if (y == DEBUGLINE) {
-  Serial.print(x);
-  Serial.print(",");
-  Serial.print(y);
-  Serial.print(">");
-  Serial.print(red);
-  Serial.print(",");
-  Serial.print(green);
-  Serial.print(",");
-  Serial.print(blue);
-  Serial.println("");
-  }
-#endif
-}
 
 // Setup method runs once, when the sketch starts
 void setup() {
-    // Wait for teensy Serial to be ready
-    delay(3000);
-    decoder.setScreenClearCallback(screenClearCallback);
-    decoder.setUpdateScreenCallback(updateScreenCallback);
-    decoder.setDrawPixelCallback(drawPixelCallback);
-
-    decoder.setFileSeekCallback(fileSeekCallback);
-    decoder.setFilePositionCallback(filePositionCallback);
-    decoder.setFileReadCallback(fileReadCallback);
-    decoder.setFileReadBlockCallback(fileReadBlockCallback);
+    sav_setup(NULL);
 
     // Seed the random number generator
     // This breaks SmartMatrix output on ESP32
     //randomSeed(analogRead(14));
 
 #ifdef NEOMATRIX
-    matrix_setup();
-    
     #if defined(ESP8266)
 	Serial.println();
 	Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
@@ -184,36 +100,10 @@ void setup() {
 	Serial.println();
     #endif
 #else
-    // neomatrix_config takes care of starting Serial, but we don't call it in the SMARTMATRIX code path
-    Serial.begin(115200);
-    Serial.println("Running on Native SmartMatrix Backend");
-    // Initialize matrix
-    matrix.addLayer(&backgroundLayer); 
     #if ENABLE_SCROLLING == 1
+	SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 	matrix.addLayer(&scrollingLayer); 
     #endif
-
-    matrix.setBrightness(defaultBrightness);
-
-    // for large panels, may want to set the refresh rate lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
-    //matrix.setRefreshRate(90);
-
-    #if defined(ESP32)
-	// for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
-	//matrix.setMaxCalculationCpuPercentage(50);
-
-	// alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
-	//matrix.setCalcRefreshRateDivider(4);
-	#if defined(SPI_FFS)
-	    matrix.begin();
-	#else
-	    // The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM
-	    // make sure at least that much is left free
-	    matrix.begin(28000);
-	#endif
-    #else // ESP32
-	matrix.begin();
-    #endif // ESP32
 #endif // NEOMATRIX
 Serial.println("Starting AnimatedGIFs Sketch");
 

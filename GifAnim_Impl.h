@@ -1,10 +1,5 @@
 #include "config.h"
 
-// If the matrix is a different size than the GIFs, set the offset for the upper left corner
-// (negative or positive is ok).
-int OFFSETX = 0;
-int OFFSETY = 0;
-
 #ifdef NEOMATRIX
 // select which NEOMATRIX config will be selected
     #define M16BY16T4
@@ -16,22 +11,14 @@ int OFFSETY = 0;
 #endif // NEOMATRIX
 
 
+extern File file;
 #include "GifDecoder.h"
-File file;
-const char *pathname = "/gifs64/200_circlesmoke.gif";
+#include "FilenameFunctions.h"
 
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
- * 
- * The lzwMaxBits value of 12 supports all GIFs, but uses 16kB RAM
- * lzwMaxBits can be set to 10 or 11 for small displays, 12 for large displays
- * All 32x32-pixel GIFs tested work with 11, most work with 10
+ * defined in config.h
  */
-GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
-
-bool fileSeekCallback(unsigned long position) { return file.seek(position); }
-unsigned long filePositionCallback(void) { return file.position(); }
-int fileReadCallback(void) { return file.read(); }
-int fileReadBlockCallback(void * buffer, int numberOfBytes) { return file.read((uint8_t*)buffer, numberOfBytes); }
+GifDecoder<kMatrixWidth, kMatrixHeight, lzwMaxBits> decoder;
 
 void screenClearCallback(void) {
 #ifdef NEOMATRIX
@@ -56,10 +43,24 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
 #else
   backgroundLayer.drawPixel(x, y, {red, green, blue});
 #endif
+#if DEBUGLINE
+  if (y == DEBUGLINE) {
+  Serial.print(x);
+  Serial.print(",");
+  Serial.print(y);
+  Serial.print(">");
+  Serial.print(red);
+  Serial.print(",");
+  Serial.print(green);
+  Serial.print(",");
+  Serial.print(blue);
+  Serial.println("");
+  }
+#endif
 }
 
 // Setup method runs once, when the sketch starts
-void setup() {
+void sav_setup(const char *pathname) {
     decoder.setScreenClearCallback(screenClearCallback);
     decoder.setUpdateScreenCallback(updateScreenCallback);
     decoder.setDrawPixelCallback(drawPixelCallback);
@@ -79,10 +80,19 @@ void setup() {
     matrix.addLayer(&backgroundLayer); 
     matrix.setBrightness(defaultBrightness);
 
+    // for large panels, may want to set the refresh rate lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
+    //matrix.setRefreshRate(90);
     #if defined(ESP32)
+	// for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
+	//matrix.setMaxCalculationCpuPercentage(50);
+
+	// alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
+	//matrix.setCalcRefreshRateDivider(4);
 	#if defined(SPI_FFS)
 	    matrix.begin();
 	#else
+	    // The ESP32 SD Card library is going to want to malloc about 28000 bytes of DMA-capable RAM
+	    // make sure at least that much is left free
 	    matrix.begin(28000);
 	#endif
     #else // ESP32
@@ -90,17 +100,20 @@ void setup() {
     #endif // ESP32
 #endif // NEOMATRIX
 
-    SPIFFS.begin();
-    file = SPIFFS.open(pathname, "r");
-    if (!file) {
-        Serial.print("Error opening GIF file ");
-        Serial.println(pathname);
-	while (1) { delay(1000); }; // while 1 loop only triggers watchdog on ESP chips
+    // If you want sdcard support send NULL and handle your own file management
+    if (pathname) {
+	SPIFFS.begin();
+	file = SPIFFS.open(pathname, "r");
+	if (!file) {
+	    Serial.print("Error opening GIF file ");
+	    Serial.println(pathname);
+	    while (1) { delay(1000); }; // while 1 loop only triggers watchdog on ESP chips
+	}
+	decoder.startDecoding();
     }
-    decoder.startDecoding();
 }
 
-void loop() {
+void sav_loop() {
     decoder.decodeFrame();
 }
 
