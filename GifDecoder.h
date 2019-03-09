@@ -132,9 +132,9 @@ private:
     uint8_t *sp;
     uint8_t * temp_buffer;
 
-    uint8_t stack  [LZW_SIZTABLE];
-    uint8_t suffix [LZW_SIZTABLE];
-    uint16_t prefix [LZW_SIZTABLE];
+    uint8_t *stack;
+    uint8_t *suffix;
+    uint16_t *prefix;
 
     // Masks for 0 .. 16 bits
     unsigned int mask[17] = {

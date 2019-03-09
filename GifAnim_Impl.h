@@ -123,7 +123,11 @@ void sav_setup(const char *pathname) {
 }
 
 void sav_loop() {
+    static int frame = 0;
+    Serial.print("Decoding Frame Start:");
+    Serial.println(frame++);
     decoder.decodeFrame();
+    Serial.println("Decoding Frame End");
 }
 
 // vim:sts=4:sw=4

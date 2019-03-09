@@ -7,7 +7,8 @@ int OFFSETX = 0;
 int OFFSETY = 0;
 
 File file;
-const char *pathname = "/gifs64/200_circlesmoke.gif";
+//const char *pathname = "/gifs64/200_circlesmoke.gif";
+const char *pathname = "/gifs64/257_mesh.gif";
 
 // Setup method runs once, when the sketch starts
 void setup() {
