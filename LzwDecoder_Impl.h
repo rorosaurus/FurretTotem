@@ -64,8 +64,8 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::lzw_decode_init (int csi
     bcnt = 0;
 
     if (!stack &&  !(stack =  (uint8_t *)  malloc(LZW_SIZTABLE)))	mallocdie(1, LZW_SIZTABLE);
-    if (!prefix && !(prefix = (uint16_t *) malloc(LZW_SIZTABLE)))	mallocdie(2, LZW_SIZTABLE);
-    if (!suffix && !(suffix = (uint8_t *)  malloc(LZW_SIZTABLE*2)))	mallocdie(3, LZW_SIZTABLE*2);
+    if (!prefix && !(prefix = (uint16_t *) malloc(LZW_SIZTABLE*2)))	mallocdie(2, LZW_SIZTABLE*2);
+    if (!suffix && !(suffix = (uint8_t *)  malloc(LZW_SIZTABLE)))	mallocdie(3, LZW_SIZTABLE);
 
     // Initialize decoder variables
     codesize = csize;
