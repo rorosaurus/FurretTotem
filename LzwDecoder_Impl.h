@@ -42,6 +42,15 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::lzw_setTempBuffer(uint8_
     temp_buffer = tempBuffer;
 }
 
+void mallocdie(uint8_t seq, uint16_t req) {
+    Serial.print("Failed to malloc #");
+    Serial.print(seq);
+    Serial.print(" in lzw_decode_init. Requested bytes: ");
+    Serial.println(req);
+    while(1);
+    return;
+}
+
 // Initialize LZW decoder
 //   csize initial code size in bits
 //   buf input data
@@ -53,6 +62,10 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::lzw_decode_init (int csi
     bbits = 0;
     bs = 0;
     bcnt = 0;
+
+    if (!stack &&  !(stack =  (uint8_t *)  malloc(LZW_SIZTABLE)))	mallocdie(1, LZW_SIZTABLE);
+    if (!prefix && !(prefix = (uint16_t *) malloc(LZW_SIZTABLE)))	mallocdie(2, LZW_SIZTABLE);
+    if (!suffix && !(suffix = (uint8_t *)  malloc(LZW_SIZTABLE*2)))	mallocdie(3, LZW_SIZTABLE*2);
 
     // Initialize decoder variables
     codesize = csize;
