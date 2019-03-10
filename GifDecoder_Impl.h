@@ -674,8 +674,34 @@ int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::parseData() {
     return ERROR_NONE;
 }
 
+void *mallocordie(const char *varname, uint32_t req) {
+    Serial.print("Malloc ");
+    Serial.print(varname);
+    Serial.print(" in GifDecoder startDecoding. Requested bytes: ");
+    Serial.println(req);
+    void *mem = malloc(req);
+    if (mem) {
+	return mem;
+    } else {
+	Serial.print("FATAL: malloc failed for ");
+	Serial.println(varname);
+	while (1);
+    }
+    return NULL;
+}
+
 template <int maxGifWidth, int maxGifHeight, int lzwMaxBits>
 int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::startDecoding(void) {
+    uint32_t gifsize = maxGifWidth * maxGifHeight;
+
+    if (!stack		) stack =  (uint8_t *)		mallocordie("stack", LZW_SIZTABLE);
+    if (!prefix		) prefix = (uint16_t *)		mallocordie("prefix", LZW_SIZTABLE*2);
+    if (!suffix		) suffix = (uint8_t *)		mallocordie("suffix", LZW_SIZTABLE);
+    //if (!imageData	) imageData = (uint8_t *)	mallocordie("imageData", gifsize);
+    //if (!imageDataBU	) imageDataBU = (uint8_t *)	mallocordie("imageDataBU", gifsize);
+    if (!palette	) palette = (rgb_24 *)		mallocordie("palette", sizeof(rgb_24)*256);
+    if (!tempBuffer	) tempBuffer = (char *)		mallocordie("tempBuffer", 260);
+
     // Initialize variables
     keyFrame = true;
     prevDisposalMethod = DISPOSAL_NONE;
@@ -812,3 +838,4 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
     if(updateScreenCallback)
         (*updateScreenCallback)();
 }
+
