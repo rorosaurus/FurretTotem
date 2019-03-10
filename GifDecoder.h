@@ -95,14 +95,16 @@ private:
     unsigned long nextFrameTime_ms;
 
     int colorCount;
-    rgb_24 palette[256];
+    rgb_24 *palette;
 
-    char tempBuffer[260];
+    char *tempBuffer;
 
     // Buffer image data is decoded into
+    //uint8_t *imageData = (uint8_t *) malloc(maxGifWidth * maxGifHeight);
     uint8_t imageData[maxGifWidth * maxGifHeight];
 
     // Backup image data buffer for saving portions of image disposal method == 3
+    //uint8_t *imageDataBU = (uint8_t *) malloc(maxGifWidth * maxGifHeight);;
     uint8_t imageDataBU[maxGifWidth * maxGifHeight];
 
     callback screenClearCallback;
