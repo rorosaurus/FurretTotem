@@ -100,12 +100,12 @@ private:
     char *tempBuffer;
 
     // Buffer image data is decoded into
-    uint8_t *imageData = (uint8_t *) malloc(maxGifWidth * maxGifHeight);
-    //uint8_t imageData[maxGifWidth * maxGifHeight];
+    uint8_t *imageData;
 
     // Backup image data buffer for saving portions of image disposal method == 3
-    uint8_t *imageDataBU = (uint8_t *) malloc(maxGifWidth * maxGifHeight);;
-    //uint8_t imageDataBU[maxGifWidth * maxGifHeight];
+    uint8_t *imageDataBU;
+
+    uint32_t gifsize = maxGifWidth * maxGifHeight;
 
     callback screenClearCallback;
     callback updateScreenCallback;
