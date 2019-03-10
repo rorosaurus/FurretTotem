@@ -702,6 +702,11 @@ int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::startDecoding(void) {
     if (!palette	) palette = (rgb_24 *)		mallocordie("palette", sizeof(rgb_24)*256);
     if (!tempBuffer	) tempBuffer = (char *)		mallocordie("tempBuffer", 260);
 
+    printf("Heap Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(0), heap_caps_get_largest_free_block(0));
+    printf("8-bit Accessible Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_8BIT), heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
+    printf("32-bit Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_32BIT), heap_caps_get_largest_free_block(MALLOC_CAP_32BIT));
+    printf("DMA Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_DMA), heap_caps_get_largest_free_block(MALLOC_CAP_DMA));
+
     // Initialize variables
     keyFrame = true;
     prevDisposalMethod = DISPOSAL_NONE;
