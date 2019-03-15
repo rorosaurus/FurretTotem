@@ -1,4 +1,4 @@
-#include "config.h"
+#include "animatedgif_config.h"
 
 #ifdef NEOMATRIX
 // select which NEOMATRIX config will be selected
@@ -11,16 +11,17 @@
 #endif // NEOMATRIX
 
 
-extern File file;
 #include "GifDecoder.h"
 
 // Used by simpleGifViewer to work without FilenameFunctions*
 #ifdef BASICSPIFFS
+File file;
 bool fileSeekCallback(unsigned long position) { return file.seek(position); }
 unsigned long filePositionCallback(void) { return file.position(); }
 int fileReadCallback(void) { return file.read(); }
 int fileReadBlockCallback(void * buffer, int numberOfBytes) { return file.read((uint8_t*)buffer, numberOfBytes); }
 #else
+extern File file;
 #include "FilenameFunctions.h"
 #endif
 
@@ -69,7 +70,7 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
 }
 
 // Setup method runs once, when the sketch starts
-void sav_setup(const char *pathname) {
+void sav_setup() {
     decoder.setScreenClearCallback(screenClearCallback);
     decoder.setUpdateScreenCallback(updateScreenCallback);
     decoder.setDrawPixelCallback(drawPixelCallback);
@@ -109,25 +110,60 @@ void sav_setup(const char *pathname) {
     #endif // ESP32
 #endif // NEOMATRIX
 
-    // If you want sdcard support send NULL and handle your own file management
-    if (pathname) {
-	SPIFFS.begin();
-	file = SPIFFS.open(pathname, "r");
-	if (!file) {
-	    Serial.print("Error opening GIF file ");
-	    Serial.println(pathname);
-	    while (1) { delay(1000); }; // while 1 loop only triggers watchdog on ESP chips
+#ifdef SPI_FFS
+    // SPIFFS Begin (can crash/conflict with IRRemote on ESP32)
+    SPIFFS.begin();
+    Serial.println("SPIFFS Directory listing:");
+    #ifdef ESP8266
+	Dir dir = SPIFFS.openDir("/");
+	while (dir.next()) {
+	    String fileName = dir.fileName();
+	    size_t fileSize = dir.fileSize();
+	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
 	}
-	decoder.startDecoding();
+    #else
+    // ESP32 SPIFFS does not support directory objects
+    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
+	File dir = SPIFFS.open("/");
+	while (File file = dir.openNextFile()) {
+	    Serial.print("FS File: ");
+	    Serial.print(file.name());
+	    Serial.print(" Size: ");
+	    Serial.println(file.size());
+	}
+    #endif
+    Serial.println();
+#else
+    if(initSdCard(SD_CS) < 0) {
+	#if ENABLE_SCROLLING == 1
+	    scrollingLayer.start("No SD card", -1);
+	#endif
+	Serial.println("No SD card");
+	delay(100000); // while 1 loop only triggers watchdog on ESP chips
     }
+#endif
 }
 
-void sav_loop() {
-    static int frame = 0;
-    Serial.print("Decoding Frame Start:");
-    Serial.println(frame++);
-    decoder.decodeFrame();
-    Serial.println("Decoding Frame End");
+bool sav_newgif(const char *pathname) {
+    if (file) file.close();
+    file = SPIFFS.open(pathname, "r");
+    Serial.print(pathname);
+    if (!file) {
+        Serial.println(": Error opening GIF file");
+	return 1;
+    }
+    Serial.println(": Opened GIF file, start decoding");
+    decoder.startDecoding();
+    return 0;
+}
+
+
+bool sav_loop() {
+    // ERROR_WAITING means it wasn't time to display the next frame and the display did
+    // not get updated (this is important for a neopixel matrix where the display being
+    // updated causes a pause in the code).
+    if (decoder.decodeFrame() == ERROR_WAITING) return 1;
+    return 0;
 }
 
 // vim:sts=4:sw=4

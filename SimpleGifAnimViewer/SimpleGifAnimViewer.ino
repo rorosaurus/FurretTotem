@@ -1,3 +1,4 @@
+#define NEOPIXEL_MATRIX
 #include "neomatrix_config.h"
 #include "GifDecoder.h"
 

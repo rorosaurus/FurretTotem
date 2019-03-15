@@ -5,7 +5,7 @@
  *
  * Written by: Craig A. Lindley
  */
-#include "config.h"
+#include "animatedgif_config.h"
 
 File file;
 
