@@ -80,13 +80,12 @@ int num_files;
 
 // Setup method runs once, when the sketch starts
 void setup() {
-    sav_setup(NULL);
+    sav_setup();
 
     // Seed the random number generator
     // This breaks SmartMatrix output on ESP32
     //randomSeed(analogRead(14));
 
-#ifdef NEOMATRIX
     #if defined(ESP8266)
 	Serial.println();
 	Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
@@ -99,45 +98,11 @@ void setup() {
 	Serial.print( F("Vcc: ") ); Serial.println(ESP.getVcc());
 	Serial.println();
     #endif
-#else
     #if ENABLE_SCROLLING == 1
 	SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 	matrix.addLayer(&scrollingLayer); 
     #endif
-#endif // NEOMATRIX
-Serial.println("Starting AnimatedGIFs Sketch");
-
-#ifdef SPI_FFS
-    SPIFFS.begin();
-    Serial.println("SPIFFS Directory listing:");
-    #ifdef ESP8266
-	Dir dir = SPIFFS.openDir("/");
-	while (dir.next()) {
-	    String fileName = dir.fileName();
-	    size_t fileSize = dir.fileSize();
-	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
-	}
-    #else
-    // ESP32 SPIFFS does not support directory objects
-    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
-	File dir = SPIFFS.open("/");
-	while (File file = dir.openNextFile()) {
-	    Serial.print("FS File: ");
-	    Serial.print(file.name());
-	    Serial.print(" Size: ");
-	    Serial.println(file.size());
-	}
-    #endif
-    Serial.println();
-#else
-    if(initSdCard(SD_CS) < 0) {
-	#if ENABLE_SCROLLING == 1
-	    scrollingLayer.start("No SD card", -1);
-	#endif
-	Serial.println("No SD card");
-	while(1);
-    }
-#endif
+    Serial.println("Starting AnimatedGIFs Sketch");
 
     // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing
     // the SD card to avoid using up too much memory

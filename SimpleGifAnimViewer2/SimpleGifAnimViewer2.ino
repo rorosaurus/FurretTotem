@@ -6,13 +6,12 @@
 int OFFSETX = 0;
 int OFFSETY = 0;
 
-File file;
-//const char *pathname = "/gifs64/200_circlesmoke.gif";
-const char *pathname = "/gifs64/257_mesh.gif";
+const char *pathname = "/gifs64/200_circlesmoke.gif";
 
 // Setup method runs once, when the sketch starts
 void setup() {
-    sav_setup(pathname);
+    sav_setup();
+    if (sav_newgif(pathname)) delay(100000); // while 1 loop only triggers watchdog on ESP chips
 }
 
 void loop() {

@@ -1,5 +1,5 @@
-#ifndef config_h
-#define config_h
+#ifndef animatedgif_config
+#define animatedgif_config
 
 // control if we decode in 32x32 or 64x64, or something else
 #define matrix_size 64
