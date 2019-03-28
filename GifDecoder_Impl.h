@@ -674,6 +674,11 @@ int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::parseData() {
     return ERROR_NONE;
 }
 
+#ifdef ESP32
+// SmartMatrix teensylc branch src/ESP32MemDisplay
+#include "ESP32MemDisplay.h"
+#endif
+
 void *mallocordie(const char *varname, uint32_t req) {
     Serial.print("Malloc ");
     Serial.print(varname);
@@ -685,6 +690,9 @@ void *mallocordie(const char *varname, uint32_t req) {
     } else {
 	Serial.print("FATAL: malloc failed for ");
 	Serial.println(varname);
+        #ifdef ESP32
+	show_esp32_all_mem();
+        #endif
 	while (1);
     }
     return NULL;
@@ -702,8 +710,6 @@ int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::startDecoding(void) {
 	tempBuffer = (char *)		mallocordie("tempBuffer", 260);
 
         #ifdef ESP32
-	// SmartMatrix teensylc branch src/ESP32MemDisplay
-        #include "ESP32MemDisplay.h"
 	show_esp32_all_mem();
         #endif
     }	
