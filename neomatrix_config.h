@@ -43,6 +43,8 @@
     #include <FastLED_NeoMatrix.h>
     #pragma message "Compiling for NEOMATRIX"
 #else
+    // CHANGEME, see MatrixHardware_ESP32_V0.h in SmartMatrix/src
+    #define GPIOPINOUT 3
     #pragma message "Compiling for SMARTMATRIX with NEOMATRIX API"
     #include <SmartLEDShieldV4.h>  // if you're using SmartLED Shield V4 hardware
     #include <SmartMatrix3.h>
