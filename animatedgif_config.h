@@ -25,6 +25,8 @@ const int lzwMaxBits = 12;
     //#include "neomatrix_config.h"
 #else // NEOMATRIX
     #pragma message "Compiling for Native SmartMatrix"
+    // CHANGEME, see MatrixHardware_ESP32_V0.h in SmartMatrix/src
+    #define GPIOPINOUT 3
     #define ENABLE_SCROLLING  1
     #if defined (ARDUINO)
         //#include <SmartLEDShieldV4.h>  // uncomment this line for SmartLED Shield V4 (needs to be before #include <SmartMatrix3.h>)
