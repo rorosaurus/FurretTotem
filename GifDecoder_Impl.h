@@ -692,22 +692,21 @@ void *mallocordie(const char *varname, uint32_t req) {
 
 template <int maxGifWidth, int maxGifHeight, int lzwMaxBits>
 int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::startDecoding(void) {
-    if (!stack		) stack =  (uint8_t *)		mallocordie("stack", LZW_SIZTABLE);
-    if (!prefix		) prefix = (uint16_t *)		mallocordie("prefix", LZW_SIZTABLE*2);
-    if (!suffix		) suffix = (uint8_t *)		mallocordie("suffix", LZW_SIZTABLE);
-    if (!imageData	) imageData = (uint8_t *)	mallocordie("imageData", gifsize);
-    if (!imageDataBU	) imageDataBU = (uint8_t *)	mallocordie("imageDataBU", gifsize);
-    if (!palette	) palette = (rgb_24 *)		mallocordie("palette", sizeof(rgb_24)*256);
-    if (!tempBuffer	) tempBuffer = (char *)		mallocordie("tempBuffer", 260);
+    if (!stack) {
+	stack =  (uint8_t *)		mallocordie("stack", LZW_SIZTABLE);
+	prefix = (uint16_t *)		mallocordie("prefix", LZW_SIZTABLE*2);
+	suffix = (uint8_t *)		mallocordie("suffix", LZW_SIZTABLE);
+	imageData = (uint8_t *)	mallocordie("imageData", gifsize);
+	imageDataBU = (uint8_t *)	mallocordie("imageDataBU", gifsize);
+	palette = (rgb_24 *)		mallocordie("palette", sizeof(rgb_24)*256);
+	tempBuffer = (char *)		mallocordie("tempBuffer", 260);
 
-#if 0
-    #ifdef ESP32
-    printf("Heap Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(0), heap_caps_get_largest_free_block(0));
-    printf("8-bit Accessible Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_8BIT), heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
-    printf("32-bit Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_32BIT), heap_caps_get_largest_free_block(MALLOC_CAP_32BIT));
-    printf("DMA Memory Available: %d bytes total, %d bytes largest free block: \r\n", heap_caps_get_free_size(MALLOC_CAP_DMA), heap_caps_get_largest_free_block(MALLOC_CAP_DMA));
-    #endif
-#endif
+        #ifdef ESP32
+	// SmartMatrix teensylc branch src/ESP32MemDisplay
+        #include "ESP32MemDisplay.h"
+	show_esp32_all_mem();
+        #endif
+    }	
 
     // Initialize variables
     keyFrame = true;
