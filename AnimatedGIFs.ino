@@ -149,12 +149,17 @@ void loop() {
     static unsigned long lastTime = millis();
     static int index = FIRSTINDEX;
     static int8_t new_file = 1;
+    static uint16_t frame = 0;
     // allow stalling on a picture if requested
     static uint32_t longer = 0;
     char readchar;
+    // frame by frame display
+    static bool debugframe = false;
+    bool gotnf = false;
+    // clear display before each frame
+    static bool clear = false;
 
     if (Serial.available()) readchar = Serial.read(); else readchar = 0;
-
 
     switch(readchar) {
     case 'n': 
@@ -167,6 +172,23 @@ void loop() {
 	Serial.println("Serial => previous");
 	new_file = 1;
 	index--;
+	break;
+
+    case 'f':
+	Serial.println("Serial => debug frames, press 'g' for next frame");
+	debugframe = true;
+	longer = 3600; //  if frame debugging, keep current gif for 1h
+	break;
+
+    case 'g':
+	Serial.println("Serial => next frame");
+	gotnf = true;
+	break;
+
+    case 'c':
+	Serial.print("Toggle clear screen: ");
+	clear = !clear;;
+	Serial.println(clear);
 	break;
 
     case '+': adjust_gamma(+0.2); break;
@@ -200,12 +222,17 @@ void loop() {
 	}
     }
 
+    if (debugframe) {
+	if (! gotnf) return;
+    }
+
     if (millis() - lastTime > ((DISPLAY_TIME_SECONDS + longer) * 1000)) {
 	new_file = 1;
 	index++;
     }
 
     if (new_file) { 
+	frame = 0;
 	new_file = 0;
 	lastTime = millis();
 	if (index >= num_files) index = 0;
@@ -223,7 +250,15 @@ void loop() {
 	    delay(1000000);
 	}
     }
+
+    if (clear) screenClearCallback();
     decoder.decodeFrame();
+    frame++;
+    if (debugframe) {
+	Serial.print("Displayed frame #");
+	Serial.print(frame);
+	Serial.println(". Press g for next frame");
+    }
 #if DEBUGLINE
     delay(1000000);
 #endif
