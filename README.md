@@ -73,6 +73,19 @@ You can get more animated GIFS here:
 - https://imgur.com/a/HjMW0
 
 
+FatFS/FFAT support on ESP32
+---------------------------
+Sadly when you add too many files to SPIFFS, it caused some inefficiencies in seeks that 
+caused the GIF animations to hang at times. The fix was to switch to the new FatFS/FFAT 
+support that was added recently to arduino-esp32.  
+It now nicely animates up to 3MB of animated Gifs on ESP32 without any hangs.
+
+https://github.com/marcmerlin/esp32_fatfsimage/blobmaster/README.md explains how to 
+create the fatfs image and how to upload it.  
+More details also on:
+http://marc.merlins.org/perso/arduino/post_2019-03-30_Using-FatFS-FFat-on-ESP32-Flash-With-Arduino.html
+
+
 Original SmartMatrix support from https://github.com/pixelmatix/AnimatedGIFs
 ----------------------------------------------------------------------------
 This [SmartMatrix Library](http://docs.pixelmatix.com/SmartMatrix/index.html) example displays 32x32 GIF animations loaded from a SD Card connected to the Teensy 3.1 using the [SmartMatrix Shield](http://docs.pixelmatix.com/SmartMatrix/shieldref.html)
