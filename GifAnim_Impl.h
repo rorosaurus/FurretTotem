@@ -12,6 +12,9 @@
 #else
     SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
     SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kBackgroundLayerOptions);
+    #ifdef ENABLE_SCROLLING
+    SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
+    #endif
 #endif // NEOMATRIX
 
 
@@ -167,7 +170,7 @@ void sav_setup() {
 bool sav_newgif(const char *pathname) {
     if (file) file.close();
     Serial.print(pathname);
-    file = FSO.open(pathname, "r");
+    file = FSO.open(pathname);
     if (!file) {
         Serial.println(": Error opening GIF file");
 	return 1;
