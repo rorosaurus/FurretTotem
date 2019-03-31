@@ -17,7 +17,7 @@
 
 #include "GifDecoder.h"
 
-// Used by simpleGifViewer to work without FilenameFunctions*
+// Used by SimpleGifAnimViewer2 to work without FilenameFunctions*
 #ifdef BASICSPIFFS
 File file;
 bool fileSeekCallback(unsigned long position) { return file.seek(position); }
@@ -28,6 +28,11 @@ int fileReadBlockCallback(void * buffer, int numberOfBytes) { return file.read((
 extern File file;
 #include "FilenameFunctions.h"
 #endif
+
+void die(const char *mesg) {
+    Serial.println(mesg);
+    delay(100000); // while 1 loop only triggers watchdog on ESP chips
+}
 
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
  * defined in config.h
@@ -118,10 +123,12 @@ void sav_setup() {
     #endif // NEOMATRIX
 #endif // GIFANIM_INCLUDE
 
-#ifdef SPI_FFS
+#ifndef FSOSD
     // SPIFFS Begin (can crash/conflict with IRRemote on ESP32)
-    SPIFFS.begin();
-    Serial.println("SPIFFS Directory listing:");
+    if (!FSO.begin()) die("FS mount failed");
+    Serial.println(" Directory listing:");
+
+    // ESP32 SPIFFS uses special directory objects
     #ifdef ESP8266
 	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) {
@@ -130,32 +137,37 @@ void sav_setup() {
 	    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
 	}
     #else
-    // ESP32 SPIFFS does not support directory objects
-    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
-	File dir = SPIFFS.open("/");
+        #if defined(FSOFAT)
+            Serial.printf("Total space: %10lu\n", FFat.totalBytes());
+            Serial.printf("Free space: %10lu\n", FFat.freeBytes());
+            File dir = FFat.open(GIF_DIRECTORY);
+            if (!dir) die("Can't open  " GIF_DIRECTORY);
+            if (!dir.isDirectory()) die( GIF_DIRECTORY ": not a directory");
+        #else
+	    File dir = SPO.open("/");
+        #endif
 	while (File file = dir.openNextFile()) {
 	    Serial.print("FS File: ");
 	    Serial.print(file.name());
 	    Serial.print(" Size: ");
 	    Serial.println(file.size());
 	}
-    #endif
+    #endif // ESP8266
     Serial.println();
-#else // SPI_FFS
+#else
     if(initSdCard(SD_CS) < 0) {
 	#if ENABLE_SCROLLING == 1
 	    scrollingLayer.start("No SD card", -1);
 	#endif
-	Serial.println("No SD card");
-	delay(100000); // while 1 loop only triggers watchdog on ESP chips
+	die("No SD card");
     }
-#endif // SPI_FFS
+#endif
 }
 
 bool sav_newgif(const char *pathname) {
     if (file) file.close();
-    file = SPIFFS.open(pathname, "r");
     Serial.print(pathname);
+    file = FSO.open(pathname, "r");
     if (!file) {
         Serial.println(": Error opening GIF file");
 	return 1;
@@ -164,7 +176,6 @@ bool sav_newgif(const char *pathname) {
     decoder.startDecoding();
     return 0;
 }
-
 
 bool sav_loop() {
     // ERROR_WAITING means it wasn't time to display the next frame and the display did

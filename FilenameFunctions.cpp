@@ -2,14 +2,19 @@
  * Animated GIFs Display Code for SmartMatrix and 32x32 RGB LED Panels
  *
  * This file contains code to enumerate and select animated GIF files by name
- *
- * Written by: Craig A. Lindley
+ * Originally written by: Craig A. Lindley
+ * Largely reworked by Marc MERLIN <marc_soft@merlins.org> to support SPIFFS and FatFS
  */
 #include "animatedgif_config.h"
 
 File file;
 
 int numberOfFiles;
+
+static void die(const char *mesg) {
+    Serial.println(mesg);
+    delay(100000); // while 1 loop only triggers watchdog on ESP chips
+}
 
 bool fileSeekCallback(unsigned long position) {
     return file.seek(position);
@@ -27,24 +32,18 @@ int fileReadBlockCallback(void * buffer, int numberOfBytes) {
     return file.read((uint8_t*)buffer, numberOfBytes);
 }
 
-#ifndef SPI_FFS
+#ifdef FSOSD 
 int initSdCard(int chipSelectPin) {
     // initialize the SD card at full speed
     pinMode(chipSelectPin, OUTPUT);
-    if (!SD.begin(chipSelectPin))
-        return -1;
+    if (!SD.begin(chipSelectPin)) die("SD Begin failed");
     return 0;
 }
-#endif
 
-#ifdef SPI_FFS
-bool isAnimationFile(String filenameString) {
-#else
 bool isAnimationFile(const char filename []) {
     String filenameString(filename);
-#endif
-
-#if defined(ESP32) || defined(ESP8266)
+#else
+    bool isAnimationFile(String filenameString) {
     // ESP32 filename includes the full path, so need to remove the path before looking at the filename
     int pathindex = filenameString.lastIndexOf("/");
     if(pathindex >= 0)
@@ -74,42 +73,27 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
     Serial.print("Enumerate files in dir ");
     Serial.println(directoryName);
 
-#ifdef SPI_FFS
-    #ifdef ESP32
-    // Oh boy, ESP32 SPIFFS does not even support directory objects...
-    // See https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_time/SPIFFS_time.ino
-	File dir = SPIFFS.open(directoryName);
-	while (File file = dir.openNextFile()) {
-	    String filename = file.name();
-	    if (isAnimationFile(filename)) {
-		numberOfFiles++;
-		if (displayFilenames) Serial.println(filename);
-	    }
+#ifdef ESP8266
+    // ESP8266 SPIFFS uses special directory objects
+    Dir dir = SPIFFS.openDir(directoryName);
+    while (dir.next()) {
+	String filename = dir.fileName();
+	if (isAnimationFile(filename)) {
+	    numberOfFiles++;
+	    if (displayFilenames) Serial.println(filename);
 	}
-    #else
-	Dir dir = SPIFFS.openDir(directoryName);
-	while (dir.next()) {
-	    String filename = dir.fileName();
-	    if (isAnimationFile(filename)) {
-		numberOfFiles++;
-		if (displayFilenames) Serial.println(filename);
-	    }
-	}
-    #endif
+    }
 #else
-    File directory = SD.open(directoryName);
-    if (!directory) return -1;
+    File directory = FSO.open(directoryName);
+    if (!directory) die("Can't open directory");
 
-    File file = directory.openNextFile();
-    while (file) {
+    while (File file = directory.openNextFile()) {
         if (isAnimationFile(file.name())) {
             numberOfFiles++;
             if (displayFilenames) Serial.println(file.name());
         }
         file.close();
-        file = directory.openNextFile();
     }
-    file.close();
     directory.close();
 #endif
 
@@ -122,9 +106,9 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
     // Make sure index is in range
     if ((index < 0) || (index >= numberOfFiles)) return;
 
-#ifdef SPI_FFS
+#ifndef FSOSD 
     #ifdef ESP32
-	File dir = SPIFFS.open(directoryName);
+	File dir = FSO.open(directoryName);
 	while (File file = dir.openNextFile()) {
 	    String filename = file.name();
 	    if (isAnimationFile(filename)) {
@@ -134,7 +118,7 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 	    if (!index) break;
 	}
     #else
-	Dir dir = SPIFFS.openDir(directoryName);
+	Dir dir = FSO.openDir(directoryName);
 	
 	while (dir.next() && index >= 0) {
 	    String filename = dir.fileName();
@@ -156,7 +140,8 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
             index--;
 
 #if !defined(ESP32)
-            // Copy the directory name into the pathname buffer - ESP32 SD Library includes the full path name in the filename, so no need to add the directory name
+            // Copy the directory name into the pathname buffer - 
+	    // ESP32 SD Library includes the full path name in the filename, so no need to add the directory name
             strcpy(pnBuffer, directoryName);
             // Append the filename to the pathname
             strcat(pnBuffer, filename);
@@ -185,20 +170,10 @@ int openGifFilenameByIndex(const char *directoryName, int index) {
     //Serial.print("Pathname: ");
     //Serial.println(pathname);
 
-    if (file)
-        file.close();
+    if (file) file.close();
 
     // Attempt to open the file for reading
-#ifdef SPI_FFS
-    file = SPIFFS.open(pathname, "r");
-#else
-    file = SD.open(pathname);
-#endif
-    if (!file) {
-        Serial.println("Error opening GIF file");
-        return -1;
-    }
-
+    if (! (file = FSO.open(pathname)) ) die ("Error opening GIF file");
     return 0;
 }
 
