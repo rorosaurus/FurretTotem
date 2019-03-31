@@ -144,7 +144,7 @@ void sav_setup() {
             if (!dir) die("Can't open  " GIF_DIRECTORY);
             if (!dir.isDirectory()) die( GIF_DIRECTORY ": not a directory");
         #else
-	    File dir = SPO.open("/");
+	    File dir = FSO.open("/");
         #endif
 	while (File file = dir.openNextFile()) {
 	    Serial.print("FS File: ");
