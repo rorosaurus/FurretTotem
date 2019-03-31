@@ -113,17 +113,14 @@ void setup() {
 #if ENABLE_SCROLLING == 1
         scrollingLayer.start("No gifs directory", -1);
 #endif
-        Serial.println("No gifs directory");
-	// while(1) trips the watchdog on ESP8266
-        delay(100000000);
+        die("No gifs directory");
     }
 
     if(!num_files) {
 #if ENABLE_SCROLLING == 1
         scrollingLayer.start("Empty gifs directory", -1);
 #endif
-        Serial.println("Empty gifs directory");
-        delay(100000000);
+        die("Empty gifs directory");
     }
     Serial.print("Index of files: 0 to ");
     Serial.println(num_files);
@@ -246,8 +243,7 @@ void loop() {
 
             decoder.startDecoding();
         } else {
-	    Serial.println("FATAL: failed to open file");
-	    delay(1000000);
+	    die("FATAL: failed to open file");
 	}
     }
 

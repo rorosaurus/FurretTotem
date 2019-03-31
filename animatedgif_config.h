@@ -60,13 +60,14 @@ extern int OFFSETY;
 
 // Note, you can use an sdcard on ESP32 or ESP8266 if you really want,
 // but if your data fits in built in flash, why not use it?
-// Use built in flash via SPIFFS
+// Use built in flash via SPIFFS/FATFS
 // esp8266com/esp8266/libraries/SD/src/File.cpp
 // ESP8266: http://esp8266.github.io/Arduino/versions/2.3.0/doc/filesystem.html#uploading-files-to-file-system
 // ESP32: https://github.com/me-no-dev/arduino-esp32fs-plugin
+// https://github.com/marcmerlin/esp32_fatfsimage/blob/master/README.md
 #if defined(ESP8266)
     #include <FS.h>
-    #define SPI_FFS
+    #define FSO SPIFFS
     #if matrix_size == 64
         #define GIF_DIRECTORY "/gifs64/"
     #else
@@ -76,8 +77,11 @@ extern int OFFSETY;
         #include "user_interface.h"
     }
 #elif defined(ESP32)
-    #include <SPIFFS.h>
-    #define SPI_FFS
+    //#include <SPIFFS.h>
+    //#define FSO SPIFFS
+    #include "FFat.h"
+    #define FSO FFat
+    #define FSOFAT
     // Do NOT add a trailing slash, or things will fail
     #if matrix_size == 64
         #define GIF_DIRECTORY "/gifs64"
@@ -85,6 +89,8 @@ extern int OFFSETY;
         #define GIF_DIRECTORY "/gifs"
     #endif
 #else
+    #define FSO SD
+    #define FSOSD
     #if defined (ARDUINO)
     #include <SD.h>
     #elif defined (SPARK)
