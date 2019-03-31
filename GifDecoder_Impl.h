@@ -27,6 +27,7 @@
  */
 
 #define GIFDEBUG 0
+#define tempBufferSz 260
 
 #if defined (ARDUINO)
 #include <Arduino.h>
@@ -336,7 +337,7 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::parseGraphicControlExten
 template <int maxGifWidth, int maxGifHeight, int lzwMaxBits>
 void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::parseApplicationExtension() {
 
-    memset(tempBuffer, 0, sizeof(tempBuffer));
+    memset(tempBuffer, 0, tempBufferSz);
 
 #if GIFDEBUG == 1 && DEBUG_PROCESSING_APP_EXT == 1
     Serial.println("\nProcessing Application Extension");
@@ -376,7 +377,7 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::parseCommentExtension() 
     uint8_t len = readByte();
     while (len != 0) {
         // Clear buffer
-        memset(tempBuffer, 0, sizeof(tempBuffer));
+        memset(tempBuffer, 0, tempBufferSz);
 
         // Read len bytes into buffer
         readIntoBuffer(tempBuffer, len);
@@ -707,7 +708,7 @@ int GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::startDecoding(void) {
 	imageData = (uint8_t *)	mallocordie("imageData", gifsize);
 	imageDataBU = (uint8_t *)	mallocordie("imageDataBU", gifsize);
 	palette = (rgb_24 *)		mallocordie("palette", sizeof(rgb_24)*256);
-	tempBuffer = (char *)		mallocordie("tempBuffer", 260);
+	tempBuffer = (char *)		mallocordie("tempBuffer", tempBufferSz);
 
         #ifdef ESP32
 	show_esp32_all_mem();
