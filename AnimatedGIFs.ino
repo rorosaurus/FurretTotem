@@ -80,6 +80,10 @@ int num_files;
 
 // Setup method runs once, when the sketch starts
 void setup() {
+#ifdef KINETISK
+    delay(6000);
+#endif
+    Serial.println("Starting AnimatedGIFs Sketch");
     sav_setup();
 
     // Seed the random number generator
@@ -99,10 +103,8 @@ void setup() {
 	Serial.println();
     #endif
     #if ENABLE_SCROLLING == 1
-	SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 	matrix.addLayer(&scrollingLayer); 
     #endif
-    Serial.println("Starting AnimatedGIFs Sketch");
 
     // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing
     // the SD card to avoid using up too much memory
