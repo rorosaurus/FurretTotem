@@ -139,7 +139,7 @@ private:
     uint16_t *prefix;
 
     // Masks for 0 .. 16 bits
-    unsigned int mask[17] = {
+    const unsigned int mask[17] = {
         0x0000, 0x0001, 0x0003, 0x0007,
         0x000F, 0x001F, 0x003F, 0x007F,
         0x00FF, 0x01FF, 0x03FF, 0x07FF,
