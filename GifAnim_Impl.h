@@ -128,8 +128,15 @@ void sav_setup() {
 
 #ifndef FSOSD
     // SPIFFS Begin (can crash/conflict with IRRemote on ESP32)
-    if (!FSO.begin()) die("FS mount failed");
-    Serial.println(" Directory listing:");
+    #ifdef FSOFAT
+        // Limit Fat support to a single concurrent file to save RAM
+	// 37248 KB are saved by using limiting to 1 file instead of 10
+        if (!FFat.begin(0, "", 1)) die("Fat FS mount failed. Not enough RAM?");
+	Serial.println("FatFS Directory listing:");
+    #else
+        if (!FSO.begin()) die("FS mount failed");
+	Serial.println("Directory listing:");
+    #endif
 
     // ESP32 SPIFFS uses special directory objects
     #ifdef ESP8266
