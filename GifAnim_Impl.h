@@ -148,8 +148,8 @@ void sav_setup() {
 	}
     #else
         #if defined(FSOFAT)
-            Serial.printf("Total space: %10lu\n", FFat.totalBytes());
-            Serial.printf("Free space: %10lu\n", FFat.freeBytes());
+            Serial.printf("Total space: %10u\n", FFat.totalBytes());
+            Serial.printf("Free space:  %10u\n", FFat.freeBytes());
             File dir = FFat.open(GIF_DIRECTORY);
             if (!dir) die("Can't open  " GIF_DIRECTORY);
             if (!dir.isDirectory()) die( GIF_DIRECTORY ": not a directory");
