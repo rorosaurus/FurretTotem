@@ -1,6 +1,9 @@
 #ifndef neomatrix_config_h
 #define neomatrix_config_h
 
+bool init_done = 0;
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
 #define M16BY16T4
 //#define NEOPIXEL_MATRIX
 #ifndef NEOPIXEL_MATRIX
@@ -54,6 +57,8 @@
 #include <FastLED.h>
 
 #ifdef LEDMATRIX
+// Please use https://github.com/marcmerlin/LEDMatrix/tree/ledmalloc for
+// zero copy/no malloc code to work.
 #include <LEDMatrix.h>
 #endif
 
@@ -63,7 +68,7 @@ uint8_t matrix_brightness = 255;
 #ifdef ESP32
 #pragma message "Compiling for ESP32 with 64x32 16 scan panel"
 const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
-const uint8_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
+const uint8_t MATRIX_TILE_HEIGHT= 96; // height of each matrix
 #elif defined(__MK66FX1M0__) // my teensy 3.6 is connected to a 64x64 panel
 #pragma message "Compiling for Teensy with 64x64 32 scan panel"
 const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;
@@ -85,7 +90,6 @@ const uint16_t NUMMATRIX = mw*mh;
 const uint16_t NUM_LEDS = NUMMATRIX; 
 const uint8_t MATRIX_HEIGHT = mh;
 const uint8_t MATRIX_WIDTH = mw;
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 /// SmartMatrix Defines
 #define COLOR_DEPTH 24         // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
@@ -102,27 +106,37 @@ SMARTMATRIX_ALLOCATE_BACKGROUND_LAYER(backgroundLayer, kMatrixWidth, kMatrixHeig
 #ifdef LEDMATRIX
 // cLEDMatrix defines 
 cLEDMatrix<MATRIX_TILE_WIDTH, -MATRIX_TILE_HEIGHT, HORIZONTAL_MATRIX,
-    MATRIX_TILE_H, MATRIX_TILE_V, HORIZONTAL_BLOCKS> ledmatrix;
+    MATRIX_TILE_H, MATRIX_TILE_V, HORIZONTAL_BLOCKS> ledmatrix(false);
 
 // cLEDMatrix creates a FastLED array inside its object and we need to retrieve
 // a pointer to its first element to act as a regular FastLED array, necessary
 // for NeoMatrix and other operations that may work directly on the array like FadeAll.
-CRGB *matrixleds = ledmatrix[0];
+//CRGB *matrixleds = ledmatrix[0];
 #else
-CRGB matrixleds[NUMMATRIX];
+//CRGB matrixleds[NUMMATRIX];
 #endif
+CRGB *matrixleds;
+
+void show_callback();
+SmartMatrix_GFX *matrix = new SmartMatrix_GFX(matrixleds, mw, mh, show_callback);
 
 // Sadly this callback function must be copied around with this init code
 void show_callback() {
-    memcpy(backgroundLayer.backBuffer(), matrixleds, kMatrixHeight*kMatrixWidth*3);
-    backgroundLayer.swapBuffers(false);
+//    memcpy(backgroundLayer.backBuffer(), matrixleds, kMatrixHeight*kMatrixWidth*3);
+//    backgroundLayer.swapBuffers(false);
+    backgroundLayer.swapBuffers(true);
+    //matrixleds = (CRGB *)backgroundLayer.getRealBackBuffer());
+    matrixleds = (CRGB *)backgroundLayer.backBuffer();
+    matrix->newLedsPtr(matrixleds);
+#ifdef LEDMATRIX
+    ledmatrix.SetLEDArray(matrixleds);
+#endif
 }
 
-SmartMatrix_GFX *matrix = new SmartMatrix_GFX(matrixleds, mw, mh, show_callback);
 
 //---------------------------------------------------------------------------- 
 #elif defined(M32B8X3)
-const uint8_t matrix_brightness = 64;
+uint8_t matrix_brightness = 64;
 // Used by LEDMatrix
 const uint8_t MATRIX_TILE_WIDTH = 8; // width of EACH NEOPIXEL MATRIX (not total display)
 const uint8_t MATRIX_TILE_HEIGHT= 32; // height of each matrix
@@ -138,7 +152,6 @@ const uint16_t NUMMATRIX = mw*mh;
 const uint16_t NUM_LEDS = NUMMATRIX; 
 const uint8_t MATRIX_HEIGHT = mh;
 const uint8_t MATRIX_WIDTH = mw;
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
 // cLEDMatrix defines 
@@ -189,7 +202,7 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH,
 
 //---------------------------------------------------------------------------- 
 #elif defined(M16BY16T4)
-const uint8_t matrix_brightness = 64;
+uint8_t matrix_brightness = 64;
 
 const uint8_t MATRIX_TILE_WIDTH = 16; // width of EACH NEOPIXEL MATRIX (not total display)
 const uint8_t MATRIX_TILE_HEIGHT= 16; // height of each matrix
@@ -205,7 +218,6 @@ const uint16_t NUMMATRIX = mw*mh;
 const uint16_t NUM_LEDS = NUMMATRIX; 
 const uint8_t MATRIX_HEIGHT = mh;
 const uint8_t MATRIX_WIDTH = mw;
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
 // cLEDMatrix defines 
@@ -235,7 +247,7 @@ const uint8_t MATRIXPIN = 13;
 //---------------------------------------------------------------------------- 
 #elif defined(M64BY64) // 64x64 straight connection (no matrices)
 // http://marc.merlins.org/perso/arduino/post_2018-07-30_Building-a-64x64-Neopixel-Neomatrix-_4096-pixels_-running-NeoMatrix-FastLED-IR.html
-const uint8_t matrix_brightness = 32;
+uint8_t matrix_brightness = 32;
 //
 // Used by LEDMatrix
 const uint8_t MATRIX_TILE_WIDTH = 64; // width of EACH NEOPIXEL MATRIX (not total display)
@@ -254,7 +266,6 @@ const uint16_t NUMMATRIX = mw*mh;
 const uint16_t NUM_LEDS = NUMMATRIX; 
 const uint8_t MATRIX_HEIGHT = mh;
 const uint8_t MATRIX_WIDTH = mw;
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 #ifdef LEDMATRIX
 // cLEDMatrix defines 
@@ -337,7 +348,6 @@ extern "C" {
 #define max(a,b) (a>b)?(a):(b)
 #endif // ESP8266
 
-
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 uint16_t speed = 255;
 
@@ -359,15 +369,23 @@ int wrapX(int x) {
 }
 
 
-void matrix_setup() {
+void matrix_setup(int reservemem = 40000) {
+    if (init_done) {
+	Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BUG: matrix_setup called twice");
+	return;
+    }
+    init_done = 1;
     Serial.begin(115200);
     Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Serial.begin");
     matrix_gamma = 2.4; // higher number is darker, needed for Neomatrix more than SmartMatrix
 #if defined(SMARTMATRIX)
     matrix_gamma = 1; // SmartMatrix should be good by default.
     matrixLayer.addLayer(&backgroundLayer); 
-    matrixLayer.begin();
-    matrixLayer.setBrightness(matrix_brightness);
+    // SmartMatrix takes all the RAM it can get its hands on. Get it to leave some
+    // free RAM so that other libraries can work too.
+    if (reservemem) matrixLayer.begin(reservemem); else matrixLayer.begin();
+    // This sets the neomatrix and LEDMatrix pointers
+    show_callback();
     matrixLayer.setRefreshRate(240);
     backgroundLayer.enableColorCorrection(true);
     Serial.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix GFX output, total LEDs: ");
@@ -377,7 +395,8 @@ void matrix_setup() {
 #ifndef DISABLE_MATRIX_TEST
     Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix Grey Demo");
     backgroundLayer.fillScreen( {0x80, 0x80, 0x80} );
-    backgroundLayer.swapBuffers();
+    // backgroundLayer.swapBuffers();
+    show_callback();
     delay(1000);
 #endif
 
@@ -439,18 +458,21 @@ void matrix_setup() {
         #endif // ESP32
     #endif // ESP32_16PINS
 #endif
-#if !defined(SMARTMATRIX)
+
+    Serial.print("Setting Brightness: ");
+    Serial.println(matrix_brightness);
+#if defined(SMARTMATRIX)
+    matrixLayer.setBrightness(matrix_brightness);
+#else
     FastLED.setBrightness(matrix_brightness);
 #endif
-    Serial.print("Brightness: ");
-    Serial.println(matrix_brightness);
     Serial.print("Gamma Correction: ");
     Serial.println(matrix_gamma);
-    // Gamma is used by AnimatedGIFs, as such:
+    // Gamma is used by AnimatedGIFs and others, as such:
     // CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
     matrix->precal_gamma(matrix_gamma);
 
-// LEDMatrix alignment is tricky, make sure things are aligned correctly
+// LEDMatrix alignment is tricky, this test helps make sure things are aligned correctly
 #ifndef DISABLE_MATRIX_TEST
 #ifdef LEDMATRIX
     ledmatrix.DrawLine (0, 0, ledmatrix.Width() - 1, ledmatrix.Height() - 1, CRGB(0, 255, 0));
@@ -471,4 +493,4 @@ void matrix_setup() {
     while(Serial.available() > 0) { char t = Serial.read(); t = t; }
 }
 
-#endif
+#endif // neomatrix_config_h
