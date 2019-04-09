@@ -69,6 +69,7 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
+#define NEOMATRIX
 #include "GifAnim_Impl.h"
 
 // If the matrix is a different size than the GIFs, allow panning through the GIF
