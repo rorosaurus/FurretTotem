@@ -7,6 +7,7 @@ Demo on 24x32 NeoMatrix:
 ![125_20180713_neomatrix_animatedgifs](https://user-images.githubusercontent.com/1369412/42703527-b27a5450-8681-11e8-82a9-d074e473848c.jpg)
 Demo on 64x64 SmartMatrix:
 ![144_20190409_RGBPanels_Diffusers](https://user-images.githubusercontent.com/1369412/55811945-df591280-5a9e-11e9-8546-520265b14e83.jpg)
+![104_20190409_RGBPanels_Diffusers](https://user-images.githubusercontent.com/1369412/55813849-5cd25200-5aa2-11e9-8c6c-7e22ae2a5a18.jpg)
 
 Configuration
 -------------
