@@ -1,7 +1,6 @@
-img.ffat: data/.built
+img.ffat: data/gifs64/*
 	# Get from https://github.com/marcmerlin/esp32_fatfsimage/
 	fatfsimage img.ffat 3004 data/
-	@touch data/.built
 
 flash:
 	# IF you aren't using a 1/3GB split, 0x111000 will need to be updated
