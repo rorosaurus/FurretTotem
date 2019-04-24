@@ -143,7 +143,7 @@ void sav_setup() {
 	Serial.println("Directory listing:");
     #endif
 
-    // ESP32 SPIFFS uses special directory objects
+    // ESP8266 SPIFFS uses special directory objects
     #ifdef ESP8266
 	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) {
@@ -182,7 +182,11 @@ void sav_setup() {
 bool sav_newgif(const char *pathname) {
     if (file) file.close();
     Serial.print(pathname);
+    #ifdef ESP8266
+    file = SPIFFS.open(pathname, "r");
+    #else
     file = FSO.open(pathname);
+    #endif
     if (!file) {
         Serial.println(": Error opening GIF file");
 	return 1;
