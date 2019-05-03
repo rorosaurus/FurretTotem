@@ -90,6 +90,11 @@ More details also on:
 http://marc.merlins.org/perso/arduino/post_2019-03-30_Using-FatFS-FFat-on-ESP32-Flash-With-Arduino.html
 
 
+Finding Animated GIFs
+---------------------
+look for "imagesize:64x64 michael jackson animated gif" on google, and click images tab.
+
+
 Original SmartMatrix support from https://github.com/pixelmatix/AnimatedGIFs
 ----------------------------------------------------------------------------
 This [SmartMatrix Library](http://docs.pixelmatix.com/SmartMatrix/index.html) example displays 32x32 GIF animations loaded from a SD Card connected to the Teensy 3.1 using the [SmartMatrix Shield](http://docs.pixelmatix.com/SmartMatrix/shieldref.html)
