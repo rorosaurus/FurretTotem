@@ -2,7 +2,11 @@
 #define animatedgif_config
 
 // control if we decode in 32x32 or 64x64, or something else
+#ifdef ESP8266
+#define matrix_size 32
+#else
 #define matrix_size 64
+#endif
 
 /* GifDecoder needs lzwMaxBits
  * The lzwMaxBits value of 12 supports all GIFs, but uses 16kB RAM
@@ -57,6 +61,8 @@ const int lzwMaxBits = 12;
 // (negative or positive is ok).
 extern int OFFSETX;
 extern int OFFSETY;
+extern int FACTX;
+extern int FACTY;
 
 // Note, you can use an sdcard on ESP32 or ESP8266 if you really want,
 // but if your data fits in built in flash, why not use it?

@@ -6,6 +6,8 @@
 // while displaying it, or bouncing it around if it's smaller than the display
 int OFFSETX = 0;
 int OFFSETY = 0;
+int FACTX = 0;
+int FACTY = 0;
 
 #ifdef ESP8266
 #include <FS.h>
