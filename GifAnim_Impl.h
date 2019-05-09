@@ -4,6 +4,7 @@
 #include "animatedgif_config.h"
 #endif
 
+// Use NeoMatrix backend? Defined in main ino that calls sav_loop
 #ifdef NEOMATRIX
 // select which NEOMATRIX config will be selected
     //#define M16BY16T4

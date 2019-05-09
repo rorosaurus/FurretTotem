@@ -22,7 +22,8 @@ const int lzwMaxBits = 12;
 #define FIRSTINDEX 0
 //#define DEBUGLINE 6
 
-// Use Neomatrix backend (which in turn could be using SmartMatrix)
+// Use Neomatrix API (which in turn could be using SmartMatrix driver)?
+// This is defined in main ino that calls sav_loop
 #ifdef NEOMATRIX
     // This doesn't work due to variables being redefined. Sigh...
     // instead it's included once from AnimatedGIFs.ino
