@@ -76,15 +76,20 @@
 // while displaying it, or bouncing it around if it's smaller than the display
 int OFFSETX = 0;
 int OFFSETY = 0;
-int FACTX = 0;
-int FACTY = 0;
+float FACTX = 0;
+float FACTY = 0;
 
 int num_files;
 
 // Setup method runs once, when the sketch starts
 void setup() {
+    // Wait before serial on teensy
 #ifdef KINETISK
     delay(6000);
+#endif
+#ifdef ESP8266
+    // 32x32 GIFs on 24x32 display, hence offset of -4
+    OFFSETX = -4;
 #endif
     Serial.println("Starting AnimatedGIFs Sketch");
     sav_setup();

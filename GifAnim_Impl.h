@@ -61,16 +61,20 @@ void updateScreenCallback(void) {
 
 void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t blue) {
 #ifdef NEOMATRIX
-  //CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
-  CRGB color = CRGB(red, green, blue);
-  if (FACTY == 1.5) {
+  CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
+  if (FACTX == 1.5 && FACTY == 1.5) {
+      matrix->drawPixel(x*1.5+0.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
+      if (x % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
+      if (y % 2 == 0) matrix->drawPixel(x*1.5+0.5+OFFSETX, y*1.5+1.5+OFFSETY, color);
+      if (x % 2 == 0 && y % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y*1.5+1.5+OFFSETY, color);
+  } else if (FACTY == 1.5) {
       matrix->drawPixel(x+OFFSETX, y*1.5+0.5+OFFSETY, color);
       if (y % 2 == 0) matrix->drawPixel(x+OFFSETX, y*1.5+1.5+OFFSETY, color);
   } else if (FACTX == 1.5) {
       matrix->drawPixel(x*1.5+0.5+OFFSETX, y+OFFSETY, color);
       if (x % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y+OFFSETY, color);
   } else {
-      matrix->drawPixel(x, y, color);
+      matrix->drawPixel(x+OFFSETX, y+OFFSETY, color);
   }
 #else
   backgroundLayer.drawPixel(x, y, {red, green, blue});

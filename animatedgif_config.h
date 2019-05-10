@@ -62,8 +62,8 @@ const int lzwMaxBits = 12;
 // (negative or positive is ok).
 extern int OFFSETX;
 extern int OFFSETY;
-extern int FACTX;
-extern int FACTY;
+extern float FACTX;
+extern float FACTY;
 
 // Note, you can use an sdcard on ESP32 or ESP8266 if you really want,
 // but if your data fits in built in flash, why not use it?
