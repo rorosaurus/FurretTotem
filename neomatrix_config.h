@@ -245,11 +245,7 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, MATRIX_TILE_WIDTH,
     NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG + 
     NEO_TILE_TOP + NEO_TILE_RIGHT +  NEO_TILE_PROGRESSIVE);
 
-#ifdef ESP8266
-const uint8_t MATRIXPIN = 5;
-#else
 const uint8_t MATRIXPIN = 13;
-#endif
 
 
 //---------------------------------------------------------------------------- 

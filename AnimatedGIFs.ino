@@ -90,6 +90,7 @@ void setup() {
 #ifdef ESP8266
     // 32x32 GIFs on 24x32 display, hence offset of -4
     OFFSETX = -4;
+    OFFSETY = 0;
 #endif
     Serial.println("Starting AnimatedGIFs Sketch");
     sav_setup();

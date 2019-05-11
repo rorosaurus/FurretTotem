@@ -41,7 +41,7 @@ void die(const char *mesg) {
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
  * defined in config.h
  */
-GifDecoder<kMatrixWidth, kMatrixHeight, lzwMaxBits> decoder;
+GifDecoder<gif_size, gif_size, lzwMaxBits> decoder;
 
 void screenClearCallback(void) {
 #ifdef NEOMATRIX
@@ -60,6 +60,21 @@ void updateScreenCallback(void) {
 }
 
 void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t blue) {
+#if DEBUGLINE
+  if (y == DEBUGLINE) {
+      Serial.print(x);
+      Serial.print(",");
+      Serial.print(y);
+      Serial.print(">");
+      Serial.print(red);
+      Serial.print(",");
+      Serial.print(green);
+      Serial.print(",");
+      Serial.print(blue);
+      Serial.println("");
+  }
+  if (y > DEBUGLINE) return;
+#endif
 #ifdef NEOMATRIX
   CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
   if (FACTX == 1.5 && FACTY == 1.5) {
@@ -78,20 +93,6 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
   }
 #else
   backgroundLayer.drawPixel(x, y, {red, green, blue});
-#endif
-#if DEBUGLINE
-  if (y == DEBUGLINE) {
-  Serial.print(x);
-  Serial.print(",");
-  Serial.print(y);
-  Serial.print(">");
-  Serial.print(red);
-  Serial.print(",");
-  Serial.print(green);
-  Serial.print(",");
-  Serial.print(blue);
-  Serial.println("");
-  }
 #endif
 }
 
