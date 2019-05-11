@@ -3,9 +3,9 @@
 
 // control if we decode in 32x32 or 64x64, or something else
 #ifdef ESP8266
-#define matrix_size 32
+#define gif_size 32
 #else
-#define matrix_size 64
+#define gif_size 64
 #endif
 
 /* GifDecoder needs lzwMaxBits
@@ -20,7 +20,7 @@ const int lzwMaxBits = 12;
 
 // if you want to display a file and display that one first
 #define FIRSTINDEX 0
-//#define DEBUGLINE 6
+//#define DEBUGLINE 16
 
 // Use Neomatrix API (which in turn could be using SmartMatrix driver)?
 // This is defined in main ino that calls sav_loop
@@ -45,8 +45,8 @@ const int lzwMaxBits = 12;
     // to a different value in neomatrix_config.h
     // range 0-255
     const int defaultBrightness = 255;
-    const uint8_t kMatrixWidth = matrix_size;        // known working: 32, 64, 96, 128
-    const uint8_t kMatrixHeight = matrix_size;       // known working: 16, 32, 48, 64
+    const uint8_t kMatrixWidth = gif_size;        // known working: 32, 64, 96, 128
+    const uint8_t kMatrixHeight = gif_size;       // known working: 16, 32, 48, 64
     /* SmartMatrix configuration and memory allocation */
     #define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
     const uint8_t kRefreshDepth = 24;       // known working: 24, 36, 48
@@ -75,7 +75,7 @@ extern float FACTY;
 #if defined(ESP8266)
     #include <FS.h>
     #define FSO SPIFFS
-    #if matrix_size == 64
+    #if gif_size == 64
         #define GIF_DIRECTORY "/gifs64/"
     #else
         #define GIF_DIRECTORY "/gifs/"
@@ -90,7 +90,7 @@ extern float FACTY;
     #define FSO FFat
     #define FSOFAT
     // Do NOT add a trailing slash, or things will fail
-    #if matrix_size == 64
+    #if gif_size == 64
         #define GIF_DIRECTORY "/gifs64"
     #else
         #define GIF_DIRECTORY "/gifs"
@@ -118,14 +118,14 @@ extern float FACTY;
     
     #if defined(ESP32)
         // ESP32 SD Library can't handle a trailing slash in the directory name
-        #if matrix_size == 64
+        #if gif_size == 64
             #define GIF_DIRECTORY "/gifs64"
         #else
             #define GIF_DIRECTORY "/gifs"
         #endif
     #else
         // Teensy SD Library requires a trailing slash in the directory name
-        #if matrix_size == 64
+        #if gif_size == 64
             #define GIF_DIRECTORY "/gifs64/"
         #else
             #define GIF_DIRECTORY "/gifs/"
