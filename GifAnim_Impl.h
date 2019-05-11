@@ -77,15 +77,15 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
 #endif
 #ifdef NEOMATRIX
   CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
-  if (FACTX == 1.5 && FACTY == 1.5) {
+  if (FACTX == 15 && FACTY == 15) {
       matrix->drawPixel(x*1.5+0.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
       if (x % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
       if (y % 2 == 0) matrix->drawPixel(x*1.5+0.5+OFFSETX, y*1.5+1.5+OFFSETY, color);
       if (x % 2 == 0 && y % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y*1.5+1.5+OFFSETY, color);
-  } else if (FACTY == 1.5) {
+  } else if (FACTY == 15) {
       matrix->drawPixel(x+OFFSETX, y*1.5+0.5+OFFSETY, color);
       if (y % 2 == 0) matrix->drawPixel(x+OFFSETX, y*1.5+1.5+OFFSETY, color);
-  } else if (FACTX == 1.5) {
+  } else if (FACTX == 15) {
       matrix->drawPixel(x*1.5+0.5+OFFSETX, y+OFFSETY, color);
       if (x % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y+OFFSETY, color);
   } else {
