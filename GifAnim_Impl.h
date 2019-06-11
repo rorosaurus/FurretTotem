@@ -60,6 +60,9 @@ void updateScreenCallback(void) {
 }
 
 void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t blue) {
+  red   = matrix->gamma[red];
+  green = matrix->gamma[green];
+  blue  = matrix->gamma[blue];
 #if DEBUGLINE
   if (y == DEBUGLINE) {
       Serial.print(x);
@@ -76,7 +79,7 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
   if (y > DEBUGLINE) return;
 #endif
 #ifdef NEOMATRIX
-  CRGB color = CRGB(matrix->gamma[red], matrix->gamma[green], matrix->gamma[blue]);
+  CRGB color = CRGB(red, green, blue);
   if (FACTX == 15 && FACTY == 15) {
       matrix->drawPixel(x*1.5+0.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
       if (x % 2 == 0) matrix->drawPixel(x*1.5+1.5+OFFSETX, y*1.5+0.5+OFFSETY, color);
