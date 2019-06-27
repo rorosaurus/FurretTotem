@@ -84,11 +84,11 @@ extern int FACTY;
         #include "user_interface.h"
     }
 #elif defined(ESP32)
-    //#include <SPIFFS.h>
-    //#define FSO SPIFFS
-    #include "FFat.h"
-    #define FSO FFat
-    #define FSOFAT
+    #include <SPIFFS.h>
+    #define FSO SPIFFS
+    //#include "FFat.h"
+    //#define FSO FFat
+    //#define FSOFAT
     // Do NOT add a trailing slash, or things will fail
     #if gif_size == 64
         #define GIF_DIRECTORY "/gifs64"
@@ -133,6 +133,6 @@ extern int FACTY;
     #endif
 #endif
 
-#define DISPLAY_TIME_SECONDS 10
+#define DISPLAY_TIME_SECONDS 1000
 #endif
 
