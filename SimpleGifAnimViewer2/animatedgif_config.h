@@ -1,1 +1,0 @@
-../animatedgif_config.h
