@@ -90,11 +90,7 @@ extern int FACTY;
     //#define FSO FFat
     //#define FSOFAT
     // Do NOT add a trailing slash, or things will fail
-    #if gif_size == 64
-        #define GIF_DIRECTORY "/gifs64"
-    #else
-        #define GIF_DIRECTORY "/gifs"
-    #endif
+    #define GIF_DIRECTORY "/gifs"
 #else
     #define FSO SD
     #define FSOSD
