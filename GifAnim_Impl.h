@@ -41,7 +41,7 @@ void die(const char *mesg) {
 /* template parameters are maxGifWidth, maxGifHeight, lzwMaxBits
  * defined in config.h
  */
-GifDecoder<gif_size, gif_size, lzwMaxBits> decoder;
+GifDecoder<128, 64, lzwMaxBits> decoder;
 
 void screenClearCallback(void) {
 #ifdef NEOMATRIX
@@ -127,7 +127,7 @@ void sav_setup() {
 	//matrix.setRefreshRate(90);
 	#if defined(ESP32)
 	    // for large panels on ESP32, may want to set the max percentage time dedicated to updating the refresh frames lower, to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly)
-	    //matrix.setMaxCalculationCpuPercentage(50);
+	    matrix.setMaxCalculationCpuPercentage(90);
 
 	    // alternatively, for large panels on ESP32, may want to set the calculation refresh rate divider lower to leave more CPU time to decoding GIFs (needed if GIFs are playing back slowly) - this has the same effect as matrix.setMaxCalculationCpuPercentage() but is set with a different parameter
 	    //matrix.setCalcRefreshRateDivider(4);
