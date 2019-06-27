@@ -199,9 +199,9 @@ void loop() {
 	Serial.println(clear);
 	break;
 
-    case '+': adjust_gamma(+0.2); break;
+    case '+': adjust_gamma(+0.05); break;
 
-    case '-': adjust_gamma(-0.2); break;
+    case '-': adjust_gamma(-0.05); break;
 
     // = allows staying on a single picture for up to 1H instead of a few seconds
     case '=':
