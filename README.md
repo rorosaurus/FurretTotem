@@ -43,15 +43,20 @@ CLK_PIN 22
 
 ## Power
 I butchered a USB cable to supply the 5V power to the panel via a battery bank.  At full brightness, this pulls about 2 amps.
-If I want to power this off a 5V/3A power bank, this gives me 15W to work with.  Minus ~1W for the ESP32, this leaves 14W for the panels.  For 2 panels, this leaves ~7W each, giving me a max brightness of ~165/255.
+If I want to power this off a single 5V/3A USB port , this gives me 15W to work with.  Minus ~1W for the ESP32, this leaves 14W for the panels.  For 2 panels, this leaves ~7W each, giving me a max brightness of ~165/255. That brightness is suitable for sunlight conditions, but the ability to go brighter would be better.  Maybe use 2 ports and split up the power distribution for each panel?
 
 Actual power measurements:
-````
-10/255 brightness, walking loop: ~1.5W
-25/255 brightness, walking loop: ~2W
-50/255 brightness, walking loop: 3W
-128/255 brightness, walking loop: 5.7W
-165/255 brightness, walking loop: 6.8W
-200/255 brightness, walking loop: 8.3W
-255/255 brightness, walking loop: 10W
-````
+
+ESP32 running basic-walk.gif: 0.9W
+
+1x LED panel running basic-walk.gif:
+
+Brightness | Power
+-----------|------
+10/255 | ~1.5W
+25/255 | ~2W
+50/255 | 3W
+128/255 | 5.7W
+165/255 | 6.8W
+200/255 | 8.3W
+255/255 | 10W
