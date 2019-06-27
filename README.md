@@ -46,11 +46,12 @@ Originally I was planning to power this off some 18650's, but I butchered a USB 
 
 If I want to power this off a single 5V/3A USB port , this gives me 15W to work with.  Minus ~1W for the ESP32, this leaves 14W for the panels.  For 2 panels, this leaves ~7W each, giving me a max brightness of ~165/255. That brightness is suitable for sunlight conditions, but the ability to go brighter would be better.  Maybe use 2 ports and split up the power distribution for each panel?
 
-Actual power measurements:
+### Actual power measurements:
 
-ESP32 running basic-walk.gif: 0.9W
+#### ESP32 running basic-walk.gif
+`0.9W`
 
-1x LED panel running basic-walk.gif:
+#### 1x LED panel running basic-walk.gif
 
 Brightness | Power
 -----------|------
