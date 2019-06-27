@@ -42,7 +42,8 @@ CLK_PIN 22
 ````
 
 ## Power
-I butchered a USB cable to supply the 5V power to the panel via a battery bank.  At full brightness, this pulls about 2 amps.
+Originally I was planning to power this off some 18650's, but I butchered a USB cable to supply the 5V power to the panel for testing, and I'm really enjoying how simple it is.  At full brightness, the panel pulls about 2 amps @ 5 volts.
+
 If I want to power this off a single 5V/3A USB port , this gives me 15W to work with.  Minus ~1W for the ESP32, this leaves 14W for the panels.  For 2 panels, this leaves ~7W each, giving me a max brightness of ~165/255. That brightness is suitable for sunlight conditions, but the ability to go brighter would be better.  Maybe use 2 ports and split up the power distribution for each panel?
 
 Actual power measurements:
