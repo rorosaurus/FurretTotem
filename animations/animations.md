@@ -4,6 +4,7 @@
   2. loop
   3. outro
 * allow transparent backgrounds (alpha layer) so we can change/generate the backgrounds
+* warning: SPIFFS filenames can't be too long...
 
 # Animation ideas
 
