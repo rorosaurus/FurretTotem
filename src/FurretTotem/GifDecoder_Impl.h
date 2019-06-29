@@ -834,10 +834,10 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
                 // not sure how else to draw the background yet, so hacking it in here...
 				if(drawPixelCallback) {
 					CHSV currentBackgroundColor = backgroundHSV;
-					currentBackgroundColor.hue += x+y;
+					currentBackgroundColor.hue += x;
 					CRGB thisPixelColor;
 					hsv2rgb_rainbow(currentBackgroundColor, thisPixelColor);
-					//thisPixelColor.setHue(currentBackgroundColor.hue);
+					//thisPixelColor.setHSV(currentBackgroundColor.hue, currentBackgroundColor.sat, currentBackgroundColor.val);
 					(*drawPixelCallback)(x, y, thisPixelColor.r, thisPixelColor.g, thisPixelColor.b);
 				}
 				continue;
@@ -848,7 +848,7 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
                 (*drawPixelCallback)(x, y, palette[pixel].red, palette[pixel].green, palette[pixel].blue);
         }
     }
-	backgroundHSV.hue += 7;
+	backgroundHSV.hue -= 9;
 
     // Make animation frame visible
     // swapBuffers() call can take up to 1/framerate seconds to return (it waits until a buffer copy is complete)
