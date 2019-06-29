@@ -831,7 +831,15 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
 
             // Check pixel transparency
             if (pixel == transparentColorIndex) {
-                continue;
+                // not sure how else to draw the background yet, so hacking it in here...
+				if(drawPixelCallback) {
+					CHSV currentBackgroundColor = backgroundHSV;
+					currentBackgroundColor.hue += x+y;
+					CRGB thisPixelColor;
+					thisPixelColor.setHue(currentBackgroundColor.hue);
+					(*drawPixelCallback)(x, y, thisPixelColor.r, thisPixelColor.g, thisPixelColor.b);
+				}
+				continue;
             }
 
             // Pixel not transparent so get color from palette and draw the pixel
@@ -839,6 +847,8 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
                 (*drawPixelCallback)(x, y, palette[pixel].red, palette[pixel].green, palette[pixel].blue);
         }
     }
+	backgroundHSV.hue += 7;
+
     // Make animation frame visible
     // swapBuffers() call can take up to 1/framerate seconds to return (it waits until a buffer copy is complete)
     // note the time before calling
