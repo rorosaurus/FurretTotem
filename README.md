@@ -6,13 +6,14 @@
 ## Special Thanks
 * [@alex_illustrat](https://twitter.com/alex_illustrat) - who [originally created the 8bit pixel art for Furret Walking](https://www.youtube.com/watch?v=ylnLUMmBNKc). See more of his work on [ArtStation](https://alexillustration.artstation.com/)!
 * [narpy](https://www.youtube.com/channel/UCKYFHftFxQOJghmrEaK32sg) - for [starting the most adorable, wholesome, meme](https://www.youtube.com/watch?v=xa1Zn6XrDlM)
-* Sprite_tm, Craig A. Lindley, Louis Beaudoin, and Marc MERLIN
+* Sprite_tm, Craig A. Lindley, Louis Beaudoin, and Marc MERLIN - for the below libraries and helpful forum posts :)
 
 ## Software
 This project was built on top of so many incredible libraries:
 * https://github.com/espressif/arduino-esp32
 * https://github.com/pixelmatix/SmartMatrix/tree/teensylc
 * https://github.com/marcmerlin/AnimatedGIFs
+* https://github.com/me-no-dev/arduino-esp32fs-plugin
 
 ## Hardware
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
