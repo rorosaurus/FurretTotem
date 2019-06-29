@@ -97,6 +97,9 @@ private:
     int colorCount;
     rgb_24 *palette;
 
+    // actual background color state
+    CHSV backgroundHSV = CHSV(0,255,255);
+
     char *tempBuffer;
 
     // Buffer image data is decoded into
