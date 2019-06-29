@@ -836,7 +836,8 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
 					CHSV currentBackgroundColor = backgroundHSV;
 					currentBackgroundColor.hue += x+y;
 					CRGB thisPixelColor;
-					thisPixelColor.setHue(currentBackgroundColor.hue);
+					hsv2rgb_rainbow(currentBackgroundColor, thisPixelColor);
+					//thisPixelColor.setHue(currentBackgroundColor.hue);
 					(*drawPixelCallback)(x, y, thisPixelColor.r, thisPixelColor.g, thisPixelColor.b);
 				}
 				continue;
