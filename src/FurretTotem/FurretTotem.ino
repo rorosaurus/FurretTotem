@@ -69,6 +69,7 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
+#define DISABLE_MATRIX_TEST
 #define NEOMATRIX
 #include "GifAnim_Impl.h"
 
