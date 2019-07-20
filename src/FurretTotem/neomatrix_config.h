@@ -546,7 +546,7 @@ void matrix_setup(int reservemem = 40000) {
     Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Serial.begin");
     matrix_gamma = 2.4; // higher number is darker, needed for Neomatrix more than SmartMatrix
 #if defined(SMARTMATRIX)
-    matrix_gamma = 1.05; // SmartMatrix should be good by default.
+    matrix_gamma = 1.90; // SmartMatrix isn't good by default and color correction is the bane of my existence.
     matrixLayer.addLayer(&backgroundLayer); 
     // SmartMatrix takes all the RAM it can get its hands on. Get it to leave some
     // free RAM so that other libraries can work too.
@@ -558,7 +558,7 @@ void matrix_setup(int reservemem = 40000) {
     // This sets the neomatrix and LEDMatrix pointers
     show_callback();
     matrixLayer.setRefreshRate(240);
-    backgroundLayer.enableColorCorrection(true);
+    backgroundLayer.enableColorCorrection(false);
     Serial.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SmartMatrix GFX output, total LEDs: ");
     Serial.println(NUMMATRIX);
     delay(1000);
