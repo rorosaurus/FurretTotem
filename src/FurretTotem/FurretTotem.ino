@@ -80,6 +80,8 @@ int OFFSETY = 0;
 int FACTX = 0;
 int FACTY = 0;
 
+float smoothPotVal;
+
 int num_files;
 
 // Setup method runs once, when the sketch starts
@@ -260,6 +262,20 @@ void loop() {
     }
 
     if (clear) screenClearCallback();
+    
+    // adjust brightness
+    int potVal = analogRead(33);  
+    int rawBrightness = map (potVal, 0, 4095, 10, 210);
+    Serial.print("rawBrightness = ");
+    Serial.println(rawBrightness);
+
+    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
+    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
+    Serial.print("smoothBrightness = ");
+    Serial.println(smoothBrightness);
+    matrixLayer.setBrightness(smoothBrightness);
+
+    // decode the gif
     decoder.decodeFrame();
     frame++;
     if (debugframe) {
