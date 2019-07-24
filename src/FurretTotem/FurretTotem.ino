@@ -207,11 +207,11 @@ void loop() {
     case '-': adjust_gamma(-0.05); break;
 
     // = allows staying on a single picture for up to 1H instead of a few seconds
-    case '=':
-	longer = longer?0:3600;
-	Serial.print("Image display time: "); 
-	Serial.println(longer + DISPLAY_TIME_SECONDS); 
-	break;
+//    case '=':
+//	longer = longer?0:3600;
+//	Serial.print("Image display time: "); 
+//	Serial.println(longer + DISPLAY_TIME_SECONDS); 
+//	break;
 
     default:
 	// BUG: this does not work for index '0', just type '1', and 'p'
@@ -237,10 +237,10 @@ void loop() {
 	if (! gotnf) return;
     }
 
-    if (millis() - lastTime > ((DISPLAY_TIME_SECONDS + longer) * 1000)) {
-	new_file = 1;
-	index++;
-    }
+//    if (millis() - lastTime > ((DISPLAY_TIME_SECONDS + longer) * 1000)) {
+//	new_file = 1;
+//	index++;
+//    }
 
     if (new_file) { 
 	frame = 0;
