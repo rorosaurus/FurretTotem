@@ -71,6 +71,11 @@
 
 #define DISABLE_MATRIX_TEST
 #define NEOMATRIX
+
+#define POT_PIN 33
+#define BUTTON_PIN 0
+#define BUBBLE_PIN 32
+
 #include "GifAnim_Impl.h"
 
 // If the matrix is a different size than the GIFs, allow panning through the GIF
@@ -84,8 +89,13 @@ float smoothPotVal;
 
 int num_files;
 
+bool buttonState = false;
+bool prevButtonState = false;
+
 // Setup method runs once, when the sketch starts
 void setup() {
+    pinMode(BUTTON_PIN, INPUT);
+  
     // Wait before serial on teensy
 #ifdef KINETISK
     delay(6000);
@@ -206,13 +216,6 @@ void loop() {
 
     case '-': adjust_gamma(-0.05); break;
 
-    // = allows staying on a single picture for up to 1H instead of a few seconds
-//    case '=':
-//	longer = longer?0:3600;
-//	Serial.print("Image display time: "); 
-//	Serial.println(longer + DISPLAY_TIME_SECONDS); 
-//	break;
-
     default:
 	// BUG: this does not work for index '0', just type '1', and 'p'
 	if (readchar) {
@@ -237,10 +240,15 @@ void loop() {
 	if (! gotnf) return;
     }
 
-//    if (millis() - lastTime > ((DISPLAY_TIME_SECONDS + longer) * 1000)) {
-//	new_file = 1;
-//	index++;
-//    }
+  // use button to move to next animation
+  // button is connected between BUTTON_PIN and GND
+  buttonState = digitalRead(BUTTON_PIN);
+//  Serial.println(buttonState);
+  if (prevButtonState == true && buttonState == false) {
+    new_file = 1;
+    index++;
+  }
+  prevButtonState = buttonState;
 
     if (new_file) { 
 	frame = 0;
@@ -264,15 +272,15 @@ void loop() {
     if (clear) screenClearCallback();
     
     // adjust brightness
-    int potVal = analogRead(33);  
+    int potVal = analogRead(POT_PIN);  
     int rawBrightness = map (potVal, 0, 4095, 10, 210);
-    Serial.print("rawBrightness = ");
-    Serial.println(rawBrightness);
+//    Serial.print("rawBrightness = ");
+//    Serial.println(rawBrightness);
 
     smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
     int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
-    Serial.print("smoothBrightness = ");
-    Serial.println(smoothBrightness);
+//    Serial.print("smoothBrightness = ");
+//    Serial.println(smoothBrightness);
     matrixLayer.setBrightness(smoothBrightness);
 
     // decode the gif
