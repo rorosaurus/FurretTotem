@@ -74,7 +74,7 @@
 
 #define POT_PIN 33
 #define BUTTON_PIN 0
-#define BUBBLE_PIN 32
+#define BUBBLE_PIN 23
 
 #include "GifAnim_Impl.h"
 
@@ -85,16 +85,22 @@ int OFFSETY = 0;
 int FACTX = 0;
 int FACTY = 0;
 
+// keep track of the animation we were on before bubbles started
+int oldIndex = 1;
+
 float smoothPotVal;
 
 int num_files;
 
 bool buttonState = false;
 bool prevButtonState = false;
+bool bubbleState = false;
+bool prevBubbleState = false;
 
 // Setup method runs once, when the sketch starts
 void setup() {
     pinMode(BUTTON_PIN, INPUT);
+    pinMode(BUBBLE_PIN, INPUT);
   
     // Wait before serial on teensy
 #ifdef KINETISK
@@ -164,6 +170,14 @@ void adjust_gamma(float change) {
 #else
     Serial.println("Gamma changing not supported in SmartMatrix lib"); 
 #endif
+}
+
+void adjust_brightness() {
+    int potVal = analogRead(POT_PIN);  
+    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
+    
+    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
+    matrixLayer.setBrightness(smoothBrightness);
 }
 
 void loop() {
@@ -240,16 +254,31 @@ void loop() {
 	if (! gotnf) return;
     }
 
-  // use button to move to next animation
-  // button is connected between BUTTON_PIN and GND
-  buttonState = digitalRead(BUTTON_PIN);
-//  Serial.println(buttonState);
-  if (prevButtonState == true && buttonState == false) {
+  // is it time for bubbles?
+  bubbleState = digitalRead(BUBBLE_PIN);
+  Serial.print("bubbleState: ");
+  Serial.println(bubbleState);
+  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
     new_file = 1;
-    index++;
+    oldIndex = index;
+    index = 0;
   }
-  prevButtonState = buttonState;
+  else if (bubbleState == false && prevBubbleState == true) { // go back to the old animation
+    new_file = 1;
+    index = oldIndex;
+  }
+  prevBubbleState = bubbleState;
 
+  // use main button to trigger move to next animation
+  if (!bubbleState) { // (if we aren't holding the bubble button)
+    buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
+    if (prevButtonState == true && buttonState == false) {
+      new_file = 1;
+      index++;
+    }
+    prevButtonState = buttonState;
+  }
+  
     if (new_file) { 
 	frame = 0;
 	new_file = 0;
@@ -270,18 +299,8 @@ void loop() {
     }
 
     if (clear) screenClearCallback();
-    
-    // adjust brightness
-    int potVal = analogRead(POT_PIN);  
-    int rawBrightness = map (potVal, 0, 4095, 10, 210);
-//    Serial.print("rawBrightness = ");
-//    Serial.println(rawBrightness);
 
-    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
-    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
-//    Serial.print("smoothBrightness = ");
-//    Serial.println(smoothBrightness);
-    matrixLayer.setBrightness(smoothBrightness);
+    adjust_brightness();
 
     // decode the gif
     decoder.decodeFrame();
