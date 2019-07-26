@@ -74,7 +74,7 @@
 
 #define POT_PIN 33
 #define BUTTON_PIN 0
-#define BUBBLE_PIN 23
+#define BUBBLE_PIN 35
 
 #include "GifAnim_Impl.h"
 
@@ -255,7 +255,10 @@ void loop() {
     }
 
   // is it time for bubbles?
-  bubbleState = digitalRead(BUBBLE_PIN);
+  int bubbleVal = analogRead(BUBBLE_PIN);
+  Serial.print("bubbleVal: ");
+  Serial.println(bubbleVal);
+  bubbleState = bubbleVal > 1500;
   Serial.print("bubbleState: ");
   Serial.println(bubbleState);
   if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
