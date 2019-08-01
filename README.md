@@ -10,7 +10,8 @@
 ## Special Thanks
 * [@alex_illustrat](https://twitter.com/alex_illustrat) - who [originally created the 8bit pixel art for Furret Walking](https://www.youtube.com/watch?v=ylnLUMmBNKc). See more of his work on [ArtStation](https://alexillustration.artstation.com/)!
 * [narpy](https://www.youtube.com/channel/UCKYFHftFxQOJghmrEaK32sg) - for [starting the most adorable, wholesome, meme](https://www.youtube.com/watch?v=xa1Zn6XrDlM)
-* Sprite_tm, Craig A. Lindley, Louis Beaudoin, and Marc MERLIN - for the below libraries and helpful forum posts :)
+* Sprite_tm, Craig A. Lindley, Louis Beaudoin, and Marc Merlin - for the below libraries and helpful forum posts :)
+* [bigclive](https://www.youtube.com/channel/UCtM5z2gkrGRuWd0JQMx76qA) for showing me the [perfect bubble blowing mechanism](https://www.youtube.com/watch?v=BvQtl3ciGcA)!
 
 ## Software
 This project was built on top of so many incredible libraries:
@@ -22,6 +23,7 @@ This project was built on top of so many incredible libraries:
 ## Hardware
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
 * ESP32 from [Amazon](https://smile.amazon.com/gp/product/B0718T232Z/), any variant should work as long as you have all the required pins listed below
+* Bubble machine extracted from children's bubble wand toy, purchased on [eBay](https://www.ebay.com/itm/332880742452)
 
 ## Pins
 Using `ESP32_FORUM_PINOUT` from [MatrixHardware_ESP32_V0.h](https://github.com/pixelmatix/SmartMatrix/blob/teensylc/src/MatrixHardware_ESP32_V0.h)
@@ -54,7 +56,10 @@ If I want to power this off a single 5V/3A USB port , this gives me 15W to work 
 ### Actual power measurements:
 
 #### ESP32 running basic-walk.gif
-`0.9W`
+`1W`
+
+#### Bubble machine running @ 5V
+`1.5-4W`
 
 #### 1x LED panel running basic-walk.gif
 
