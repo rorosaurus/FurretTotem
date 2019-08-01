@@ -1,7 +1,11 @@
-128x64 LED Panel powered by ESP32
+128x64 LED Panel, playing Animated GIFs, powered by an ESP32
 ==================================
 
 ![Furret Walking](demo.gif)
+
+[YouTube - Furret's debut at Above and Beyond: Group Therapy Weekender 2019](https://www.youtube.com/watch?v=Q7uGj0VHFyQ)
+
+[YouTube - Demo of v1.0 Animations](https://www.youtube.com/watch?v=LR-oUCg1d9I)
 
 ## Special Thanks
 * [@alex_illustrat](https://twitter.com/alex_illustrat) - who [originally created the 8bit pixel art for Furret Walking](https://www.youtube.com/watch?v=ylnLUMmBNKc). See more of his work on [ArtStation](https://alexillustration.artstation.com/)!
