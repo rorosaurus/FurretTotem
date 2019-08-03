@@ -13,8 +13,6 @@
 
 * Furret eats a berry and then his eyes change (ditto or dilated pupils?) and he grows a smile
 * pulsing heart emoji eyes
-* transparent (rainbow) pupils
 * the worm?
 * ditto furret face
 * additional crops for furret walking video
-* 3rd eye
