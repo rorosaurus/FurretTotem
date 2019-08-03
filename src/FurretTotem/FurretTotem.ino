@@ -256,11 +256,11 @@ void loop() {
 
   // is it time for bubbles?
   int bubbleVal = analogRead(BUBBLE_PIN);
-  Serial.print("bubbleVal: ");
-  Serial.println(bubbleVal);
+//  Serial.print("bubbleVal: ");
+//  Serial.println(bubbleVal);
   bubbleState = bubbleVal > 1500;
-  Serial.print("bubbleState: ");
-  Serial.println(bubbleState);
+//  Serial.print("bubbleState: ");
+//  Serial.println(bubbleState);
   if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
     new_file = 1;
     oldIndex = index;
