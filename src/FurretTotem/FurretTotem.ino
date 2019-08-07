@@ -91,6 +91,7 @@ int oldIndex = 1;
 float smoothPotVal;
 
 int num_files;
+std::string currentFilename;
 
 bool buttonState = false;
 bool prevButtonState = false;

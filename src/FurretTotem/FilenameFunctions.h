@@ -5,6 +5,7 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames);
 void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer);
 int openGifFilenameByIndex(const char *directoryName, int index);
 int initSdCard(int chipSelectPin);
+extern std::string currentFilename;
 
 bool fileSeekCallback(unsigned long position);
 unsigned long filePositionCallback(void);

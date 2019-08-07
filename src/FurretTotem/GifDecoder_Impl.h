@@ -94,7 +94,7 @@
 #define DISPOSAL_BACKGROUND 2
 #define DISPOSAL_RESTORE    3
 
-
+extern std::string currentFilename;
 
 template <int maxGifWidth, int maxGifHeight, int lzwMaxBits>
 void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::setStartDrawingCallback(callback f) {
@@ -828,12 +828,18 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
         for (int x = tbiImageX; x < tbiWidth + tbiImageX; x++) {
             // Get the next pixel
             pixel = imageData[yOffset + x];
-
+Serial.println(currentFilename.c_str());
             // Check pixel transparency
             if (pixel == transparentColorIndex) {
                 // not sure how else to draw the background yet, so hacking it in here...
+      					//if (strcmp(currentFilename, "/gifs/crop-1.gif") == 0){
+                
+                if (currentFilename == "/gifs/crop-1.gif"){
+                  
+                  Serial.println("yay");
+      					}
       					CHSV currentBackgroundColor = backgroundHSV;
-      					currentBackgroundColor.hue += x/2;
+      					currentBackgroundColor.hue += y;
       					CRGB thisPixelColor;
       					hsv2rgb_rainbow(currentBackgroundColor, thisPixelColor);
       					//thisPixelColor.setHSV(currentBackgroundColor.hue, currentBackgroundColor.sat, currentBackgroundColor.val);
@@ -852,7 +858,7 @@ void GifDecoder<maxGifWidth, maxGifHeight, lzwMaxBits>::decompressAndDisplayFram
     // Make animation frame visible
     // swapBuffers() call can take up to 1/framerate seconds to return (it waits until a buffer copy is complete)
     // note the time before calling
-
+//Serial.println(currentFilename);
     // wait until time to display next frame
     while(nextFrameTime_ms > millis());
 

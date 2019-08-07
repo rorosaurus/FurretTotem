@@ -6,6 +6,7 @@
  * Largely reworked by Marc MERLIN <marc_soft@merlins.org> to support SPIFFS and FatFS
  */
 #include "animatedgif_config.h"
+#include "FilenameFunctions.h"
 
 File file;
 
@@ -158,6 +159,8 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 
     Serial.print("Selected file ");
     Serial.println(pnBuffer);
+    currentFilename = pnBuffer;
+//    strcpy(currentFilename, pnBuffer);
     file.close();
 }
 
