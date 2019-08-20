@@ -78,7 +78,7 @@ bool init_done = 0;
 #endif
 
 #if defined(SMARTMATRIX)
-uint8_t matrix_brightness = 10;
+uint8_t matrix_brightness = 128;
 
 #ifdef ESP32
 #pragma message "Compiling for ESP32 with 64x32 16 scan panel"
