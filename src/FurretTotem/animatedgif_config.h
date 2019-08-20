@@ -129,6 +129,6 @@ extern int FACTY;
     #endif
 #endif
 
-#define DISPLAY_TIME_SECONDS 1000
+#define DISPLAY_TIME_SECONDS 60
 #endif
 
