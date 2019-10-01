@@ -4,8 +4,11 @@
 ![Furret Walking](demo.gif)
 
 ## About
+
 Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable!
+
 The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
+
 The original pixel art animation was done by the extremely talented [@alex_illustrat](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
 
 ## Social
