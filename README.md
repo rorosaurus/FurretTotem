@@ -1,6 +1,6 @@
 Furret Totem
 ==================================
-Featuring two 128x64 LED Panels looping animated gifs. Powered by an ESP32.
+Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
 
 ![Furret Walking](demo.gif)
 
