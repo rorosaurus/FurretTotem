@@ -1,4 +1,4 @@
-128x64 LED Panels, looping .GIFs, powered by an ESP32
+128x64 LED Panels, looping animated .gifs, powered by an ESP32
 ==================================
 
 ![Furret Walking](demo.gif)
@@ -9,17 +9,17 @@ Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable!
 
 The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
 
-The original pixel art animation was done by the extremely talented [@alex_illustrat](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
+The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
 
 ## Social
 
-[@ravefurret](https://www.instagram.com/ravefurret/) on Instagram!  Share your pics and videos with us!
+* [@ravefurret](https://www.instagram.com/ravefurret/) on Instagram!  Share your pics and videos with us!
+* [ravefurret.com](ravefurret.com) redirects to the Github page, with all the code and technical information!
 
 ## Videos
 
-[YouTube - Furret's debut at Above and Beyond: Group Therapy Weekender 2019](https://www.youtube.com/watch?v=Q7uGj0VHFyQ)
-
-[YouTube - Demo of v1.0 Animations](https://www.youtube.com/watch?v=LR-oUCg1d9I)
+* [YouTube - Furret's debut at Above and Beyond: Group Therapy Weekender 2019](https://www.youtube.com/watch?v=Q7uGj0VHFyQ)
+* [YouTube - Demo of v1.0 Animations](https://www.youtube.com/watch?v=LR-oUCg1d9I)
 
 ## Special Thanks
 * [@alex_illustrat](https://twitter.com/alex_illustrat) - who [originally created the 8bit pixel art for Furret Walking](https://www.youtube.com/watch?v=ylnLUMmBNKc). See more of his work on [ArtStation](https://alexillustration.artstation.com/)!
