@@ -1,5 +1,6 @@
-128x64 LED Panels, looping animated .gifs, powered by an ESP32
+Furret Totem
 ==================================
+Featuring two 128x64 LED Panels looping animated gifs. Powered by an ESP32.
 
 ![Furret Walking](demo.gif)
 
