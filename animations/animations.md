@@ -1,5 +1,5 @@
 # Finalized animations
-Some of these have transparent backgrounds, which are usually filled with moving rainbow gradients on the real totem.
+Some of these have transparent backgrounds, which only show up as white here. Usually this transparency is filled with moving rainbow gradients on the real totem.
 
 ![3rd-eye-blink](finalized/3rd-eye-blink.gif)
 ![8bit-double](finalized/8bit-double.gif)
@@ -42,16 +42,18 @@ Some of these have transparent backgrounds, which are usually filled with moving
 ![walkoff-walkon-upsidedown](finalized/walkoff-walkon-upsidedown.gif)
 ![walkoff-walkon](finalized/walkoff-walkon.gif)
 
-# Design
+# Limitations
+* SPIFFS filenames can't be too long, or files will not upload.
+* Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
+* Short looped animations: due to memory constraints on ESP32 with 128x64px, use < 20 frames total (or is it < 20kB filesize?)
+
+# Desired design
 * Allow every animation to have 3 phases: 1 and 3 are optional and play once.  2 loops as long as needed.
   1. intro
   2. loop
   3. outro
   
 * transparent backgrounds (alpha layer) are allowed so we can change/generate the backgrounds
-* warning: SPIFFS filenames can't be too long...
-* warning: use < 32 colors
-* warning: use < 20 frames total (or is it < 20kB filesize?)
 
 # Animation ideas
 
@@ -59,3 +61,4 @@ Some of these have transparent backgrounds, which are usually filled with moving
 * the worm?
 * ditto furret face
 * additional crops for furret walking video
+* add a microphone and do beat analysis.  adjust frame delay until furret walking lines up with the beat.
