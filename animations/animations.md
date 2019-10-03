@@ -7,7 +7,7 @@
 * transparent backgrounds (alpha layer) are allowed so we can change/generate the backgrounds
 * warning: SPIFFS filenames can't be too long...
 * warning: use < 32 colors
-* warning: use < 20 frames total
+* warning: use < 20 frames total (or is it < 20kB filesize?)
 
 # Animation ideas
 
