@@ -1,4 +1,7 @@
 # Finalized animations
+
+The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
+
 Some of these have transparent backgrounds, which only show up as white here. Usually this transparency is filled with moving rainbow gradients on the real totem.
 
 ![3rd-eye-blink](finalized/3rd-eye-blink.gif)
