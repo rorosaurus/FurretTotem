@@ -6,7 +6,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
 
 ## FAQ
 
-Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable!
+Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable! You can see [all the animations here](animations/animations.md)!
 
 The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
 
