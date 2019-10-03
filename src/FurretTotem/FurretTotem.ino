@@ -100,8 +100,7 @@ bool prevBubbleState = false;
 // Setup method runs once, when the sketch starts
 void setup() {
     pinMode(BUTTON_PIN, INPUT);
-    pinMode(POT_PIN, INPUT);
-    pinMode(BUBBLE_PIN, INPUT);   
+    pinMode(BUBBLE_PIN, INPUT);
   
     // Wait before serial on teensy
 #ifdef KINETISK
@@ -174,11 +173,11 @@ void adjust_gamma(float change) {
 }
 
 void adjust_brightness() {
-//    int potVal = analogRead(POT_PIN); 
-//    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
-//    
-//    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
-//    matrixLayer.setBrightness(smoothBrightness);
+    int potVal = analogRead(POT_PIN);  
+    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
+    
+    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
+    matrixLayer.setBrightness(smoothBrightness);
 }
 
 void loop() {
@@ -262,22 +261,21 @@ void loop() {
   bubbleState = bubbleVal > 1500;
 //  Serial.print("bubbleState: ");
 //  Serial.println(bubbleState);
-//  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
-//    new_file = 1;
-//    oldIndex = index;
-//    index = 0;
-//  }
-//  else if (bubbleState == false && prevBubbleState == true) { // go back to the old animation
-//    new_file = 1;
-//    index = oldIndex;
-//  }
+  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
+    new_file = 1;
+    oldIndex = index;
+    index = 0;
+  }
+  else if (bubbleState == false && prevBubbleState == true) { // go back to the old animation
+    new_file = 1;
+    index = oldIndex;
+  }
   prevBubbleState = bubbleState;
 
   // use main button to trigger move to next animation
   if (!bubbleState) { // (if we aren't holding the bubble button)
     buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
-    if (prevButtonState == true && buttonState == false ||
-        (millis() - lastTime > ((DISPLAY_TIME_SECONDS + longer) * 1000))) {
+    if (prevButtonState == true && buttonState == false) {
       new_file = 1;
       index++;
     }
