@@ -72,9 +72,8 @@
 #define DISABLE_MATRIX_TEST
 #define NEOMATRIX
 
-#define POT_PIN 33
-#define BUTTON_PIN 0
-#define BUBBLE_PIN 35
+#define POT_PIN 33 // other pot pins go to GND and 3.3V
+#define BUTTON_PIN 35 // other button pin goes to GND
 
 #include "GifAnim_Impl.h"
 
@@ -92,15 +91,16 @@ float smoothPotVal;
 
 int num_files;
 
-bool buttonState = false;
-bool prevButtonState = false;
-bool bubbleState = false;
-bool prevBubbleState = false;
+//bool buttonState = false;
+bool prevButtonState = true;
+//bool bubbleState = false;
+//bool prevBubbleState = false;
+
+int lowestButtonVal = 5000;
 
 // Setup method runs once, when the sketch starts
 void setup() {
     pinMode(BUTTON_PIN, INPUT);
-    pinMode(BUBBLE_PIN, INPUT);
   
     // Wait before serial on teensy
 #ifdef KINETISK
@@ -174,7 +174,11 @@ void adjust_gamma(float change) {
 
 void adjust_brightness() {
     int potVal = analogRead(POT_PIN);  
+//    Serial.print("potVal = ");
+//    Serial.println(potVal);
     smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
+//    Serial.print("smoothPotVal = ");
+//    Serial.println(smoothPotVal);
     
     int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
     matrixLayer.setBrightness(smoothBrightness);
@@ -255,32 +259,53 @@ void loop() {
     }
 
   // is it time for bubbles?
-  int bubbleVal = analogRead(BUBBLE_PIN);
+  //int bubbleVal = analogRead(BUBBLE_PIN);
 //  Serial.print("bubbleVal: ");
 //  Serial.println(bubbleVal);
-  bubbleState = bubbleVal > 1500;
+//  bubbleState = false;
 //  Serial.print("bubbleState: ");
 //  Serial.println(bubbleState);
-  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles animation!
-    new_file = 1;
-    oldIndex = index;
-    index = 0;
-  }
-  else if (bubbleState == false && prevBubbleState == true) { // go back to the old animation
-    new_file = 1;
-    index = oldIndex;
-  }
-  prevBubbleState = bubbleState;
+//  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles!
+//    digitalWrite(BUBBLE_PIN, HIGH);
+//    new_file = 1;
+//    oldIndex = index;
+//    index = 0;
+//  }
+//  else if (bubbleState == false && prevBubbleState == true) { // stop bubbles and go back to the old animation
+//    digitalWrite(BUBBLE_PIN, LOW);
+//    new_file = 1;
+//    index = oldIndex;
+//  }
+//  prevBubbleState = bubbleState;
+//
+//  // use main button to trigger move to next animation
+//  if (!bubbleState) { // (if we aren't holding the bubble button)
+//    buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
+//    if (prevButtonState == true && buttonState == false) {
+//      new_file = 1;
+//      index++;
+//    }
+//    prevButtonState = buttonState;
+//  }
+//  buttonState = digitalRead(BUTTON_PIN);
+//  buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
+  
+  int buttonVal = analogRead(BUTTON_PIN);
+//  Serial.print("buttonVal: ");
+//  Serial.println(buttonVal);
 
-  // use main button to trigger move to next animation
-  if (!bubbleState) { // (if we aren't holding the bubble button)
-    buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
-    if (prevButtonState == true && buttonState == false) {
+  if (buttonVal < lowestButtonVal) lowestButtonVal = buttonVal;
+//  Serial.print("lowestButtonVal: ");
+//  Serial.println(lowestButtonVal);
+
+  bool buttonPressed = buttonVal > 10;
+  
+    if (buttonPressed && prevButtonState == false) {
       new_file = 1;
       index++;
     }
-    prevButtonState = buttonState;
-  }
+    prevButtonState = buttonPressed;
+
   
     if (new_file) { 
 	frame = 0;
