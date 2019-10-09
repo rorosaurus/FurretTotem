@@ -31,10 +31,12 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
 
 ## Software
 This project was built on top of so many incredible libraries:
-* https://github.com/espressif/arduino-esp32
-* https://github.com/pixelmatix/SmartMatrix/tree/teensylc
-* https://github.com/marcmerlin/AnimatedGIFs
-* https://github.com/me-no-dev/arduino-esp32fs-plugin
+* [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
+* [SmartMatrix Library for ESP32](https://github.com/pixelmatix/SmartMatrix/tree/teensylc)
+* [Animated GIFs on ESP32](https://github.com/marcmerlin/AnimatedGIFs)
+* [Arduino plugin for uploading files to ESP32 file system](https://github.com/me-no-dev/arduino-esp32fs-plugin)
+
+We used Photoshop to create the animations!
 
 ## Hardware
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
