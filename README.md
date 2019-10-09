@@ -11,7 +11,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
 * The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
 
 ## Animations
-[Click here to see all the animations!](animations.md)
+[Click here to see all the animations!](animations)
 
 ## Social
 
