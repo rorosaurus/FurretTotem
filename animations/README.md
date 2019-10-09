@@ -1,0 +1,67 @@
+# Finalized animations
+
+The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
+
+Some of these have transparent backgrounds, which show a changing solid color background here. Usually this background is filled with moving rainbow gradients on the real totem, which looks much more interesting!
+
+![3rd-eye-blink](animations/finalized/3rd-eye-blink.gif)
+![8bit-double](animations/finalized/8bit-double.gif)
+![8bit-transp-eyes](animations/finalized/8bit-transp-eyes.gif)
+![abgtw](animations/finalized/abgtw.gif)
+![basic-walk](animations/finalized/basic-walk.gif)
+![crop-1](animations/finalized/crop-1.gif)
+![crop-2-truncated](animations/finalized/crop-2-truncated.gif)
+![crop-3-truncated](animations/finalized/crop-3-truncated.gif)
+![crop-4](animations/finalized/crop-4.gif)
+![crop-5](animations/finalized/crop-5.gif)
+![ff-transparent](animations/finalized/ff-transparent.gif)
+![furret-friends](animations/finalized/furret-friends.gif)
+![gitchfurret-CHONK](animations/finalized/gitchfurret-CHONK.gif)
+![gitchfurret-fractally](animations/finalized/gitchfurret-fractally.gif)
+![gitchfurret-horror](animations/finalized/gitchfurret-horror.gif)
+![gitchfurret-minor](animations/finalized/gitchfurret-minor.gif)
+![gitchfurret-oface](animations/finalized/gitchfurret-oface.gif)
+![gitchfurret-printing](animations/finalized/gitchfurret-printing.gif)
+![gitchfurret-wavy](animations/finalized/gitchfurret-wavy.gif)
+![gitchfurret2](animations/finalized/gitchfurret2.gif)
+![head-bob](animations/finalized/head-bob.gif)
+![heart-eyes](animations/finalized/heart-eyes.gif)
+![kandi-walk](animations/finalized/kandi-walk.gif)
+![mantykebubbles](animations/finalized/mantykebubbles.gif)
+![nyancat](animations/finalized/nyancat.gif)
+![outrun](animations/finalized/outrun.gif)
+![rave-furret](animations/finalized/rave-furret.gif)
+![test-shambhala-5](animations/finalized/test-shambhala-5.gif)
+![test-shambhala-6](animations/finalized/test-shambhala-6.gif)
+![test-shambhala-7](animations/finalized/test-shambhala-7.gif)
+![test-shambhala-8](animations/finalized/test-shambhala-8.gif)
+![test-shambhala-9](animations/finalized/test-shambhala-9.gif)
+![test-shambhala](animations/finalized/test-shambhala.gif)
+![transparent-walk](animations/finalized/transparent-walk.gif)
+![upside-down-walk](animations/finalized/upside-down-walk.gif)
+![walkoff-vertical-solo](animations/finalized/walkoff-vertical-solo.gif)
+![walkoff-vertical-truncated](animations/finalized/walkoff-vertical-truncated.gif)
+![walkoff-walkon-right](animations/finalized/walkoff-walkon-right.gif)
+![walkoff-walkon-upsidedown](animations/finalized/walkoff-walkon-upsidedown.gif)
+![walkoff-walkon](animations/finalized/walkoff-walkon.gif)
+
+# Limitations
+* SPIFFS filenames can't be too long, or files will not upload.
+* Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
+* Short looped animations: due to memory constraints on ESP32 with 128x64px, use < 20 frames total (or is it < 20kB filesize?)
+
+# Desired design principles
+* Allow every animation to have 3 phases: 1 and 3 are optional and play once.  2 loops as long as needed.
+  1. intro
+  2. loop
+  3. outro
+  
+* transparent backgrounds (alpha layer) are allowed so we can change/generate the backgrounds
+
+# Future Animation ideas
+
+* Furret eats a berry and then his eyes change (ditto or dilated pupils?) and he grows a smile
+* the worm?
+* ditto furret face
+* additional crops for furret walking video
+* add a microphone and do beat analysis.  adjust frame delay until furret walking lines up with the beat.
