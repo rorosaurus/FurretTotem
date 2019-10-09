@@ -6,11 +6,9 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
 
 ## FAQ
 
-Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable! You can see [all the animations here](animations/animations.md)!
-
-The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
-
-The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
+* Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable! You can see [all the animations here](animations/animations.md)!
+* The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
+* The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
 
 ## Social
 
@@ -42,6 +40,7 @@ This project was built on top of so many incredible libraries:
 
 ## Pins
 Using `ESP32_FORUM_PINOUT` from [MatrixHardware_ESP32_V0.h](https://github.com/pixelmatix/SmartMatrix/blob/teensylc/src/MatrixHardware_ESP32_V0.h)
+
 (Except for one board, which I use `R2_PIN  14` and `B2_PIN  13`...)
 
 ## Power
