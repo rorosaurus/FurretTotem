@@ -4,6 +4,8 @@ The original pixel art animation was done by the extremely talented [Alex Illust
 
 The animations with transparent (dynamically generated) backgrounds aren't *perfectly* re-created here, but you get the idea!
 
+Here they are, sorted by when they were added to the animation pool!
+
 ## v0.1
 ![basic-walk](finalized/basic-walk.gif)
 ![transparent-walk](finalized/transparent-walk.gif)
@@ -33,7 +35,7 @@ The animations with transparent (dynamically generated) backgrounds aren't *perf
 ## Burning Man 2019
 Ran out of time! 😅
 
-## Alchemy Tour
+## Alchemy Tour 2019
 ![gitchfurret-CHONK](finalized/gitchfurret-CHONK.gif)
 ![gitchfurret-fractally](finalized/gitchfurret-fractally.gif)
 ![gitchfurret-horror](finalized/gitchfurret-horror.gif)
@@ -45,11 +47,11 @@ Ran out of time! 😅
 ![outrun](finalized/outrun.gif)
 
 # Limitations
-* SPIFFS filenames can't be too long, or files will not upload.
+* SPIFFS filenames can't be too long, or files will not upload. (Move to FatFS!)
 * Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
 * Short looped animations: due to memory constraints on ESP32 with 128x64px, use < 20 frames total (or is it < 20kB filesize?)
 
-# Desired design principles
+# Future design philosophy
 * Allow every animation to have 3 phases: 1 and 3 are optional and play once.  2 loops as long as needed.
   1. intro
   2. loop
