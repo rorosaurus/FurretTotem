@@ -4,18 +4,36 @@ The original pixel art animation was done by the extremely talented [Alex Illust
 
 The animations with transparent (dynamically generated) backgrounds aren't *perfectly* re-created here, but you get the idea!
 
-![3rd-eye-blink](finalized/3rd-eye-blink.gif)
-![8bit-double](finalized/8bit-double.gif)
-![8bit-transp-eyes](finalized/8bit-transp-eyes.gif)
-![abgtw](finalized/abgtw.gif)
+## v0.1
 ![basic-walk](finalized/basic-walk.gif)
+![transparent-walk](finalized/transparent-walk.gif)
+
+## ABGT Weekender 2019
+![abgtw](finalized/abgtw.gif)
+![furret-friends](finalized/furret-friends.gif)
+![head-bob](finalized/head-bob.gif)
+![mantykebubbles](finalized/mantykebubbles.gif)
+![rave-furret](finalized/rave-furret.gif)
+
+## Shambhala 2019
+![3rd-eye-blink](finalized/3rd-eye-blink.gif)
 ![crop-1](finalized/crop-1.gif)
 ![crop-2-truncated](finalized/crop-2-truncated.gif)
 ![crop-3-truncated](finalized/crop-3-truncated.gif)
 ![crop-4](finalized/crop-4.gif)
-![crop-5](finalized/crop-5.gif)
-![ff-transparent](finalized/ff-transparent.gif)
-![furret-friends](finalized/furret-friends.gif)
+![heart-eyes](finalized/heart-eyes.gif)
+![test-shambhala-6](finalized/test-shambhala-6.gif)
+![test-shambhala-9](finalized/test-shambhala-9.gif)
+![upside-down-walk](finalized/upside-down-walk.gif)
+![walkoff-vertical-solo](finalized/walkoff-vertical-solo.gif)
+![walkoff-vertical-truncated](finalized/walkoff-vertical-truncated.gif)
+![walkoff-walkon-upsidedown](finalized/walkoff-walkon-upsidedown.gif)
+![walkoff-walkon](finalized/walkoff-walkon.gif)
+
+## Burning Man 2019
+Ran out of time! 😅
+
+## Alchemy Tour
 ![gitchfurret-CHONK](finalized/gitchfurret-CHONK.gif)
 ![gitchfurret-fractally](finalized/gitchfurret-fractally.gif)
 ![gitchfurret-horror](finalized/gitchfurret-horror.gif)
@@ -24,26 +42,7 @@ The animations with transparent (dynamically generated) backgrounds aren't *perf
 ![gitchfurret-printing](finalized/gitchfurret-printing.gif)
 ![gitchfurret-wavy](finalized/gitchfurret-wavy.gif)
 ![gitchfurret2](finalized/gitchfurret2.gif)
-![head-bob](finalized/head-bob.gif)
-![heart-eyes](finalized/heart-eyes.gif)
-![kandi-walk](finalized/kandi-walk.gif)
-![mantykebubbles](finalized/mantykebubbles.gif)
-![nyancat](finalized/nyancat.gif)
 ![outrun](finalized/outrun.gif)
-![rave-furret](finalized/rave-furret.gif)
-![test-shambhala-5](finalized/test-shambhala-5.gif)
-![test-shambhala-6](finalized/test-shambhala-6.gif)
-![test-shambhala-7](finalized/test-shambhala-7.gif)
-![test-shambhala-8](finalized/test-shambhala-8.gif)
-![test-shambhala-9](finalized/test-shambhala-9.gif)
-![test-shambhala](finalized/test-shambhala.gif)
-![transparent-walk](finalized/transparent-walk.gif)
-![upside-down-walk](finalized/upside-down-walk.gif)
-![walkoff-vertical-solo](finalized/walkoff-vertical-solo.gif)
-![walkoff-vertical-truncated](finalized/walkoff-vertical-truncated.gif)
-![walkoff-walkon-right](finalized/walkoff-walkon-right.gif)
-![walkoff-walkon-upsidedown](finalized/walkoff-walkon-upsidedown.gif)
-![walkoff-walkon](finalized/walkoff-walkon.gif)
 
 # Limitations
 * SPIFFS filenames can't be too long, or files will not upload.
