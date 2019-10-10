@@ -12,6 +12,26 @@
     <![endif]-->
   </head>
   <body>
+    <script> // this script will scroll the background gradients for transparent gifs
+      // init our hue
+      var hue = 0;
+
+      setInterval(function(){
+        // what is the ending hue of the gradient?
+        var endingHue = (hue + 64) % 360;
+
+        // set the new gradients
+        let myElements = document.querySelectorAll("img");
+
+        for (let i = 0; i < myElements.length; i++) {
+          myElements[i].style.background = 'linear-gradient(90deg, hsl(' + hue + ', 100%, 50%) 0%, hsl(' + endingHue + ', 100%, 50%) 100%)';
+        }
+
+        // move us along the rainbow
+        hue = hue - 7;
+        if (hue < 0) hue = 360 + hue;
+      },80);
+    </script>
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
