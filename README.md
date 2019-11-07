@@ -6,7 +6,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32 and a custom 
 
 ## FAQ
 
-* Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable!
+* Yes, he's built using "Arduino"! No, it's not Neopixel LEDs!  Yes, he is adorable!
 * Furret uses a [custom PCB I designed](https://github.com/rorosaurus/esp32-hub75-driver) to drive HUB75 panels with an ESP32!
 * The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
 * The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
