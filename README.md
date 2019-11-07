@@ -1,12 +1,13 @@
 Furret Totem
 ==================================
-Two 128x64px LED panels looping animated gifs. Powered by an ESP32.
+Two 128x64px LED panels looping animated gifs. Powered by an ESP32 and a custom PCB!
 
 ![Furret Walking](demo.gif)
 
 ## FAQ
 
 * Yes, he's powered by Arduino! No, it's not Neopixel LEDs!  Yes, he is adorable!
+* Furret uses a [custom PCB I designed](https://github.com/rorosaurus/esp32-hub75-driver) to drive HUB75 panels with an ESP32!
 * The LED panels were $25 each and the microcontroller was $5. It's powered by a USB battery pack!
 * The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! My wife and I modified the basic animation in Photoshop to make all the other animations!
 
@@ -39,8 +40,10 @@ This project was built on top of so many incredible libraries:
 We used Photoshop to create the animations!
 
 ## Hardware
+* [PCB I designed](https://github.com/rorosaurus/esp32-hub75-driver) to drive HUB75 panels with an ESP32: [Buy on Tindie!](https://www.tindie.com/products/18357/)
+  * This part is optional, but *greatly* simplifies your wiring!
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
-* ESP32 from [Amazon](https://smile.amazon.com/gp/product/B0718T232Z/), any variant should work as long as you have all the required pins listed below
+* ESP32 (any variant should work as long as you have all the required pins listed below): [Amazon ($7)](https://smile.amazon.com/gp/product/B07Q576VWZ/), [AliExpress ($4)](https://www.aliexpress.com/item/32902307791.html)
 * Bubble machine extracted from children's bubble wand toy, purchased on [eBay](https://www.ebay.com/itm/332880742452)
 
 ## Pins
