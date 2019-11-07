@@ -49,8 +49,6 @@ We used Photoshop to create the animations!
 ## Pins
 Using `ESP32_FORUM_PINOUT` from [MatrixHardware_ESP32_V0.h](https://github.com/pixelmatix/SmartMatrix/blob/teensylc/src/MatrixHardware_ESP32_V0.h)
 
-(Except for one board, which I use `R2_PIN  14` and `B2_PIN  13`...)
-
 ## Power
 Originally I was planning to power this off some 18650's, but I butchered a USB cable to supply the 5V power to the panel for testing, and I'm really enjoying how simple it is.  At full brightness, the panel pulls about 2 amps @ 5 volts.
 
