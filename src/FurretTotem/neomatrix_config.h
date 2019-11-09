@@ -78,10 +78,10 @@ bool init_done = 0;
 #endif
 
 #if defined(SMARTMATRIX)
-uint8_t matrix_brightness = 128;
+uint8_t matrix_brightness = 25;
 
 #ifdef ESP32
-#pragma message "Compiling for ESP32 with 64x32 16 scan panel"
+#pragma message "Compiling for ESP32 with 128x64 32 scan panel"
 const uint8_t kPanelType = SMARTMATRIX_HUB75_64ROW_MOD32SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
 const uint16_t MATRIX_TILE_WIDTH = 128; // width of EACH NEOPIXEL MATRIX (not total display)
 const uint16_t MATRIX_TILE_HEIGHT= 64; // height of each matrix
@@ -113,7 +113,7 @@ const uint16_t MATRIX_WIDTH = mw;
 const uint8_t kMatrixWidth = mw;
 const uint8_t kMatrixHeight = mh;
 const uint8_t kRefreshDepth = 24;       // known working: 24, 36, 48
-const uint8_t kDmaBufferRows = 2;       // known working: 2-4, use 2 to save memory, more to keep from dropping frames and automatically lowering refresh rate
+const uint8_t kDmaBufferRows = 0;       // known working: 2-4, use 2 to save memory, more to keep from dropping frames and automatically lowering refresh rate
 const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);      // see http://docs.pixelmatix.com/SmartMatrix for options
 const uint8_t kBackgroundLayerOptions = (SM_BACKGROUND_OPTIONS_NONE);
 

@@ -69,11 +69,16 @@
  *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
  */
 
+#include <DNSServer.h>
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#include "ESPAsyncWebServer.h"
+
 #define DISABLE_MATRIX_TEST
 #define NEOMATRIX
 
 #define POT_PIN 33 // other pot pins go to GND and 3.3V
-#define BUTTON_PIN 35 // other button pin goes to GND
+#define BUTTON_PIN 0 // other button pin goes to GND
 
 #include "GifAnim_Impl.h"
 
@@ -96,7 +101,43 @@ bool prevButtonState = true;
 //bool bubbleState = false;
 //bool prevBubbleState = false;
 
+bool nextFlag = false;
+bool prevFlag = false;
+
 int lowestButtonVal = 5000;
+
+bool serverInitialized = false;
+DNSServer dnsServer;
+AsyncWebServer server(80);
+
+class CaptiveRequestHandler : public AsyncWebHandler {
+public:
+  CaptiveRequestHandler() {}
+  virtual ~CaptiveRequestHandler() {}
+
+  bool canHandle(AsyncWebServerRequest *request){
+    //request->addInterestingHeader("ANY");
+    return true;
+  }
+
+  void handleRequest(AsyncWebServerRequest *request) {
+    if (request->url() == "/NEXT") {
+        Serial.println("NEXT PRESSED");
+        nextFlag = true;
+    }
+    else if (request->url() == "/PREVIOUS") {
+        Serial.println("PREVIOUS PRESSED");
+        prevFlag = true;
+    }
+    
+    AsyncResponseStream *response = request->beginResponseStream("text/html");
+    response->print("<!DOCTYPE html><html  style='width: 100%; height: 100%'><head><title>Wifi Remote</title></head><body style='width: 100%; height: 100%'>");
+    response->print("<a href='/NEXT'><button style='width: 100%;height: 50%;font-size: 12vw;'>NEXT .gif</button></a>");
+    response->print("<a href='/PREVIOUS'><button style='width: 100%;height: 50%;font-size: 12vw;'>PREVIOUS .gif</button></a>");
+    response->print("</body></html>");
+    request->send(response);
+  }
+};
 
 // Setup method runs once, when the sketch starts
 void setup() {
@@ -159,6 +200,16 @@ void setup() {
     // serial output gets looped back into serial input
     // Hence, flush input.
     while(Serial.available() > 0) { char t = Serial.read(); t=t; }
+
+//    We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
+//    Change the line 194 of SmartMatrixMultiplexedRefreshEsp32_Impl.h
+//    from: matrixUpdateFrames[1] = (frameStruct *)heap_caps_malloc(sizeof(frameStruct), MALLOC_CAP_DMA);
+//    to: matrixUpdateFrames[1] = matrixUpdateFrames[0];
+    WiFi.softAP("myLEDPanel");
+    
+    dnsServer.start(53, "*", WiFi.softAPIP());
+    server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+    server.begin();
 }
 
 void adjust_gamma(float change) {
@@ -181,10 +232,12 @@ void adjust_brightness() {
 //    Serial.println(smoothPotVal);
     
     int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
-    matrixLayer.setBrightness(smoothBrightness);
+    //matrixLayer.setBrightness(smoothBrightness);
 }
 
 void loop() {
+    dnsServer.processNextRequest();
+    
     static unsigned long lastTime = millis();
     static int index = FIRSTINDEX;
     static int8_t new_file = 1;
@@ -197,6 +250,20 @@ void loop() {
     bool gotnf = false;
     // clear display before each frame
     static bool clear = false;
+
+  if (nextFlag){
+    Serial.println("Wifi => next");
+    new_file = 1;  
+    index++;
+    nextFlag = false;
+  }
+  
+  if (prevFlag){
+    Serial.println("Wifi => previous");
+    new_file = 1;  
+    index--;
+    prevFlag = false;
+  }
 
     if (Serial.available()) readchar = Serial.read(); else readchar = 0;
 
