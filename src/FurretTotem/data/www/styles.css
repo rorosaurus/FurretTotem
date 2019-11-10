@@ -8,25 +8,34 @@ body {
   height: 100%
 }
 
-form {
-  height:30%
+.fileForm {
+  height:15%
+}
+
+.fileSelect {
+  width: 100%;
+  height: 15%;
+  font-size: 8vw;
 }
 
 .nextButton , .prevButton {
-  width: 100%;
-  height: 30%;
+  width: 50%;
+  height: 50%;
   font-size: 12vw;
 }
 
-.submitButton {
+.brightnessForm {
+  height:30%
+}
+
+.brightnessSubmit {
   width: 100%;
-  height:80%;
+  height:15%;
   font-size: 8vw;
 }
 
 .slidecontainer {
   width: 100%;
-  height: 50px;
   padding-top: 75px;
 }
 
