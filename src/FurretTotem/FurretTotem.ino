@@ -19,6 +19,7 @@
 int currentBrightness = defaultBrightness;
 bool nextFlag = false;
 bool prevFlag = false;
+int newIndex = -1;
 
 // If the matrix is a different size than the GIFs, allow panning through the GIF
 int OFFSETX = 0;
@@ -27,6 +28,7 @@ int FACTX = 0;
 int FACTY = 0;
 
 int num_files;
+String filenameOptions = "";
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -35,6 +37,7 @@ String processor(const String& var){
   if(var == "MIN_BRIGHTNESS") return String(minBrightness);
   if(var == "MAX_BRIGHTNESS") return String(maxBrightness);
   if(var == "CURRENT_BRIGHTNESS") return String(currentBrightness);
+  if(var == "LIST_FILENAME_OPTIONS") return filenameOptions;
   return String();
 }
 
@@ -49,26 +52,33 @@ public:
   }
 
   void handleRequest(AsyncWebServerRequest *request) {
+    // handle other file requests
     if (request->url() == "/styles.css"){
       request->send(SPIFFS, "/www/styles.css", "text/css");
     }
-    else {
-      if (request->url() == "/NEXT") {
-          Serial.println("NEXT PRESSED");
-          nextFlag = true;
+    else { // handle parameters
+      if(request->hasParam("next")){
+        Serial.println("NEXT pressed");
+        nextFlag = true;
       }
-      else if (request->url() == "/PREVIOUS") {
-          Serial.println("PREVIOUS PRESSED");
-          prevFlag = true;
+      if(request->hasParam("prev")){
+        Serial.println("PREVIOUS pressed");
+        prevFlag = true;
       }
-
       if(request->hasParam("brightness")){
         AsyncWebParameter* p = request->getParam("brightness");
         currentBrightness = p->value().toInt();
-          Serial.print("New brightness: ");
-          Serial.println(currentBrightness);
+        Serial.print("New brightness: ");
+        Serial.println(currentBrightness);
       }
-      
+      if(request->hasParam("newFileIndex")){
+        AsyncWebParameter* p = request->getParam("newFileIndex");
+        newIndex = p->value().toInt();
+        Serial.print("New file index: ");
+        Serial.println(newIndex);
+      }
+
+      // catch everything else
       //Send index.htm with template processor function
       request->send(SPIFFS, "/www/index.htm", "text/html", false, processor);
     }
@@ -130,12 +140,11 @@ void adjust_gamma(float change) {
 #endif
 }
 
-void adjust_brightness() {
-    matrixLayer.setBrightness(currentBrightness);
-}
 
 void loop() {
     dnsServer.processNextRequest();
+
+    matrixLayer.setBrightness(currentBrightness);
     
     static unsigned long lastTime = millis();
     static int index = FIRSTINDEX;
@@ -162,6 +171,11 @@ void loop() {
     new_file = 1;  
     index--;
     prevFlag = false;
+  }
+  if (newIndex != -1){
+      new_file = 1;
+      index = newIndex;
+      newIndex = -1;
   }
 
     if (Serial.available()) readchar = Serial.read(); else readchar = 0;
@@ -244,8 +258,6 @@ void loop() {
     }
 
     if (clear) screenClearCallback();
-
-    adjust_brightness();
 
     // decode the gif
     decoder.decodeFrame();

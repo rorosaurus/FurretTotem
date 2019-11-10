@@ -11,6 +11,8 @@ File file;
 
 int numberOfFiles;
 
+extern String filenameOptions;
+
 static void die(const char *mesg) {
     Serial.println(mesg);
     delay(100000); // while 1 loop only triggers watchdog on ESP chips
@@ -70,6 +72,7 @@ bool isAnimationFile(const char filename []) {
 int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
 
     numberOfFiles = 0;
+    int i = 0;
     Serial.print("Enumerate files in dir ");
     Serial.println(directoryName);
 
@@ -91,6 +94,8 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
         if (isAnimationFile(file.name())) {
             numberOfFiles++;
             if (displayFilenames) Serial.println(file.name());
+            filenameOptions += "<option value='" + String(i) + "'>" + file.name() + "</option>";
+            i++;
         }
         file.close();
     }

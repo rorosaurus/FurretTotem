@@ -5,17 +5,33 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-      <a href='/NEXT'><button class='nextButton'>NEXT .gif</button></a>
-      <a href='/PREVIOUS'><button class='prevButton'>PREVIOUS .gif</button></a>
+      <select id="newFileSelector" name="newFileIndex" class="fileSelect" onchange="submitParam('newFileIndex', document.getElementById('newFileSelector').value)">
+        <option value="" selected disabled hidden>Choose a specific .gif</option>
+        %LIST_FILENAME_OPTIONS%
+      </select>
       
-      <form action="/index.htm">
-      <input type="submit" id='brightnessButton' value="test" class='submitButton'>
+      <button class='prevButton' onclick="submitParam('prev', 1)">PREV .gif</button><button class='nextButton'  onclick="submitParam('next', 1)">NEXT .gif</button>
+      
+      <input type="submit" id='brightnessButton' value="test" class='brightnessSubmit' onclick="submitParam('brightness', document.getElementById('brightnessSlider').value)">
       <div class="slidecontainer">
         <input type='range' name='brightness' step='1' min='%MIN_BRIGHTNESS%' max='%MAX_BRIGHTNESS%' value='%CURRENT_BRIGHTNESS%' id='brightnessSlider' class='slider'/>
       </div>
-      </form>
       
       <script>
+        function submitParam(parameter, val) {
+          var http = new XMLHttpRequest();
+          var params = parameter + "=" + val;
+          http.open("GET", "/index.htm?" + params, true);
+          http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+          http.send();
+          
+          if(parameter != "newFileIndex") resetFileSelector();
+        }
+        
+        function resetFileSelector(){
+          document.getElementById('newFileSelector').value = "";
+        }
+      
         var slider = document.getElementById("brightnessSlider");
         var button = document.getElementById("brightnessButton");
                 
