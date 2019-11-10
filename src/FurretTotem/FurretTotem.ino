@@ -1,72 +1,5 @@
 /*
- * Animated GIFs Display Code for SmartMatrix and 32x32 RGB LED Panels
- *
- * Uses SmartMatrix Library for Teensy 3.1 written by Louis Beaudoin at pixelmatix.com
- *
- * Written by: Craig A. Lindley
- *
- * Copyright (c) 2014 Craig A. Lindley
- * Refactoring by Louis Beaudoin (Pixelmatix)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-/*
- * This example displays 32x32 GIF animations loaded from a SD Card connected to the Teensy 3.1
- * The GIFs can be up to 32 pixels in width and height.
- * This code has been tested with 32x32 pixel and 16x16 pixel GIFs, but is optimized for 32x32 pixel GIFs.
- *
- * Wiring is on the default Teensy 3.1 SPI pins, and chip select can be on any GPIO,
- * set by defining SD_CS in the code below
- * Function     | Pin
- * DOUT         |  11
- * DIN          |  12
- * CLK          |  13
- * CS (default) |  15
- *
- * Wiring for ESP32 follows the default for the ESP32 SD Library, see: https://github.com/espressif/arduino-esp32/tree/master/libraries/SDis is on the default Teensy 3.1 SPI pins, and chip select can be on any GPIO,
- *
- * This code first looks for .gif files in the /gifs/ directory
- * (customize below with the GIF_DIRECTORY definition) then plays random GIFs in the directory,
- * looping each GIF for DISPLAY_TIME_SECONDS
- *
- * This example is meant to give you an idea of how to add GIF playback to your own sketch.
- * For a project that adds GIF playback with other features, take a look at
- * Light Appliance and Aurora:
- * https://github.com/CraigLindley/LightAppliance
- * https://github.com/pixelmatix/aurora
- *
- * If you find any GIFs that won't play properly, please attach them to a new
- * Issue post in the GitHub repo here:
- * https://github.com/pixelmatix/AnimatedGIFs/issues
- */
-
-/*
- * CONFIGURATION:
- *  - If you're using SmartLED Shield V4 (or above), uncomment the line that includes <SmartMatrixShieldV4.h>
- *  - update the "SmartMatrix configuration and memory allocation" section to match the width and height and other configuration of your display
- *  - Note for 128x32 and 64x64 displays with Teensy 3.2 - need to reduce RAM:
- *    set kRefreshDepth=24 and kDmaBufferRows=2 or set USB Type: "None" in Arduino,
- *    decrease refreshRate in setup() to 90 or lower to get good an accurate GIF frame rate
- *  - Set the chip select pin for your board.  On Teensy 3.5/3.6, the onboard microSD CS pin is "BUILTIN_SDCARD"
- *  - For ESP32 and large panels, you don't need to lower the refreshRate, but you can lower the frameRate (number of times the refresh buffer
- *    is updaed with new data per second), giving more time for the CPU to decode the GIF.
- *    Use matrix.setMaxCalculationCpuPercentage() or matrix.setCalcRefreshRateDivider()
+ * HE WALK!
  */
 
 #include <DNSServer.h>
@@ -81,6 +14,7 @@
 #define BUTTON_PIN 0 // other button pin goes to GND
 
 #include "GifAnim_Impl.h"
+#include "secrets.h"
 
 // If the matrix is a different size than the GIFs, allow panning through the GIF
 // while displaying it, or bouncing it around if it's smaller than the display
@@ -101,6 +35,12 @@ bool prevButtonState = true;
 //bool bubbleState = false;
 //bool prevBubbleState = false;
 
+#define defaultBrightness 25
+#define minBrightness 0
+#define maxBrightness 165
+
+int currentBrightness = defaultBrightness;
+
 bool nextFlag = false;
 bool prevFlag = false;
 
@@ -109,6 +49,13 @@ int lowestButtonVal = 5000;
 bool serverInitialized = false;
 DNSServer dnsServer;
 AsyncWebServer server(80);
+
+String processor(const String& var){
+  if(var == "MIN_BRIGHTNESS") return String(minBrightness);
+  if(var == "MAX_BRIGHTNESS") return String(maxBrightness);
+  if(var == "CURRENT_BRIGHTNESS") return String(currentBrightness);
+  return String();
+}
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -121,21 +68,29 @@ public:
   }
 
   void handleRequest(AsyncWebServerRequest *request) {
-    if (request->url() == "/NEXT") {
-        Serial.println("NEXT PRESSED");
-        nextFlag = true;
+    if (request->url() == "/styles.css"){
+      request->send(SPIFFS, "/www/styles.css", "text/css");
     }
-    else if (request->url() == "/PREVIOUS") {
-        Serial.println("PREVIOUS PRESSED");
-        prevFlag = true;
+    else {
+      if (request->url() == "/NEXT") {
+          Serial.println("NEXT PRESSED");
+          nextFlag = true;
+      }
+      else if (request->url() == "/PREVIOUS") {
+          Serial.println("PREVIOUS PRESSED");
+          prevFlag = true;
+      }
+
+      if(request->hasParam("brightness")){
+        AsyncWebParameter* p = request->getParam("brightness");
+        currentBrightness = p->value().toInt();
+          Serial.print("New brightness: ");
+          Serial.println(currentBrightness);
+      }
+      
+      //Send index.htm with template processor function
+      request->send(SPIFFS, "/www/index.htm", "text/html", false, processor);
     }
-    
-    AsyncResponseStream *response = request->beginResponseStream("text/html");
-    response->print("<!DOCTYPE html><html  style='width: 100%; height: 100%'><head><title>Wifi Remote</title></head><body style='width: 100%; height: 100%'>");
-    response->print("<a href='/NEXT'><button style='width: 100%;height: 50%;font-size: 12vw;'>NEXT .gif</button></a>");
-    response->print("<a href='/PREVIOUS'><button style='width: 100%;height: 50%;font-size: 12vw;'>PREVIOUS .gif</button></a>");
-    response->print("</body></html>");
-    request->send(response);
   }
 };
 
@@ -201,15 +156,16 @@ void setup() {
     // Hence, flush input.
     while(Serial.available() > 0) { char t = Serial.read(); t=t; }
 
-//    We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
-//    Change the line 194 of SmartMatrixMultiplexedRefreshEsp32_Impl.h
-//    from: matrixUpdateFrames[1] = (frameStruct *)heap_caps_malloc(sizeof(frameStruct), MALLOC_CAP_DMA);
-//    to: matrixUpdateFrames[1] = matrixUpdateFrames[0];
-    WiFi.softAP("myLEDPanel");
+    // We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
+    // https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8
+    Serial.println("Configuring access point...");
+    WiFi.softAP(ssid, password);
     
     dnsServer.start(53, "*", WiFi.softAPIP());
-    server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+    server.addHandler(new CaptiveRequestHandler());//only when requested from AP
     server.begin();
+    Serial.print("Server started. IP Address: ");
+    Serial.println(WiFi.softAPIP());
 }
 
 void adjust_gamma(float change) {
@@ -224,15 +180,16 @@ void adjust_gamma(float change) {
 }
 
 void adjust_brightness() {
-    int potVal = analogRead(POT_PIN);  
+//    int potVal = analogRead(POT_PIN);  
 //    Serial.print("potVal = ");
 //    Serial.println(potVal);
-    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
+//    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
 //    Serial.print("smoothPotVal = ");
 //    Serial.println(smoothPotVal);
     
-    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
+//    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
     //matrixLayer.setBrightness(smoothBrightness);
+    matrixLayer.setBrightness(currentBrightness);
 }
 
 void loop() {

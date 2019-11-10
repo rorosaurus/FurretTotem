@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wifi Remote</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+      <a href='/NEXT'><button class='nextButton'>NEXT .gif</button></a>
+      <a href='/PREVIOUS'><button class='prevButton'>PREVIOUS .gif</button></a>
+      
+      <form action="/index.htm">
+      <input type="submit" id='brightnessButton' value="test" class='submitButton'>
+      <div class="slidecontainer">
+        <input type='range' name='brightness' step='1' min='%MIN_BRIGHTNESS%' max='%MAX_BRIGHTNESS%' value='%CURRENT_BRIGHTNESS%' id='brightnessSlider' class='slider'/>
+      </div>
+      </form>
+      
+      <script>
+        var slider = document.getElementById("brightnessSlider");
+        var button = document.getElementById("brightnessButton");
+                
+        button.innerHTML = button.value = 'Set Brightness to ' + slider.value;
+        
+        slider.oninput = function() {
+          button.value = 'Set Brightness to ' + this.value;
+        }
+      </script>
+  </body>
+</html>
