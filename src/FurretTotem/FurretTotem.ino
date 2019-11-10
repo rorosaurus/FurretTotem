@@ -2,51 +2,32 @@
  * HE WALK!
  */
 
-#include <DNSServer.h>
-#include <WiFi.h>
-#include <AsyncTCP.h>
-#include "ESPAsyncWebServer.h"
-
 #define DISABLE_MATRIX_TEST
 #define NEOMATRIX
-
-#define POT_PIN 33 // other pot pins go to GND and 3.3V
-#define BUTTON_PIN 0 // other button pin goes to GND
-
-#include "GifAnim_Impl.h"
-#include "secrets.h"
-
-// If the matrix is a different size than the GIFs, allow panning through the GIF
-// while displaying it, or bouncing it around if it's smaller than the display
-int OFFSETX = 0;
-int OFFSETY = 0;
-int FACTX = 0;
-int FACTY = 0;
-
-// keep track of the animation we were on before bubbles started
-int oldIndex = 1;
-
-float smoothPotVal;
-
-int num_files;
-
-//bool buttonState = false;
-bool prevButtonState = true;
-//bool bubbleState = false;
-//bool prevBubbleState = false;
 
 #define defaultBrightness 25
 #define minBrightness 0
 #define maxBrightness 165
 
-int currentBrightness = defaultBrightness;
+#include <DNSServer.h>
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#include "ESPAsyncWebServer.h"
+#include "secrets.h"
+#include "GifAnim_Impl.h"
 
+int currentBrightness = defaultBrightness;
 bool nextFlag = false;
 bool prevFlag = false;
 
-int lowestButtonVal = 5000;
+// If the matrix is a different size than the GIFs, allow panning through the GIF
+int OFFSETX = 0;
+int OFFSETY = 0;
+int FACTX = 0;
+int FACTY = 0;
 
-bool serverInitialized = false;
+int num_files;
+
 DNSServer dnsServer;
 AsyncWebServer server(80);
 
@@ -96,66 +77,36 @@ public:
 
 // Setup method runs once, when the sketch starts
 void setup() {
-    pinMode(BUTTON_PIN, INPUT);
-  
-    // Wait before serial on teensy
-#ifdef KINETISK
-    delay(6000);
-#endif
-#ifdef ESP8266
-    // 32x32 GIFs on 24x32 display, hence offset of -4
-    OFFSETX = -4;
-    OFFSETY = 0;
-#endif
+    Serial.begin(115200);
+    
     Serial.println("Starting AnimatedGIFs Sketch");
     sav_setup();
 
-    // Seed the random number generator
-    // This breaks SmartMatrix output on ESP32
-    //randomSeed(analogRead(14));
-
-    #if defined(ESP8266)
-	Serial.println();
-	Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
-	Serial.print( F("Boot Vers: ") ); Serial.println(system_get_boot_version());
-	Serial.print( F("CPU: ") ); Serial.println(system_get_cpu_freq());
-	Serial.print( F("SDK: ") ); Serial.println(system_get_sdk_version());
-	Serial.print( F("Chip ID: ") ); Serial.println(system_get_chip_id());
-	Serial.print( F("Flash ID: ") ); Serial.println(spi_flash_get_id());
-	Serial.print( F("Flash Size: ") ); Serial.println(ESP.getFlashChipRealSize());
-	Serial.print( F("Vcc: ") ); Serial.println(ESP.getVcc());
-	Serial.println();
-    #endif
     #if ENABLE_SCROLLING == 1
-	matrix.addLayer(&scrollingLayer); 
+	  matrix.addLayer(&scrollingLayer); 
     #endif
 
-    // for ESP32 we need to allocate SmartMatrix DMA buffers after initializing
-    // the SD card to avoid using up too much memory
     // Determine how many animated GIF files exist
     num_files = enumerateGIFFiles(GIF_DIRECTORY, true);
 
     if(num_files < 0) {
-#if ENABLE_SCROLLING == 1
-        scrollingLayer.start("No gifs directory", -1);
-#endif
-        die("No gifs directory");
+      #if ENABLE_SCROLLING == 1
+      scrollingLayer.start("No gifs directory", -1);
+      #endif
+      die("No gifs directory");
     }
 
     if(!num_files) {
-#if ENABLE_SCROLLING == 1
+        #if ENABLE_SCROLLING == 1
         scrollingLayer.start("Empty gifs directory", -1);
-#endif
+        #endif
         die("Empty gifs directory");
     }
+    
     Serial.print("Index of files: 0 to ");
     Serial.println(num_files);
     Serial.flush();
-    // At least on teensy, due to some framework bug it seems, early
-    // serial output gets looped back into serial input
-    // Hence, flush input.
-    while(Serial.available() > 0) { char t = Serial.read(); t=t; }
-
+    
     // We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
     // https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8
     Serial.println("Configuring access point...");
@@ -180,15 +131,6 @@ void adjust_gamma(float change) {
 }
 
 void adjust_brightness() {
-//    int potVal = analogRead(POT_PIN);  
-//    Serial.print("potVal = ");
-//    Serial.println(potVal);
-//    smoothPotVal = 0.97 * smoothPotVal + 0.03 * potVal;
-//    Serial.print("smoothPotVal = ");
-//    Serial.println(smoothPotVal);
-    
-//    int smoothBrightness = map (smoothPotVal, 0, 4095, 10, 210);
-    //matrixLayer.setBrightness(smoothBrightness);
     matrixLayer.setBrightness(currentBrightness);
 }
 
@@ -282,56 +224,7 @@ void loop() {
 	if (! gotnf) return;
     }
 
-  // is it time for bubbles?
-  //int bubbleVal = analogRead(BUBBLE_PIN);
-//  Serial.print("bubbleVal: ");
-//  Serial.println(bubbleVal);
-//  bubbleState = false;
-//  Serial.print("bubbleState: ");
-//  Serial.println(bubbleState);
-//  if (bubbleState == true && prevBubbleState == false) { // trigger bubbles!
-//    digitalWrite(BUBBLE_PIN, HIGH);
-//    new_file = 1;
-//    oldIndex = index;
-//    index = 0;
-//  }
-//  else if (bubbleState == false && prevBubbleState == true) { // stop bubbles and go back to the old animation
-//    digitalWrite(BUBBLE_PIN, LOW);
-//    new_file = 1;
-//    index = oldIndex;
-//  }
-//  prevBubbleState = bubbleState;
-//
-//  // use main button to trigger move to next animation
-//  if (!bubbleState) { // (if we aren't holding the bubble button)
-//    buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
-//    if (prevButtonState == true && buttonState == false) {
-//      new_file = 1;
-//      index++;
-//    }
-//    prevButtonState = buttonState;
-//  }
-//  buttonState = digitalRead(BUTTON_PIN);
-//  buttonState = digitalRead(BUTTON_PIN); // button is connected between BUTTON_PIN and GND
-  
-  int buttonVal = analogRead(BUTTON_PIN);
-//  Serial.print("buttonVal: ");
-//  Serial.println(buttonVal);
-
-  if (buttonVal < lowestButtonVal) lowestButtonVal = buttonVal;
-//  Serial.print("lowestButtonVal: ");
-//  Serial.println(lowestButtonVal);
-
-  bool buttonPressed = buttonVal > 10;
-  
-    if (buttonPressed && prevButtonState == false) {
-      new_file = 1;
-      index++;
-    }
-    prevButtonState = buttonPressed;
-
-  
-    if (new_file) { 
+  if (new_file) { 
 	frame = 0;
 	new_file = 0;
 	lastTime = millis();
