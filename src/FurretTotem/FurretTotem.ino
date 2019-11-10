@@ -242,7 +242,7 @@ void loop() {
 	frame = 0;
 	new_file = 0;
 	lastTime = millis();
-	if (index >= num_files) index = 1;
+	if (index >= num_files) index = 0;
 	if (index <= -1) index = num_files - 1;
         Serial.print("Fetching file index #");
         Serial.println(index);
