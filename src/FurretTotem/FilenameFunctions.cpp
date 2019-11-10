@@ -12,6 +12,7 @@ File file;
 int numberOfFiles;
 
 extern String filenameOptions;
+bool optionsBuilt = false;
 
 static void die(const char *mesg) {
     Serial.println(mesg);
@@ -76,17 +77,6 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
     Serial.print("Enumerate files in dir ");
     Serial.println(directoryName);
 
-#ifdef ESP8266
-    // ESP8266 SPIFFS uses special directory objects
-    Dir dir = SPIFFS.openDir(directoryName);
-    while (dir.next()) {
-	String filename = dir.fileName();
-	if (isAnimationFile(filename)) {
-	    numberOfFiles++;
-	    if (displayFilenames) Serial.println(filename);
-	}
-    }
-#else
     File directory = FSO.open(directoryName);
     if (!directory) die("Can't open directory");
 
@@ -94,14 +84,14 @@ int enumerateGIFFiles(const char *directoryName, boolean displayFilenames) {
         if (isAnimationFile(file.name())) {
             numberOfFiles++;
             if (displayFilenames) Serial.println(file.name());
-            filenameOptions += "<option value='" + String(i) + "'>" + file.name() + "</option>";
+            if (!optionsBuilt) filenameOptions += "<option value='" + String(i) + "'>" + file.name() + "</option>";
             i++;
         }
         file.close();
     }
     directory.close();
-#endif
 
+    optionsBuilt = true;
     return numberOfFiles;
 }
 
@@ -117,10 +107,10 @@ void getGIFFilenameByIndex(const char *directoryName, int index, char *pnBuffer)
 	while (File file = dir.openNextFile()) {
 	    String filename = file.name();
 	    if (isAnimationFile(filename)) {
-		index--;
-		filename.toCharArray(pnBuffer, 127);
+    		filename.toCharArray(pnBuffer, 127);
+        if (!index) break;
+        index--;
 	    }
-	    if (!index) break;
 	}
     #else
 	Dir dir = FSO.openDir(directoryName);

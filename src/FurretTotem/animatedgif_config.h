@@ -19,7 +19,7 @@ const int lzwMaxBits = 12;
 //#define NEOPIXEL_MATRIX  // If NEOMATRIX, use FastLED::NeoMatrix, not SmartMatrix_GFX
 
 // if you want to display a file and display that one first
-#define FIRSTINDEX 1
+#define FIRSTINDEX 0
 //#define DEBUGLINE 16
 
 // Use Neomatrix API (which in turn could be using SmartMatrix driver)?
@@ -131,4 +131,3 @@ extern int FACTY;
 
 #define DISPLAY_TIME_SECONDS 60
 #endif
-
