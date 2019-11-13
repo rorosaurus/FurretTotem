@@ -7,7 +7,7 @@
 
 #define defaultBrightness 25
 #define minBrightness 0
-#define maxBrightness 165
+#define maxBrightness 100
 
 #include <DNSServer.h>
 #include <WiFi.h>
@@ -120,7 +120,7 @@ void setup() {
     // We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
     // https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8
     Serial.println("Configuring access point...");
-    WiFi.softAP(ssid, password);
+    WiFi.softAP(ssid, password, 1, 1, 1); // channel 1 (default), hide SSID, max connected clients = 1
     
     dnsServer.start(53, "*", WiFi.softAPIP());
     server.addHandler(new CaptiveRequestHandler());//only when requested from AP
