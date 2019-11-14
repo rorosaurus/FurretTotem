@@ -50,7 +50,7 @@ Ran out of time! 😅
 ![outrun-glasses](finalized/outrun-glasses.gif)
 ![nyanfurret](finalized/nyanfurret.gif)
 ![bmo](finalized/bmo.gif)
-![galactic-furret](finalized/galactic-furret.gif)
+![galactic-furret-paralax](finalized/galactic-furret-paralax.gif)
 
 # Limitations
 * SPIFFS filenames can't be too long, or files will not upload. (Move to FatFS!)
