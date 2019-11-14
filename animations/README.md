@@ -46,6 +46,12 @@ Ran out of time! 😅
 ![gitchfurret2](finalized/gitchfurret2.gif)
 ![outrun](finalized/outrun.gif)
 
+## Dreamstate SoCal 2019
+![outrun-glasses](finalized/outrun-glasses.gif)
+![nyanfurret](finalized/nyanfurret.gif)
+![bmo](finalized/bmo.gif)
+![galactic-furret](finalized/galactic-furret.gif)
+
 # Limitations
 * SPIFFS filenames can't be too long, or files will not upload. (Move to FatFS!)
 * Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
