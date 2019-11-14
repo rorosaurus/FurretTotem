@@ -7,7 +7,7 @@
 
 #define defaultBrightness 25
 #define minBrightness 0
-#define maxBrightness 100
+#define maxBrightness 80
 
 #include <DNSServer.h>
 #include <WiFi.h>
