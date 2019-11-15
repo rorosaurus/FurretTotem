@@ -51,21 +51,4 @@ We used Photoshop to create the animations!
 Using `ESP32_FORUM_PINOUT` from [MatrixHardware_ESP32_V0.h](https://github.com/pixelmatix/SmartMatrix/blob/teensylc/src/MatrixHardware_ESP32_V0.h)
 
 ## Power
-Originally I was planning to power this off some 18650's, but I butchered a USB cable to supply the 5V power to the panel for testing, and I'm really enjoying how simple it is.  At full brightness, the panel pulls about 2 amps @ 5 volts.
-
-If I want to power this off a single 5V/3A USB port , this gives me 15W to work with.  Minus ~1W for the ESP32, this leaves 14W for the panels.  For 2 panels, this leaves ~7W each, giving me a max brightness of ~165/255. That brightness is suitable for sunlight conditions, but the ability to go brighter would be better.  Maybe use 2 ports and split up the power distribution for each panel?
-
-**Actual power measurements:**
-* ESP32 running basic-walk.gif: `1W`
-* Bubble machine running @ 5V: `1.5-4W`
-* 1x LED panel running basic-walk.gif:
-
-Brightness | Power
------------|------
-10/255 | ~1.5W
-25/255 | ~2W
-50/255 | 3W
-128/255 | 5.7W
-165/255 | 6.8W
-200/255 | 8.3W
-255/255 | 10W
+Originally I was planning to power this off some 18650's, but I butchered a USB cable to supply the 5V power to the panel for testing, and I'm really enjoying how simple it is.  At full brightness, one panel pulls about 2 amps @ 5 volts.
