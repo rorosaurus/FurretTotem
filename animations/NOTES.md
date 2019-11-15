@@ -18,3 +18,4 @@
 * ditto furret face
 * additional crops for furret walking video
 * add a microphone and do beat analysis.  adjust frame delay until furret walking lines up with the beat.
+* [HeartGold and SoulSilver](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) have pixel animations for walking every pokemon...
