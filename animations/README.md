@@ -47,10 +47,18 @@ Ran out of time! 😅
 ![outrun](finalized/outrun.gif)
 
 ## Dreamstate SoCal 2019
-![outrun-glasses](finalized/outrun-glasses.gif)
+![tinted-outrun-glasses](finalized/tinted-outrun-glasses.gif)
 ![nyanfurret](finalized/nyanfurret.gif)
 ![bmo](finalized/bmo.gif)
 ![galactic-furret-paralax](finalized/galactic-furret-paralax.gif)
+![hue-trip](finalized/hue-trip.gif)
+![pika-balloon](finalized/pika-balloon.gif)
+![pika-border](finalized/pika-border.gif)
+![pika-face](finalized/pika-face.gif)
+![jiggy-jump](finalized/jiggy-jump.gif)
+![torchic-rowlet](finalized/torchic-rowlet.gif)
+![research](finalized/research.gif)
+![friends-starcrafts](finalized/friends-starcrafts.gif)
 
 # Limitations
 * SPIFFS filenames can't be too long, or files will not upload. (Move to FatFS!)
