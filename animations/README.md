@@ -66,3 +66,6 @@ Ran out of time! 😅
 ![crystal-1](finalized/glitch/crystal-1.gif)
 ![prancer](finalized/glitch/prancer.gif)
 ![skrunched-face](finalized/glitch/skrunched-face.gif)
+![runaround](finalized/1st/runaround.gif)
+![wakeup](finalized/1st/wakeup.gif)
+![ditto](finalized/1st/ditto.gif)
