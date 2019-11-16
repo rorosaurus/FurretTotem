@@ -12,7 +12,7 @@ Here they are, sorted by when they were added to the animation pool!
 
 ## ABGT Weekender 2019
 ![abgtw](finalized/abgtw.gif)
-![furret-friends](finalized/furret-friends.gif)
+![friends-eggs](finalized/friends-eggs.gif)
 ![head-bob](finalized/head-bob.gif)
 ![mantykebubbles](finalized/mantykebubbles.gif)
 ![rave-furret](finalized/rave-furret.gif)
@@ -61,3 +61,5 @@ Ran out of time! 😅
 ![friends-starcrafts](finalized/friends-starcrafts.gif)
 ![seattle-trance-family](finalized/seattle-trance-family.gif)
 ![blocking-snorlax](finalized/blocking-snorlax.gif)
+![friends-mantine](finalized/friends-mantine.gif)
+![friends-kirby](finalized/friends-kirby.gif)
