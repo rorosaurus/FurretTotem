@@ -36,13 +36,13 @@ Here they are, sorted by when they were added to the animation pool!
 Ran out of time! 😅
 
 ## Alchemy Tour 2019
-![CHONK](finalized/gitch/CHONK.gif)
-![fractally](finalized/gitch/fractally.gif)
-![horror](finalized/gitch/horror.gif)
-![minor](finalized/gitch/minor.gif)
-![oface](finalized/gitch/oface.gif)
+![CHONK](finalized/glitch/CHONK.gif)
+![fractally](finalized/glitch/fractally.gif)
+![horror](finalized/glitch/horror.gif)
+![minor](finalized/glitch/minor.gif)
+![oface](finalized/glitch/oface.gif)
 ![printing](finalized/unused/glitch-printing.gif)
-![wavy](finalized/gitch/wavy.gif)
+![wavy](finalized/glitch/wavy.gif)
 ![outrun](finalized/unused/outrun.gif)
 
 ## Dreamstate SoCal 2019
@@ -50,7 +50,7 @@ Ran out of time! 😅
 ![nyanfurret](finalized/1st/nyanfurret.gif)
 ![bmo](finalized/friends/bmo.gif)
 ![galactic-paralax](finalized/1st/galactic-paralax.gif)
-![hue-trip](finalized/hue-trip.gif)
+![hue-trip](finalized/1st/hue-trip.gif)
 ![pika-balloon](finalized/friends/pika-balloon.gif)
 ![pika-border](finalized/friends/pika-border.gif)
 ![starcrafts](finalized/friends/starcrafts.gif)
