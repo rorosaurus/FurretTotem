@@ -1,5 +1,7 @@
 # Limitations
 * SPIFFS filenames can't be too long, or files will not upload. (Move to FatFS!)
+* Seems the file order gets mixed up if we have more than ~35 gifs. Works using 649KB but doesn't at 672KB used..
+  * Re-partitioning with larger SPIFFS seems to resolve this issue, strangely.
 * Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
 * Short looped animations: due to memory constraints on ESP32 with 128x64px, use < 20 frames total (or is it < 20kB filesize?)
 
