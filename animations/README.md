@@ -61,3 +61,8 @@ Ran out of time! 😅
 ![colorful](finalized/glitch/colorful.gif)
 ![missingno-1](finalized/glitch/missingno-1.gif)
 ![missingno-2](finalized/glitch/missingno-2.gif)
+![missingno-3](finalized/glitch/missingno-3.gif)
+![crystal-0](finalized/glitch/crystal-0.gif)
+![crystal-1](finalized/glitch/crystal-1.gif)
+![prancer](finalized/glitch/prancer.gif)
+![skrunched-face](finalized/glitch/skrunched-face.gif)
