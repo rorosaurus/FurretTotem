@@ -20,6 +20,7 @@ int currentBrightness = defaultBrightness;
 bool nextFlag = false;
 bool prevFlag = false;
 int newIndex = -1;
+int currentIndex = FIRSTINDEX;
 
 // If the matrix is a different size than the GIFs, allow panning through the GIF
 int OFFSETX = 0;
@@ -37,6 +38,7 @@ String processor(const String& var){
   if(var == "MIN_BRIGHTNESS") return String(minBrightness);
   if(var == "MAX_BRIGHTNESS") return String(maxBrightness);
   if(var == "CURRENT_BRIGHTNESS") return String(currentBrightness);
+  if(var == "CURRENT_INDEX") return String(currentIndex);
   if(var == "LIST_FILENAME_OPTIONS") return filenameOptions;
   return String();
 }
@@ -148,6 +150,7 @@ void loop() {
     
     static unsigned long lastTime = millis();
     static int index = FIRSTINDEX;
+    currentIndex = index;
     static int8_t new_file = 1;
     static uint16_t frame = 0;
     // allow stalling on a picture if requested
