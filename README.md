@@ -17,7 +17,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32 and a custom 
 ## Social
 
 * [@ravefurret](https://www.instagram.com/ravefurret/) on Instagram!  Share your pics and videos with us!
-* [ravefurret.com](ravefurret.com) redirects to the Github page, with all the code and technical information!
+* [ravefurret.com](https://ravefurret.com) redirects to the Github page, with all the code and technical information!
 
 ## Videos
 
@@ -42,7 +42,7 @@ We used Photoshop to create the animations!
 ## Hardware
 * [PCB I designed](https://github.com/rorosaurus/esp32-hub75-driver) to drive HUB75 panels with an ESP32: [Buy on Tindie!](https://www.tindie.com/products/18357/)
   * This part is optional, but *greatly* simplifies your wiring!
-* ESP32-DEVKIT-V1: [Amazon ($7)](https://smile.amazon.com/gp/product/B07Q576VWZ/), [AliExpress ($4)](https://www.aliexpress.com/item/32902307791.html)
+* ESP32-DEVKIT-V1: [Amazon ($14 for 2)](https://smile.amazon.com/gp/product/B07Q576VWZ/)
   * You can use a different ESP32 if you don't use my PCB. Just remember to verify it has the required pins mentioned below!
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
 * Bubble machine extracted from children's bubble wand toy, purchased on [eBay](https://www.ebay.com/itm/332880742452)
