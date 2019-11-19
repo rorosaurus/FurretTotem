@@ -6,7 +6,6 @@
   </head>
   <body>
       <select id="newFileSelector" name="newFileIndex" class="fileSelect" onchange="submitParam('newFileIndex', document.getElementById('newFileSelector').value)">
-        <option value="" selected disabled hidden>Choose a specific .gif</option>
         %LIST_FILENAME_OPTIONS%
       </select>
       
@@ -18,6 +17,10 @@
       </div>
       
       <script>
+        var fileSelector = document.getElementById('newFileSelector');
+        
+        fileSelector.value = %CURRENT_INDEX%;
+      
         function submitParam(parameter, val) {
           var http = new XMLHttpRequest();
           var params = parameter + "=" + val;
@@ -25,13 +28,30 @@
           http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
           http.send();
           
-          if(parameter != "newFileIndex") resetFileSelector();
+          if(parameter == "next") incFileSelector();
+          if(parameter == "prev") decFileSelector();
         }
         
-        function resetFileSelector(){
-          document.getElementById('newFileSelector').value = "";
+        function incFileSelector(){
+          var currentIndex = fileSelector.options.selectedIndex;
+          var maxIndex = fileSelector.options.length;
+          
+          var newIndex = currentIndex + 1;
+          if (newIndex >= maxIndex) newIndex = 0;
+          
+          fileSelector.value = fileSelector.options[newIndex].value;
         }
-      
+        
+        function decFileSelector(){
+          var currentIndex = fileSelector.options.selectedIndex;
+          var maxIndex = fileSelector.options.length;
+          
+          var newIndex = currentIndex - 1;
+          if (newIndex < 0) newIndex = maxIndex - 1;
+          
+          fileSelector.value = fileSelector.options[newIndex].value;
+        }
+        
         var slider = document.getElementById("brightnessSlider");
         var button = document.getElementById("brightnessButton");
                 
