@@ -69,3 +69,6 @@ Ran out of time! 😅
 ![runaround](finalized/1st/runaround.gif)
 ![wakeup](finalized/1st/wakeup.gif)
 ![ditto](finalized/1st/ditto.gif)
+![6-stack](finalized/trippy/6-stack.gif)
+![6-stack-move](finalized/trippy/6-stack-move.gif)
+![24-stack](finalized/trippy/24-stack-move.gif)
