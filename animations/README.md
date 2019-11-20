@@ -72,3 +72,4 @@ Ran out of time! 😅
 ![6-stack](finalized/trippy/6-stack.gif)
 ![6-stack-move](finalized/trippy/6-stack-move.gif)
 ![24-stack](finalized/trippy/24-stack-move.gif)
+![sandwich](finalized/crop/sandwich.gif)
