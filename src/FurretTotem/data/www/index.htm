@@ -55,10 +55,10 @@
         var slider = document.getElementById("brightnessSlider");
         var button = document.getElementById("brightnessButton");
                 
-        button.innerHTML = button.value = 'Set Brightness to ' + slider.value;
+        button.value = 'Set Brightness to ' + slider.value;
         
         slider.oninput = function() {
-          button.value = 'Set Brightness to ' + this.value;
+          button.value = 'Set Brightness to ' + slider.value;
         }
       </script>
   </body>
