@@ -83,3 +83,6 @@ Ran out of time! 😅
 ![top](finalized/peek/top.gif)
 ![jump](finalized/1st/jump.gif)
 ![jump-wave](finalized/1st/jump-wave.gif)
+![vertical-mirror](finalized/trippy/vertical-mirror.gif)
+![vertical-mirror-2](finalized/trippy/vertical-mirror-2.gif)
+![sideways-mirror](finalized/crop/sideways-mirror.gif)
