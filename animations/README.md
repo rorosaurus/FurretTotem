@@ -82,3 +82,4 @@ Ran out of time! 😅
 ![right](finalized/peek/right.gif)
 ![top](finalized/peek/top.gif)
 ![jump](finalized/1st/jump.gif)
+![jump-wave](finalized/1st/jump-wave.gif)
