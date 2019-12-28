@@ -123,6 +123,9 @@ void setup() {
     // https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8
     Serial.println("Configuring access point...");
     WiFi.softAP(ssid, password, 1, 1, 1); // channel 1 (default), hide SSID, max connected clients = 1
+    // I also hacked the ESP32 Arduino support to reduce the packet buffer size. Some ESP32's appear to have less DMA memory than others... ?
+    // https://github.com/espressif/arduino-esp32/blob/cec3fca4ad4a39feb463f9298ab3238819732d50/libraries/WiFi/src/WiFiUdp.cpp#L214
+    // 1460 -> 800
     
     dnsServer.start(53, "*", WiFi.softAPIP());
     server.addHandler(new CaptiveRequestHandler());//only when requested from AP
