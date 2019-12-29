@@ -90,4 +90,4 @@ Ran out of time! 😅
 ## Resolution 2019
 ![shake](animations/finalized/1st/shake.gif)
 ![hop](animations/finalized/1st/hop.gif)
-
+![hop-transparent](animations/finalized/1st/hop-transparent.gif)
