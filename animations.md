@@ -42,7 +42,7 @@ Ran out of time! 😅
 ![minor](animations/finalized/glitch/minor.gif)
 ![oface](animations/finalized/glitch/missingno-0.gif)
 ![printing](animations/finalized/unused/glitch-printing.gif)
-![wavy](animations/finalized/glitch/wavy.gif)
+![wavy](animations/finalized/trippy/wavy.gif)
 ![outrun](animations/finalized/unused/outrun.gif)
 
 ## Dreamstate SoCal 2019
@@ -91,3 +91,8 @@ Ran out of time! 😅
 ![shake](animations/finalized/1st/shake.gif)
 ![hop](animations/finalized/1st/hop.gif)
 ![hop-transparent](animations/finalized/1st/hop-transparent.gif)
+![anjuna](animations/finalized/events/anjuna.gif)
+![anjuna-pulse](animations/finalized/events/anjuna-pulse.gif)
+![insta](animations/finalized/1st/insta.gif)
+![cc-info](animations/finalized/1st/cc-info.gif)
+![send-medical](animations/finalized/1st/send-medical.gif)
