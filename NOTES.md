@@ -21,3 +21,9 @@ Brightness | Power
 165/255 | 6.8W
 200/255 | 8.3W
 255/255 | 10W
+
+## Checking DMA-capable memory free
+````
+Serial.print("8-bit/DMA Memory Available: ");
+Serial.println(heap_caps_get_free_size(MALLOC_CAP_DMA));
+````
