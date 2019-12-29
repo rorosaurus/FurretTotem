@@ -4,6 +4,7 @@
   * Re-partitioning with larger SPIFFS seems to resolve this issue, strangely.
 * Little color variety: due to memory constraints on ESP32 with 128x64px, use < 32 colors
 * Short looped animations: due to memory constraints on ESP32 with 128x64px, use < 20 frames total (or is it < 20kB filesize?)
+* Seems after I hit 84 files on SPIFFS, the files stop appearing in the right order.  SPIFFS bug? Memory issue?
 
 # Future design philosophy
 * Allow every animation to have 3 phases: 1 and 3 are optional and play once.  2 loops as long as needed.
