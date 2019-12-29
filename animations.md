@@ -95,7 +95,7 @@ Ran out of time! 😅
 ![anjuna-pulse](animations/finalized/events/anjuna-pulse.gif)
 ![insta](animations/finalized/1st/insta.gif)
 ![cc-info](animations/finalized/events/cc-info.gif)
-![send-medical](animations/finalized/events/send-medical.gif)
+![EMERGENCY](animations/finalized/events/EMERGENCY.gif)
 ![eevee](animations/finalized/friends/eevee.gif)
 ![spearmint](animations/finalized/friends/spearmint.gif)
 ![eye-zoom](animations/finalized/trippy/eye-zoom.gif)

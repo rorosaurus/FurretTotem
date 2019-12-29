@@ -25,9 +25,6 @@
   * And genres and beats to match animations automatically
 * [HeartGold and SoulSilver](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) have pixel animations for walking every pokemon...
 * Furret cat bus!
-* Furret and Spearmint
-* Kirby sucks up furret on the left, the spits him out on the right
-* Endless zoom into eyes or something trippy
 * running into wobbefet and bouncing back off
 
 # Future background ideas
