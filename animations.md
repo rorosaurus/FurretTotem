@@ -98,3 +98,4 @@ Ran out of time! 😅
 ![send-medical](animations/finalized/events/send-medical.gif)
 ![eevee](animations/finalized/friends/eevee.gif)
 ![spearmint](animations/finalized/friends/spearmint.gif)
+![eye-zoom](animations/finalized/trippy/eye-zoom.gif)
