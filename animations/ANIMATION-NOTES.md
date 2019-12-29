@@ -11,14 +11,36 @@
   1. intro
   2. loop
   3. outro
-  
 * transparent backgrounds (alpha layer) are allowed so we can change/generate the backgrounds
+* Pause mode, next frame advance
+* Queue up animation changes? Auto detect drops?
+* Mode to help people find their friends
+* ability to add captions (enter text from web interface)
 
 # Future Animation ideas
-
 * Furret eats a berry and then his eyes change (ditto or dilated pupils?) and he grows a smile
 * additional crops for furret walking video
 * add a microphone and do beat analysis.  adjust frame delay until furret walking lines up with the beat.
+  * neural nets to predict next drop (maybe fade out and back in)
+  * And genres and beats to match animations automatically
 * [HeartGold and SoulSilver](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) have pixel animations for walking every pokemon...
 * Furret cat bus!
 * Furret and Spearmint
+* Kirby sucks up furret on the left, the spits him out on the right
+* Endless zoom into eyes or something trippy
+* running into wobbefet and bouncing back off
+
+# Future background ideas
+* Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
+* White stars scrolling past the screen like a galaxy moving. Random velocities are assigned to each star which adjusts the intensity of the rainbow color of the trail (which can also rotate with time?)
+* match background color of stage with ESP32-CAM?
+
+# Future effects ideas
+* Rotate every pixel's hue by some variable?
+* Mirror the gif on a number of axes, or flip entirely (any animation can now be upside down)
+  * init some variables based on those parameters for flipping
+  * use those variables for the for loops that map out the pixels
+  * also change the iterator's increment to skip some lines/columns and then use mod operator to make sure we don't walk off arrays
+* TRANSITIONS! fade to black?
+* disable reset of pixels on each frame (carry over unchanged pixels to next frame!)
+* random glitches (offset entire row/column, etc.)
