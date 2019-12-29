@@ -57,7 +57,7 @@ Ran out of time! 😅
 ![seattle-trance-family](animations/finalized/events/sea-trance-fam.gif)
 ![snorlax](animations/finalized/friends/snorlax.gif)
 ![mantine](animations/finalized/friends/mantine.gif)
-![kirby](animations/finalized/friends/kirby.gif)
+![kirby-umbrella](animations/finalized/unused/kirby-umbrella.gif)
 ![colorful](animations/finalized/glitch/colorful.gif)
 ![missingno-1](animations/finalized/glitch/missingno-1.gif)
 ![missingno-2](animations/finalized/glitch/missingno-2.gif)
@@ -99,3 +99,4 @@ Ran out of time! 😅
 ![eevee](animations/finalized/friends/eevee.gif)
 ![spearmint](animations/finalized/friends/spearmint.gif)
 ![eye-zoom](animations/finalized/trippy/eye-zoom.gif)
+![kirby](animations/finalized/friends/kirby.gif)
