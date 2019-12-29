@@ -97,3 +97,4 @@ Ran out of time! 😅
 ![cc-info](animations/finalized/events/cc-info.gif)
 ![send-medical](animations/finalized/events/send-medical.gif)
 ![eevee](animations/finalized/friends/eevee.gif)
+![spearmint](animations/finalized/friends/spearmint.gif)
