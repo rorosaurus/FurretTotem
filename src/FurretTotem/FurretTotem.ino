@@ -7,7 +7,7 @@
 
 #define defaultBrightness 25
 #define minBrightness 0
-#define maxBrightness 150
+#define maxBrightness 150 // 165 is roughly equivalent to 3A with 2 displays, but leave some headroom
 
 #include <DNSServer.h>
 #include <WiFi.h>
