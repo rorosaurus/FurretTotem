@@ -5,7 +5,7 @@
 #define DISABLE_MATRIX_TEST
 #define NEOMATRIX
 
-#define defaultBrightness 25
+#define defaultBrightness 50 // 25 is good for home testing, 50 is a good default for shows
 #define minBrightness 0
 #define maxBrightness 150 // 165 is roughly equivalent to 3A with 2 displays, but leave some headroom
 
