@@ -101,3 +101,4 @@ Ran out of time! 😅
 ![eye-zoom](animations/finalized/trippy/eye-zoom.gif)
 ![kirby](animations/finalized/friends/kirby.gif)
 ![hd-walk](animations/finalized/1st/hd-walk.gif)
+![side-crunched](animations/finalized/crop/side-crunched.gif)
