@@ -119,15 +119,18 @@ void setup() {
     Serial.println(num_files);
     Serial.flush();
     
-    // We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix:
+    // We didn't have enough DMA memory to use Wifi until I made this hack in SmartMatrix, effectively removing the double buffer:
     // https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8
     Serial.println("Configuring access point...");
     WiFi.softAP(ssid, password, 1, 1, 1); // channel 1 (default), hide SSID, max connected clients = 1
-    // I also hacked the ESP32 Arduino support to reduce the packet buffer size. Some ESP32's appear to have less DMA memory than others... ?
-    // https://github.com/espressif/arduino-esp32/blob/cec3fca4ad4a39feb463f9298ab3238819732d50/libraries/WiFi/src/WiFiUdp.cpp#L214
-    // 1460 -> 800
     
+    // I also hacked the ESP32 Arduino support to reduce packet buffer size (also uses DMA memory):
+    // https://github.com/espressif/arduino-esp32/blob/cec3fca4ad4a39feb463f9298ab3238819732d50/libraries/WiFi/src/WiFiUdp.cpp#L214
+    // Lines 210 and 214: change 1460 -> 1200
+    // Even with this, ESP32 will sometimes (randomly?) crash when dnsServer.processNextRequest() calls WiFiUDP::parsePacket()
+    // Strangely, some ESP32's appear to have less DMA memory than others... Which makes this issue even less consistent to repro. Weird.
     dnsServer.start(53, "*", WiFi.softAPIP());
+    
     server.addHandler(new CaptiveRequestHandler());//only when requested from AP
     server.begin();
     Serial.print("Server started. IP Address: ");
