@@ -100,3 +100,4 @@ Ran out of time! 😅
 ![spearmint](animations/finalized/friends/spearmint.gif)
 ![eye-zoom](animations/finalized/trippy/eye-zoom.gif)
 ![kirby](animations/finalized/friends/kirby.gif)
+![hd-walk](animations/finalized/1st/hd-walk.gif)
