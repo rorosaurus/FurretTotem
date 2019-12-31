@@ -26,6 +26,8 @@
 * [HeartGold and SoulSilver](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) have pixel animations for walking every pokemon...
 * Furret cat bus!
 * running into wobbefet and bouncing back off
+* falling asleep / waking up
+* glitching out with the HD version of Furret
 
 # Future background ideas
 * Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
