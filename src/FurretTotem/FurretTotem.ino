@@ -31,7 +31,7 @@ int FACTY = 0;
 int num_files;
 String filenameOptions = "";
 
-DNSServer dnsServer;
+//DNSServer dnsServer;
 AsyncWebServer server(80);
 
 String processor(const String& var){
@@ -124,12 +124,7 @@ void setup() {
     Serial.println("Configuring access point...");
     WiFi.softAP(ssid, password, 1, 1, 1); // channel 1 (default), hide SSID, max connected clients = 1
     
-    // I also hacked the ESP32 Arduino support to reduce packet buffer size (also uses DMA memory):
-    // https://github.com/espressif/arduino-esp32/blob/cec3fca4ad4a39feb463f9298ab3238819732d50/libraries/WiFi/src/WiFiUdp.cpp#L214
-    // Lines 210 and 214: change 1460 -> 1200
-    // Even with this, ESP32 will sometimes (randomly?) crash when dnsServer.processNextRequest() calls WiFiUDP::parsePacket()
-    // Strangely, some ESP32's appear to have less DMA memory than others... Which makes this issue even less consistent to repro. Weird.
-    dnsServer.start(53, "*", WiFi.softAPIP());
+//    dnsServer.start(53, "*", WiFi.softAPIP());
     
     server.addHandler(new CaptiveRequestHandler());//only when requested from AP
     server.begin();
@@ -150,7 +145,7 @@ void adjust_gamma(float change) {
 
 
 void loop() {
-    dnsServer.processNextRequest();
+//    dnsServer.processNextRequest();
 
     matrixLayer.setBrightness(currentBrightness);
     
