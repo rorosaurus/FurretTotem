@@ -28,6 +28,10 @@
 * running into wobbefet and bouncing back off
 * falling asleep / waking up
 * glitching out with the HD version of Furret
+* consent info
+* hydrate info
+* Celeste
+* Catbug, Bugcat, Puppycat?
 
 # Future background ideas
 * Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
