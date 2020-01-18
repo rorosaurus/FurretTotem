@@ -32,6 +32,7 @@
 * hydrate info
 * Celeste
 * Catbug, Bugcat, Puppycat?
+* Aperature Science Portals, Rick and Morty portals, Mario pipes
 
 # Future background ideas
 * Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
