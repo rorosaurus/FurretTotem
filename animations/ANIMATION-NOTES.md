@@ -31,7 +31,7 @@
 * consent info
 * hydrate info
 * Celeste
-* Catbug, Bugcat, Puppycat?
+* Catbug, Bugcat, Puppycat, Pusheen?
 * Aperature Science Portals, Rick and Morty portals, Mario pipes
 
 # Future background ideas
@@ -46,5 +46,6 @@
   * use those variables for the for loops that map out the pixels
   * also change the iterator's increment to skip some lines/columns and then use mod operator to make sure we don't walk off arrays
 * TRANSITIONS! fade to black?
+* Change playback speed, reverse, pause, strobe
 * disable reset of pixels on each frame (carry over unchanged pixels to next frame!)
 * random glitches (offset entire row/column, etc.)
