@@ -33,6 +33,12 @@
 * Celeste
 * Catbug, Bugcat, Puppycat, Pusheen?
 * Aperature Science Portals, Rick and Morty portals, Mario pipes
+* TAIKO NO TATSUJIN pixel art
+* Cinnamon
+* Bill Cypher
+* Midnight Gospel
+* Slime Rancher Pink Slime + Bee Drone
+* Pupa
 
 # Future background ideas
 * Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
