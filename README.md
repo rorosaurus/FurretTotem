@@ -34,6 +34,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32 and a custom 
 This project was built on top of so many incredible libraries:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [SmartMatrix Library for ESP32](https://github.com/pixelmatix/SmartMatrix/tree/teensylc)
+  * I did a [dirty hack](https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8) to free up some DMA memory to enable Wifi for this project.
 * [Animated GIFs on ESP32](https://github.com/marcmerlin/AnimatedGIFs)
 * [Arduino plugin for uploading files to ESP32 file system](https://github.com/me-no-dev/arduino-esp32fs-plugin)
 
