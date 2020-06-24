@@ -31,7 +31,7 @@ Two 128x64px LED panels looping animated gifs. Powered by an ESP32 and a custom 
 * [bigclive](https://www.youtube.com/channel/UCtM5z2gkrGRuWd0JQMx76qA) for showing me the [perfect bubble blowing mechanism](https://www.youtube.com/watch?v=BvQtl3ciGcA)!
 
 ## Software
-This project was built on top of so many incredible libraries:
+This repository isn't meant to be a good sample project, it's just my personal project. It was built on top of so many incredible libraries:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [SmartMatrix Library for ESP32](https://github.com/pixelmatix/SmartMatrix/tree/teensylc)
   * I did a [dirty hack](https://github.com/rorosaurus/SmartMatrix/commit/c46fe8d7be686caaaa3b7198bc4b7b24c6114df8) to free up some DMA memory to enable Wifi for this project.
@@ -48,8 +48,5 @@ We used Photoshop to create the animations!
 * 128x64px, P2.5, 1/32, HUB75E purchased on [AliExpress](https://www.aliexpress.com/item/32972741517.html?spm=a2g0s.12269583.0.0.48e74198VArDtK)
 * Bubble machine extracted from children's bubble wand toy, purchased on [eBay](https://www.ebay.com/itm/332880742452)
 
-## Pins
-Using `ESP32_FORUM_PINOUT` from [MatrixHardware_ESP32_V0.h](https://github.com/pixelmatix/SmartMatrix/blob/teensylc/src/MatrixHardware_ESP32_V0.h)
-
 ## Power
-Originally I was planning to power this off some 18650's, but I butchered a USB cable to supply the 5V power to the panel for testing, and I'm really enjoying how simple it is.  At full brightness, one panel pulls about 2 amps @ 5 volts.
+I butchered a USB cable to supply the 5V power from a large USB battery bank. At full brightness, one panel pulls about 2 amps @ 5 volts. Since the displays are so hungry, I recommend running the ESP32 from a separate 5V power source to avoid brownouts due to voltage sag.
