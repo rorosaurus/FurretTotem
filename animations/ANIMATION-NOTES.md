@@ -39,6 +39,15 @@
 * Midnight Gospel
 * Slime Rancher Pink Slime + Bee Drone
 * Pupa
+* Among Us Jellybeans
+* Catjam Furret
+* Trans ally colors
+* Lickitung
+* Run Furret through a 60fps AI upscaler
+* Sax headbob Furret
+* COVID mask Furret
+* Madeline/Badeline Celeste
+* Migrate to new driver? https://community.pixelmatix.com/t/up-to-256x128-on-esp32-with-esp32-rgb64x32matrixpanel-i2s-dma/733/3
 
 # Future background ideas
 * Several solid color rainbow/palette vertical stripes scrolling across the screen.  Their widths oscillate with time.
