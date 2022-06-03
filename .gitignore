@@ -1,4 +1,5 @@
+art/
 media/
-animations/reference/furret/furret greenscreen hd.mp4
+animations/
+src/FurretTotem/data/gifs
 src/FurretTotem/secrets.h
-animations/reference/3d-maze-footage.mp4
