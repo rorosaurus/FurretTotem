@@ -1,4 +1,3 @@
- 
 ## Wait but how?
 * The LED panels are driven by an ESP32, controlled by a phone via Wifi!
 * Yes, he's built using "Arduino"! No, they aren't normal "Neopixel" LEDs, they're HUB75!  Yes, he is adorable!
