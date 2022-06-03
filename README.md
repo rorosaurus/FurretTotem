@@ -5,15 +5,16 @@
 * The original pixel art animation was done by the extremely talented [Alex Illustration](https://www.artstation.com/alexillustration)! We used Photoshop to modify the original animation and to make all the other animations!
 
 ## Where is Furret?
-Furret uses [Meshtastic](https://meshtastic.org/), a peer-to-peer LoRa mesh network, for long range reliable texting and GPS coordinate sharing! After getting your hardware and setting up the device, join his channel if you want to find Furret easily at festivals! We'll try to announce future planned events on Instagram!
+Furret uses [Meshtastic](https://meshtastic.org/), a peer-to-peer LoRa mesh network, for long range (up to 10km!) reliable texting and GPS coordinate sharing! After getting your hardware (~$30) and setting up the device, join his channel and you can find Furret easily at festivals! We'll try to announce future planned events on Instagram!
 
-[Click here to join his channel](https://www.meshtastic.org/d/#CjAYAyIgmvE-KciSpfpBhmnGTf2xxqEcX0OudQ_G3KwMii1EzjIqClJhdmVGdXJyZXQ), or use the QR code below!
+[Click here to join his channel](https://www.meshtastic.org/d/#CjAYAyIgmvE-KciSpfpBhmnGTf2xxqEcX0OudQ_G3KwMii1EzjIqClJhdmVGdXJyZXQ), or scan the QR code below!
 
 ![Furret's Meshtastic Channel](/meshtastic-screenshot.png)
 
 ## Special Thanks
 * [@alex_illustrat](https://twitter.com/alex_illustrat) - who [originally created the 8bit pixel art for Furret Walking](https://www.youtube.com/watch?v=ylnLUMmBNKc). See more of his work on [ArtStation](https://alexillustration.artstation.com/)!
 * [narpy](https://www.youtube.com/channel/UCKYFHftFxQOJghmrEaK32sg) - for [starting the most adorable, wholesome, meme](https://www.youtube.com/watch?v=JVHybsJbTFY)
+* [@pikachutotem](https://www.instagram.com/pikachutotem/) - who inspired me to make Furret!
 * Sprite_tm, Craig A. Lindley, Louis Beaudoin, and Marc Merlin - for the below libraries and helpful forum posts :)
 * [bigclive](https://www.youtube.com/channel/UCtM5z2gkrGRuWd0JQMx76qA) for showing me the [perfect bubble blowing mechanism](https://www.youtube.com/watch?v=BvQtl3ciGcA)!
 
